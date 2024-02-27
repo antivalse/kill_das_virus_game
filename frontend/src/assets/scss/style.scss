@@ -151,9 +151,16 @@ footer p {
 #game-display {
   background-color: #f3eded;
   border: 2px solid black;
+  display: flex;
+  flex-wrap: wrap;
   height: 70vh;
   width: 70vh;
   margin: 30px;
+}
+
+.square {
+  width: calc(100% / 10);
+  height: calc(100% / 10);
 }
 
 #score-board-display {
