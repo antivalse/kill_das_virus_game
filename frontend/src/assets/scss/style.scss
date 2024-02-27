@@ -114,7 +114,7 @@ footer p {
 /* GAME PAGE STYLES */
 
 #game-page {
-  background-color: rgb(196, 167, 167);
+  background-color: rgb(255, 255, 255);
   position: fixed;
   top: 0;
   z-index: 101;
@@ -123,32 +123,55 @@ footer p {
   overflow: scroll;
 }
 
-#game-display {
-  background-color: #f3eded;
-  border: 2px solid black;
-  height: 600px;
-  width: 900px;
-  margin: 30px;
-}
-
 #game-view-wrapper {
   display: flex;
+  justify-content: center;
   font-family: "Changa", sans-serif;
 }
 
-#score-board-display {
+#game-info p {
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  font-family: "Changa", sans-serif;
+}
+
+#rule-set {
+  flex-direction: column;
+  text-align: center;
+  margin: 30px;
+  width: 300px;
+}
+
+#rule-set ul {
+  text-align: left;
+  font-size: 1.7rem;
+}
+
+#game-display {
+  background-color: #f3eded;
   border: 2px solid black;
-  display: flex;
+  height: 70vh;
+  width: 70vh;
+  margin: 30px;
+}
+
+#score-board-display {
   flex-direction: column;
   align-items: center;
-  height: 600px;
+  text-align: center;
   margin: 30px;
-  width: 400px;
+  width: 300px;
+}
+
+#score-board-display p {
+  font-size: 1.7rem;
 }
 
 #score-count {
   border: 2px solid black;
   background-color: #f3eded;
+  text-align: center;
   height: 200px;
   width: 300px;
 }
