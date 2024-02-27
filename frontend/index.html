@@ -1,17 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="https://fav.farm/😎" />
-	<link rel="stylesheet" href="/src/assets/scss/style.scss">
-	<title>FED23 API-utveckling Realtime Frontend</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="https://fav.farm/😎" />
+    <link rel="stylesheet" href="/src/assets/scss/style.scss" />
+    <title>FED23 API-utveckling Realtime Frontend</title>
+  </head>
 
-<body>
-	<div id="app"></div>
+  <body>
+    <div id="app">
+      <div id="start-page">
+        <header>
+          <h1><a href="index.html">Kill das Virus!</a></h1>
+        </header>
+        <p class="intro">
+          Get ready to conquer chaos in
+          <strong class="intro-strong">'Kill Das Virus!'</strong><br />
+          The game where you get to unleash your anti-virus prowess and say Auf
+          Wiedersehen to those pesky pathogens!
+        </p>
+        <form id="username-form">
+          <input
+            type="text"
+            id="username"
+            required
+            placeholder="Enter Your Name"
+          />
+          <button type="submit" id="start-btn">Starte Spiel!</button>
+        </form>
 
-	<script type="module" src="/src/main.ts"></script>
-</body>
+        <div id="game-page" class="hide">
+          <h1>KILL DAS VIRUS!</h1>
+          <div id="game-view-wrapper">
+            <div id="game-display"></div>
+            <div id="score-board-display">
+              <h2>SCOREBOARD</h2>
+              <div id="score-count">
+                <p id="score"></p>
+              </div>
+              <div id="player-one-stats" class="player-stats">
+                <h3>Player One</h3>
+              </div>
+              <div id="player-two-stats" class="player-stats">
+                <h3>Player Two</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="result-page" class="hide"></div>
+        <footer>
+          <p>This game was made for you by Mattea, Josefin and Victor</p>
+          <p>&copy; FED23 GAMES 2024</p>
+        </footer>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
