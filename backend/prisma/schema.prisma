@@ -6,3 +6,19 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+
+model Room {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String     @unique
+}
+
+model Player {
+   id       String    @id @default(auto()) @map("_id") @db.ObjectId
+   username String 
+}
+
+model Test {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   
+}
