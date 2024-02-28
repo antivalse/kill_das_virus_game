@@ -11,7 +11,7 @@
 
   <body>
     <div id="app">
-      <div id="start-page">
+      <div id="start-page" class="hide">
         <header>
           <h1><a href="index.html">Kill das Virus!</a></h1>
         </header>
@@ -31,20 +31,35 @@
           <button type="submit" id="start-btn">Starte Spiel!</button>
         </form>
 
-        <div id="game-page" class="hide">
+        <div id="game-page">
           <h1>KILL DAS VIRUS!</h1>
+          <div id="game-info">
+            <p>Round 7</p>
+          </div>
           <div id="game-view-wrapper">
-            <div id="game-display"></div>
+            <div id="rule-set">
+              <h2>Rules</h2>
+              <ul class="rule-list">
+                <li>Game = 10 rounds</li>
+                <li>Click on the virus to eliminate it</li>
+                <li>Win a round by eliminating the virus the fastest</li>
+                <li>Second place is for losers</li>
+              </ul>
+            </div>
+            <div id="game-display" class="display"></div>
             <div id="score-board-display">
               <h2>SCOREBOARD</h2>
               <div id="score-count">
-                <p id="score"></p>
+                <p id="score">4 - 4</p>
               </div>
+              <h2>Previous Round</h2>
               <div id="player-one-stats" class="player-stats">
                 <h3>Player One</h3>
+                <p>00:02.234</p>
               </div>
               <div id="player-two-stats" class="player-stats">
                 <h3>Player Two</h3>
+                <p>00:01.123</p>
               </div>
             </div>
           </div>
