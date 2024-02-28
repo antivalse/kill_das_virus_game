@@ -13,7 +13,7 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   io(SOCKET_HOST);
 
 // Generate squares in game-display with class and id
-const generateSquares = (): void => {
+const generateSquares = () => {
   const gameDisplay = document.querySelector(".display");
 
   const width = 10;
