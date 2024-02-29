@@ -7,13 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Room {
+model Game {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  name      String     @unique
+  result    String 
+  players   Player[]
 }
 
 model Player {
-   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-   username String 
+   id        String    @id @default(auto()) @map("_id") @db.ObjectId
+   username  String 
+   highscore String 
+   gameId    String    @db.ObjectId // to establish relation with room
+   game      Game      @relation(fields: [gameId], references: [id])
 }
 
