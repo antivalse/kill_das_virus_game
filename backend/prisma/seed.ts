@@ -3,7 +3,14 @@ const prisma = new PrismaClient();
 
 async function main() {
 	// Here be all your seeds 🌱
-}
+	const player = await prisma.player.upsert({
+		where: { id: '1' }, // Ange det identifierande värdet för spelaren här
+		update: {}, // Tomt update-block
+		create: {
+		  username: 'Josefine',
+		},
+	  });
+	}
 
 main()
 	.then(async () => {
