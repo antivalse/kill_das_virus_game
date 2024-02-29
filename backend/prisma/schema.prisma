@@ -7,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+<<<<<<< HEAD
 // model Room {
 //   id        String      @id @default(auto()) @map("_id") @db.ObjectId
 //   name      String      @unique
@@ -18,4 +19,20 @@ model Player {
   username  String
   // roomId    String      @db.ObjectId
   // room      Room        @relation(fields: [roomId], references: [id])
+=======
+
+model Room {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String     @unique
+}
+
+model Player {
+   id       String    @id @default(auto()) @map("_id") @db.ObjectId
+   username String 
+}
+
+model Test {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   
+>>>>>>> d634a8c965c58b27aaa97a94167c1dd37923d2e5
 }
