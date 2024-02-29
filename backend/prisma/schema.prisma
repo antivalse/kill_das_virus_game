@@ -17,7 +17,3 @@ model Player {
    username String 
 }
 
-model Test {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String   
-}
