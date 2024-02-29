@@ -3,6 +3,12 @@ const prisma = new PrismaClient();
 
 async function main() {
 	// Here be all your seeds 🌱
+
+	await prisma.player.create({
+		data: {
+			username: "Mattea",
+		},
+	});
 }
 
 main()
