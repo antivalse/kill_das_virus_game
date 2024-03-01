@@ -22,7 +22,7 @@ export const handleConnection = (
 	// Listen for a player join request from klient when player submits form
 
 	socket.on("playerJoinRequest", async (playername, callback) => {
-		debug("player wants to join game", playername);
+		debug("player wants to join game: ", playername);
 
 		// Create a player in the database
 

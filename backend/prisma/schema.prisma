@@ -14,7 +14,7 @@ model Game {
 }
 
 model Player {
-   id        String    @id @default(auto()) @map("_id") @db.ObjectId
+   id        String    @id @map("_id")
    playername  String 
    // highscore String remove highscore for now for testing purposes
    //gameId    String    @db.ObjectId // to establish relation with room
