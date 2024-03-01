@@ -6,6 +6,6 @@ export interface Game {
 
 export interface Player {
   id: string;
-  playername: string;
+  username: string;
   gameId: string;
 }

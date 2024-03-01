@@ -3,7 +3,10 @@
  */
 import Debug from "debug";
 import { Server, Socket } from "socket.io";
-import { ClientToServerEvents, ServerToClientEvents } from "@shared/types/SocketTypes";
+import {
+	ClientToServerEvents,
+	ServerToClientEvents,
+} from "@shared/types/SocketTypes";
 
 // Create a new debug instance
 const debug = Debug("backend:socket_controller");
@@ -14,4 +17,4 @@ export const handleConnection = (
 	io: Server<ClientToServerEvents, ServerToClientEvents>
 ) => {
 	debug("🙋 A user connected", socket.id);
-}
+};

@@ -16,7 +16,6 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
 const playerNameFormEl = document.querySelector(
   "#username-form"
 ) as HTMLFormElement;
-
 const playerNameInputEl = document.querySelector(
   "#username"
 ) as HTMLInputElement;
@@ -61,6 +60,10 @@ const generateSquares = () => {
 
 generateSquares();
 
+/**
+ * Socket handlers
+ */
+
 // Listen for when connection is established
 socket.on("connect", () => {
   console.log("💥 Connected to the server", SOCKET_HOST);
@@ -78,4 +81,11 @@ socket.on("disconnect", () => {
 socket.io.on("reconnect", () => {
   console.log("🍽️ Reconnected to the server:", SOCKET_HOST);
   console.log("🔗 Socket ID:", socket.id);
+});
+
+// Listen for when a new player joins a game
+
+socket.on("playerJoined", (playername, timestamp, gameId) => {
+  console.log("A new player joined the game: ", playername, timestamp, gameId);
+  console.log("game id is: ", gameId);
 });

@@ -1,9 +1,10 @@
-export {}
+//import { Player, Game } from "./Models";
+export {};
 
 // Events emitted by the server to the client
 export interface ServerToClientEvents {
+  playerJoined: (playername: string, timestamp: number, game: string) => void;
 }
 
 // Events emitted by the client to the server
-export interface ClientToServerEvents {
-}
+export interface ClientToServerEvents {}
