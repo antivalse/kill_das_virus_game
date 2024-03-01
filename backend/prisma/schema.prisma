@@ -10,14 +10,14 @@ datasource db {
 model Game {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   result    String 
-  players   Player[]
+  //players   Player[]
 }
 
 model Player {
    id        String    @id @default(auto()) @map("_id") @db.ObjectId
-   username  String 
+   playername  String 
    // highscore String remove highscore for now for testing purposes
-   gameId    String    @db.ObjectId // to establish relation with room
-   game      Game      @relation(fields: [gameId], references: [id])
+   //gameId    String    @db.ObjectId // to establish relation with room
+   //game      Game      @relation(fields: [gameId], references: [id])
 }
 

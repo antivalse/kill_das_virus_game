@@ -118,8 +118,9 @@ socket.io.on("reconnect", () => {
 
 // Listen for when a new player joins a game
 
-socket.on("playerJoined", (playername, timestamp, gameId) => {
-  //
-  console.log("A new player joined the game: ", playername, timestamp, gameId);
-  console.log("game id is: ", gameId);
+socket.on("playerJoined", (playername, timestamp) => {
+  // add gameId
+
+  console.log("A new player joined the game: ", playername, timestamp); // add gameId
+  //console.log("game id is: ", gameId);
 });
