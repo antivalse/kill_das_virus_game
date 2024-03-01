@@ -7,4 +7,14 @@ export interface ServerToClientEvents {
 }
 
 // Events emitted by the client to the server
-export interface ClientToServerEvents {}
+export interface ClientToServerEvents {
+  playerJoinRequest: (
+    playername: string,
+    callback: (response: PlayerJoinResponse) => void
+  ) => void;
+}
+
+// Player Join Response
+export interface PlayerJoinResponse {
+  success: boolean;
+}

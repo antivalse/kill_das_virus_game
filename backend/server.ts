@@ -5,7 +5,7 @@ import { Server } from "socket.io";
 import { handleConnection } from "./src/controllers/socket_controller";
 import {
 	ClientToServerEvents,
-	ServerToClientEvents
+	ServerToClientEvents,
 } from "@shared/types/SocketTypes";
 
 // Initialize dotenv so it reads our `.env`-file
@@ -22,7 +22,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
 	cors: {
 		origin: "*",
 		credentials: true,
-	}
+	},
 });
 
 /**
@@ -51,7 +51,9 @@ httpServer.on("error", (err: NodeJS.ErrnoException) => {
 			process.exit(1);
 			break;
 		case "EADDRINUSE":
-			console.error(`🛑 Port ${PORT} is already in use in another of your fifty thousand terminals 😜`);
+			console.error(
+				`🛑 Port ${PORT} is already in use in another of your fifty thousand terminals 😜`
+			);
 			process.exit(1);
 			break;
 		default:

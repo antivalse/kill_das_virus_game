@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import {
   ClientToServerEvents,
+  PlayerJoinResponse,
   ServerToClientEvents,
 } from "@shared/types/SocketTypes";
 import "./assets/scss/style.scss";
@@ -27,6 +28,10 @@ const gamePage = document.querySelector("#game-page") as HTMLElement;
 // Player Details
 let playerName: string | null = null;
 
+// Game Details
+
+//let gameId: string | null = null;
+
 // add eventlistener to player name form
 const showGamePage = () => {
   // add eventlistener to player name form
@@ -36,10 +41,27 @@ const showGamePage = () => {
 
     // Get player name
     playerName = playerNameInputEl.value.trim();
+    console.log("playerName is: ", playerName);
+
+    if (!playerName) {
+      return;
+    }
+
+    // send request to server with neccessary information
+    // Emit player join request event to server and wait for acknowledgement
+
+    socket.emit(
+      "playerJoinRequest",
+      playerName,
+      handlePlayerGameJoinRequestCallback
+    );
+    console.log(
+      `Emitted playerJoinRequest event to server, player: ${playerName}`
+    );
+
+    // Show game page
     startPage.classList.add("hide");
     gamePage.classList.remove("hide");
-
-    console.log("playerName is: ", playerName);
   });
 };
 
@@ -64,6 +86,17 @@ generateSquares();
  * Socket handlers
  */
 
+// Create a callback-function to handle servers response to player wanting to join game
+
+const handlePlayerGameJoinRequestCallback = (response: PlayerJoinResponse) => {
+  if (!response.success) {
+    alert("Could not join game!");
+    return;
+  }
+
+  showGamePage();
+};
+
 // Listen for when connection is established
 socket.on("connect", () => {
   console.log("💥 Connected to the server", SOCKET_HOST);
@@ -86,6 +119,7 @@ socket.io.on("reconnect", () => {
 // Listen for when a new player joins a game
 
 socket.on("playerJoined", (playername, timestamp, gameId) => {
+  //
   console.log("A new player joined the game: ", playername, timestamp, gameId);
   console.log("game id is: ", gameId);
 });
