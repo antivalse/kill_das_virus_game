@@ -17,4 +17,5 @@ export interface ClientToServerEvents {
 // Player Join Response
 export interface PlayerJoinResponse {
   success: boolean;
+  gameId: string;
 }
