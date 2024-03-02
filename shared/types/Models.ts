@@ -7,5 +7,4 @@ export interface Game {
 export interface Player {
   id: string;
   playername: string;
-  //gameId: string;
 }

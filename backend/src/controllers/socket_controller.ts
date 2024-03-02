@@ -25,13 +25,6 @@ export const handleConnection = (
 	socket.on("playerJoinRequest", async (playername, callback) => {
 		debug("player wants to join game: ");
 
-		// Create a waiting room for player here?
-		// Only proceed with creating the game room if there is another player waiting
-
-		// When server recieves playerJoinRequest it creates new game in the database
-
-		const gameRoom = await createGame();
-		debug("Created gameRoom: %o", gameRoom);
 		// Create a player in the database
 
 		const player = await createPlayer({
@@ -39,6 +32,14 @@ export const handleConnection = (
 			playername,
 		});
 		debug("Created player: %o", player);
+
+		// Create a waiting room for player here?
+		// Only proceed with creating the game room if there is another player waiting, otherwise wait for player 2 to arrive
+
+		// When server recieves playerJoinRequest it creates new game in the database
+
+		const gameRoom = await createGame();
+		debug("Created gameRoom: %o", gameRoom);
 
 		// Join player to the room
 
