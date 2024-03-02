@@ -3,7 +3,7 @@ export {};
 
 // Events emitted by the server to the client
 export interface ServerToClientEvents {
-  playerJoined: (playername: string, timestamp: number, gameId: string) => void; // add: game: string
+  playerJoined: (playername: string, timestamp: number, gameId: string) => void;
 }
 
 // Events emitted by the client to the server

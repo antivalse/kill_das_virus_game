@@ -25,7 +25,10 @@ export const handleConnection = (
 	socket.on("playerJoinRequest", async (playername, callback) => {
 		debug("player wants to join game: ");
 
-		// Create a gameroom in the database
+		// Create a waiting room for player here?
+		// Only proceed with creating the game room if there is another player waiting
+
+		// When server recieves playerJoinRequest it creates new game in the database
 
 		const gameRoom = await createGame();
 		debug("Created gameRoom: %o", gameRoom);
@@ -41,13 +44,11 @@ export const handleConnection = (
 
 		socket.join(gameRoom.id);
 
-		// Respond with game info (only success for now)
+		// Server responds to client with success and game info
 
 		callback({
 			success: true,
 			gameId: gameRoom.id,
 		});
-
-		// Let everyone in the room (including the new user) know that a user has joined
 	});
 };
