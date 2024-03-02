@@ -37,6 +37,8 @@ export const handleConnection = (
 		// Only proceed with creating the game room if there is another player waiting, otherwise wait for player 2 to arrive
 
 		// When server recieves playerJoinRequest it creates new game in the database
+		// Add array of players when creating game
+		// Update Players with game by using prisma.update
 
 		const gameRoom = await createGame();
 		debug("Created gameRoom: %o", gameRoom);
