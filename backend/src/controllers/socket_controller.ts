@@ -23,7 +23,7 @@ export const handleConnection = (
 	// Listen for a player join request from klient when player submits form
 
 	socket.on("playerJoinRequest", async (playername, callback) => {
-		debug("player wants to join game: ", playername);
+		debug("player wants to join game: ");
 
 		// Create a gameroom in the database
 
@@ -39,7 +39,7 @@ export const handleConnection = (
 
 		// Join player to the room
 
-		//socket.join(gameRoom.id);
+		socket.join(gameRoom.id);
 
 		// Respond with game info (only success for now)
 
@@ -47,5 +47,7 @@ export const handleConnection = (
 			success: true,
 			gameId: gameRoom.id,
 		});
+
+		// Let everyone in the room (including the new user) know that a user has joined
 	});
 };
