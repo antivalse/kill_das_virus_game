@@ -55,3 +55,16 @@ export const addPlayersToGame = async (gameId: string, players: Player[]) => {
 		},
 	});
 };
+
+// Get a single game with players
+
+export const getGameWithPlayers = async (gameId: string) => {
+	return prisma.game.findUnique({
+		where: {
+			id: gameId,
+		},
+		include: {
+			players: true,
+		},
+	});
+};

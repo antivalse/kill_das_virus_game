@@ -8,7 +8,11 @@ import {
 	ServerToClientEvents,
 } from "@shared/types/SocketTypes";
 import { createPlayer } from "../services/player_service";
-import { addPlayersToGame, createGame } from "../services/game_service";
+import {
+	addPlayersToGame,
+	createGame,
+	getGameWithPlayers,
+} from "../services/game_service";
 import { Player } from "@shared/types/Models";
 
 // Create a new debug instance
@@ -55,6 +59,10 @@ export const handleConnection = (
 			);
 
 			debug("Game with players: %o", gameWithPlayers);
+
+			// Get and log the game with the players from database
+			const gameFromDatabase = await getGameWithPlayers(gameRoom.id);
+			debug("Game with players from database: %o", gameFromDatabase);
 
 			// Server responds to the client with success and game info
 			callback({
