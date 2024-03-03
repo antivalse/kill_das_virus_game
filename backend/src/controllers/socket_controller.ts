@@ -36,22 +36,29 @@ export const handleConnection = (
 		// Create a waiting room for player here?
 		// Only proceed with creating the game room if there is another player waiting, otherwise wait for player 2 to arrive
 
+		let waitingPlayers: string[] = [];
+		waitingPlayers.push(player.playername);
+		debug("waiting players: %o", waitingPlayers);
 		// When server recieves playerJoinRequest it creates new game in the database
 		// Add array of players when creating game
-		// Update Players with game by using prisma.update
+		// Update Players with gameId by using prisma.player.update
 
-		const gameRoom = await createGame();
-		debug("Created gameRoom: %o", gameRoom);
+		if (waitingPlayers.length === 1) {
+			// start game if waitingPlayers.length is 1 for now but change to 2 later
+			// replace this with event/call function where game is created
+			const gameRoom = await createGame();
+			debug("Created gameRoom: %o", gameRoom);
 
-		// Join player to the room
+			// Join player to the room
 
-		socket.join(gameRoom.id);
+			socket.join(gameRoom.id);
+			debug("Player joined gameRoom: %o", gameRoom.id);
+			// Server responds to client with success and game info
 
-		// Server responds to client with success and game info
-
-		callback({
-			success: true,
-			gameId: gameRoom.id,
-		});
+			callback({
+				success: true,
+				gameId: gameRoom.id,
+			});
+		}
 	});
 };
