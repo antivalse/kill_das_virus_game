@@ -2,7 +2,7 @@
  * Game Service
  */
 
-import { Game } from "@shared/types/Models";
+import { Game, Player } from "@shared/types/Models";
 import prisma from "../prisma";
 
 export const getGames = async () => {
@@ -33,4 +33,25 @@ export const getGame = (gameId: string) => {
 
 export const createGame = () => {
 	return prisma.game.create({});
+};
+
+/**
+ * Add players to game
+ */
+
+// Add this function to your services or wherever you keep your Prisma operations
+export const addPlayersToGame = async (gameId: string, players: Player[]) => {
+	return prisma.game.update({
+		where: {
+			id: gameId,
+		},
+		data: {
+			players: {
+				connect: players.map((player) => ({ id: player.id })),
+			},
+		},
+		include: {
+			players: true,
+		},
+	});
 };
