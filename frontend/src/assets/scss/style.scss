@@ -195,21 +195,21 @@ footer p {
   text-align: left;
 }
 
-#game-display {
-  background-color: #f3eded;
-  opacity: 0.4;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  background-color: rgba(255, 255, 255, 0.4);
   border: 2px solid black;
-  display: flex;
-  flex-wrap: wrap;
-  height: 70vh;
-  width: 70vh;
+  height: 65vh;
+  width: 65vh;
   margin-left: 30px;
   margin-right: 30px;
 }
 
-.square {
-  width: calc(100% / 10);
-  height: calc(100% / 10);
+.grid-virus img {
+  height: 90%;
+  width: 100%;
 }
 
 #score-board-display {

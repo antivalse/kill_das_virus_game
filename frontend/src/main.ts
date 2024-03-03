@@ -63,24 +63,56 @@ const showGamePage = () => {
     startPage.classList.add("hide");
     gamePage.classList.remove("hide");
   });
+
+  // Test to start game/show virus
 };
 
-// Generate squares in game-display with class and id
-const generateSquares = () => {
-  const gameDisplay = document.querySelector(".display");
+// Game function
 
-  const width = 10;
-  const height = 10;
-
-  for (let i = 0; i < width * height; i++) {
-    const square = document.createElement("div");
-    square.classList.add("square");
-    square.id = String(i);
-    gameDisplay?.appendChild(square);
+// Select position of virus
+const moveVirus = () => {
+  const gridVirus = document.getElementById("gridVirus");
+  if (gridVirus) {
+    const gridColumn = getRandomNumber(1, 10);
+    const gridRow = getRandomNumber(1, 10);
+    gridVirus.style.gridColumn = String(gridColumn);
+    gridVirus.style.gridRow = String(gridRow);
   }
 };
 
-generateSquares();
+// Get random number
+const getRandomNumber = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+// Show virus
+const showVirus = () => {
+  const virus = document.getElementById("gridVirus");
+  if (virus) {
+    virus.classList.remove("hide");
+    virus.addEventListener("click", hideVirus);
+  }
+};
+
+// Hide virus
+const hideVirus = () => {
+  const virus = document.getElementById("gridVirus");
+  if (virus) {
+    virus.classList.add("hide");
+    virus.addEventListener("click", moveVirus);
+  }
+};
+
+// A singel round of game
+const gameRound = () => {
+  const gridVirus = document.getElementById("gridVirus");
+  if (gridVirus) {
+    gridVirus.addEventListener("click", moveVirus);
+  }
+  moveVirus();
+  setTimeout(showVirus, getRandomNumber(1500, 10000));
+};
+gameRound();
 
 /**
  * Socket handlers
