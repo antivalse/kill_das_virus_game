@@ -37,9 +37,11 @@ export const createGame = () => {
 
 /**
  * Add players to game
+ * @param gameId id of game
+ * @param players array of players to be added to game
  */
 
-// Add this function to your services or wherever you keep your Prisma operations
+// Add players to game
 export const addPlayersToGame = async (gameId: string, players: Player[]) => {
 	return prisma.game.update({
 		where: {
@@ -56,7 +58,11 @@ export const addPlayersToGame = async (gameId: string, players: Player[]) => {
 	});
 };
 
-// Get a single game with players
+/**
+ * Get a single game with players to see if players were added
+ * @param gameId
+ * @returns
+ */
 
 export const getGameWithPlayers = async (gameId: string) => {
 	return prisma.game.findUnique({
