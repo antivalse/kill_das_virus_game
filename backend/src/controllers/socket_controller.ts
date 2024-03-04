@@ -15,6 +15,7 @@ import { createGame, getGameWithPlayers } from "../services/game_service";
 import { Player } from "@shared/types/Models";
 import {
 	addPlayersToWaitingRoom,
+	deletePlayersFromWaitingRoom,
 	getWaitingRoom,
 } from "../services/waitingRoom_service";
 
@@ -133,7 +134,10 @@ export const handleConnection = (
 			debug("Created gameRoom: %o", gameRoom);
 
 			// empty waiting room when creating game
-
+			await deletePlayersFromWaitingRoom(
+				"65e6126154fa5214cd6db856",
+				waitingRoomWithPlayers.players
+			);
 			// Join players to the game room
 			// Does this work?
 			socket.join(gameRoom.id);

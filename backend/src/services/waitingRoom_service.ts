@@ -19,7 +19,7 @@ export const getWaitingRoom = (waitingRoomId: string) => {
  * @param players array of players to be added to game
  */
 
-// Add players to game
+// Add players to waiting room
 export const addPlayersToWaitingRoom = async (
 	waitingRoomId: string,
 	players: Player[]
@@ -35,6 +35,26 @@ export const addPlayersToWaitingRoom = async (
 		},
 		include: {
 			players: true,
+		},
+	});
+};
+
+/**
+ * Remove all players from waiting room
+ */
+
+export const deletePlayersFromWaitingRoom = async (
+	waitingRoomId: string,
+	players: Player[]
+) => {
+	return prisma.waitingRoom.update({
+		where: {
+			id: waitingRoomId,
+		},
+		data: {
+			players: {
+				disconnect: players.map((player) => ({ id: player.id })),
+			},
 		},
 	});
 };
