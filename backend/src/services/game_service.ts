@@ -31,8 +31,15 @@ export const getGame = (gameId: string) => {
  * Create a new game (room)
  */
 
-export const createGame = () => {
-	return prisma.game.create({});
+export const createGame = (waitingPlayers: Player[]) => {
+	// create game and connect waiting players directly
+	return prisma.game.create({
+		data: {
+			players: {
+				connect: waitingPlayers.map((player) => ({ id: player.id })),
+			},
+		},
+	});
 };
 
 /**
@@ -41,22 +48,22 @@ export const createGame = () => {
  * @param players array of players to be added to game
  */
 
-// Add players to game
-export const addPlayersToGame = async (gameId: string, players: Player[]) => {
-	return prisma.game.update({
-		where: {
-			id: gameId,
-		},
-		data: {
-			players: {
-				connect: players.map((player) => ({ id: player.id })),
-			},
-		},
-		include: {
-			players: true,
-		},
-	});
-};
+// // Add players to game
+// export const addPlayersToGame = async (gameId: string, players: Player[]) => {
+// 	return prisma.game.update({
+// 		where: {
+// 			id: gameId,
+// 		},
+// 		data: {
+// 			players: {
+// 				connect: players.map((player) => ({ id: player.id })),
+// 			},
+// 		},
+// 		include: {
+// 			players: true,
+// 		},
+// 	});
+// };
 
 /**
  * Get a single game with players to see if players were added

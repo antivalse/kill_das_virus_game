@@ -148,11 +148,16 @@ socket.io.on("reconnect", () => {
   console.log("🔗 Socket ID:", socket.id);
 });
 
+// Listen for when a new player joins the waiting room
+socket.on("announcePlayer", (players) => {
+  console.log("here are the players in the waiting room: ", players);
+});
+
 // Listen for when a new player joins a game
 
 socket.on("playerJoined", (playername, timestamp) => {
-  // add gameId
+  // add waitingRoomId
 
-  console.log("A new player joined the game: ", playername, timestamp); // add gameId
-  //console.log("game id is: ", gameId);
+  console.log("A new player joined the waitingroom: ", playername, timestamp); // add waitingroom id
+  //console.log("waiting room id is: ", waitingRoomId);
 });
