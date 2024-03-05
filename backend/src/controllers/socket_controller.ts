@@ -21,60 +21,8 @@ import {
 
 // Create a new debug instance
 const debug = Debug("backend:socket_controller");
-// Modify your handleConnection function
-// export const handleConnection = (
-// 	socket: Socket<ClientToServerEvents, ServerToClientEvents>,
-// 	io: Server<ClientToServerEvents, ServerToClientEvents>
-// ) => {
-// 	debug("🙋 A user connected", socket.id);
 
-// 	// Listen for a player join request from the client when a player submits a form
-// 	socket.on("playerJoinRequest", async (playername, callback) => {
-// 		debug("player wants to join game: ");
-
-// 		// Create a player in the database
-// 		const player = await createPlayer({
-// 			id: socket.id,
-// 			playername,
-// 		});
-
-// 		debug("Created player: %o", player);
-
-// 		// Create a waiting room for the player here?
-// 		// Only proceed with creating the game room if there is another player waiting; otherwise, wait for player 2 to arrive
-
-// 		let waitingPlayers: Player[] = [];
-// 		waitingPlayers.push(player);
-// 		debug("waiting players: %o", waitingPlayers);
-
-// 		if (waitingPlayers.length === 2) {
-// 			const gameRoom = await createGame();
-// 			debug("Created gameRoom: %o", gameRoom);
-
-// 			// Join player to the game room
-// 			socket.join(gameRoom.id);
-// 			debug("Player joined gameRoom: %o", gameRoom.id);
-
-// 			// Update the game with players
-// 			const gameWithPlayers = await addPlayersToGame(
-// 				gameRoom.id,
-// 				waitingPlayers
-// 			);
-
-// 			debug("Game with players: %o", gameWithPlayers);
-
-// 			// Get and log the game with the players from database
-// 			const gameFromDatabase = await getGameWithPlayers(gameRoom.id);
-// 			debug("Game with players from database: %o", gameFromDatabase);
-
-// 			// Server responds to the client with success and game info
-// 			callback({
-// 				success: true,
-// 				gameId: gameRoom.id,
-// 			});
-// 		}
-// 	});
-// };
+// handle connection function
 
 export const handleConnection = (
 	socket: Socket<ClientToServerEvents, ServerToClientEvents>,
@@ -112,13 +60,21 @@ export const handleConnection = (
 		);
 		// log array of player(s) in waitingroom
 		debug("Waiting room with player(s): %o", waitingRoomWithPlayers);
-		// let everyone in the waiting room (including new player) know that a player has joined the waiting room
-		io.to(waitingRoom.id).emit(
-			"playerJoined",
-			playername,
-			Date.now(),
-			waitingRoom.id
-		);
+		// let players (including new player) know that a player has joined the waiting room
+		// only let players that are still in the room know this, playes who have left have no access!
+
+		// check if player is in waiting room and then emit!
+
+		waitingRoomWithPlayers.players.forEach((player) => {
+			if (player.waitingRoomId === waitingRoom.id) {
+				io.to(waitingRoom.id).emit(
+					"playerJoined",
+					playername,
+					Date.now(),
+					waitingRoom.id
+				);
+			}
+		});
 
 		// Server responds to the client with success and waiting room info
 		callback({
@@ -138,12 +94,25 @@ export const handleConnection = (
 			const gameRoom = await createGame(waitingRoomWithPlayers.players);
 			debug(`Created gameRoom with id:, ${gameRoom.id}`);
 
+			// make players leave the waiting room when joining the game room
 			// empty waiting room when creating game
 			await deletePlayersFromWaitingRoom(
 				"65e6126154fa5214cd6db856",
 				waitingRoomWithPlayers.players
 			);
 
+			// add players who left waiting room to array "playersWhoLeft..."
+
+			// send a notice that the players left
+			// this is only for testin purposes
+			io.to(waitingRoom.id).emit(
+				"playersLeftWaitingRoom",
+				waitingRoomWithPlayers.players
+			);
+
+			// leave the waiting room
+			socket.leave(waitingRoom.id);
+			// ... and join the gameRoom!
 			socket.join(gameRoom.id);
 			debug("Players joined gameRoom: %o", gameRoom.id);
 		}
@@ -156,5 +125,13 @@ export const handleConnection = (
 		// 	const gameFromDatabase = await getGameWithPlayers(gameRoom.id);
 		// 	debug("Game with players from database: %o", gameFromDatabase);
 		// }
+
+		// socket.on("disconnect", async () => {
+		// 	debug("a player disconnected", socket.id);
+		// 	debug(
+		// 		"players left the waiting room ",
+		// 		waitingRoomWithPlayers.players
+		// 	);
+		// });
 	});
 };
