@@ -36,6 +36,10 @@ export const handleConnection = (
 	socket.on("playerJoinRequest", async (playername, callback) => {
 		debug(`player ${playername} wants to join the game`);
 
+		// this will be broadcasted to all connected clients
+		// for testing purposes only remove later
+		io.emit("playerJoined", playername, Date.now());
+
 		// Add player to waiting players array
 		const player = await createPlayer({
 			id: socket.id,

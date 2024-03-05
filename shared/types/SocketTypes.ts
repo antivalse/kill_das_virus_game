@@ -6,12 +6,8 @@ export {};
 // Events emitted by the server to the client
 export interface ServerToClientEvents {
   // event when player joins the waiting room
-  playerJoined: (
-    playername: string,
-    timestamp: number,
-    waitingRoomId: string
-  ) => void;
-  playersLeftWaitingRoom: (playersInWaitingRoom: Player[]) => void;
+  playerJoined: (playername: string, timestamp: number) => void;
+  //playersLeftWaitingRoom: (playersInWaitingRoom: Player[]) => void;
   gameCreated: (gameRoomId: string) => void;
 }
 

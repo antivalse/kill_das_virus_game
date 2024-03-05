@@ -148,24 +148,19 @@ socket.io.on("reconnect", () => {
   console.log("🔗 Socket ID:", socket.id);
 });
 
-// Listen for when a new player joins a game
+// Listen for when a new player wants to joins a game
 
-socket.on("playerJoined", (playername, timestamp, waitingRoomId) => {
+socket.on("playerJoined", (playername, timestamp) => {
   //make sure that message only goes to players that are left in waitingRoom
 
-  console.log(
-    "A new player joined the waitingroom: ",
-    playername,
-    timestamp,
-    waitingRoomId
-  );
+  console.log("A new player wants to join the game: ", playername, timestamp);
 });
 
 // Listen for when players leave the waiting room
 
-socket.on("playersLeftWaitingRoom", (playersInWaitingRoom) => {
-  console.log("These players left the waiting room: ", playersInWaitingRoom);
-});
+// socket.on("playersLeftWaitingRoom", (playersInWaitingRoom) => {
+//   console.log("These players left the waiting room: ", playersInWaitingRoom);
+// });
 
 // Listen for when a game is created
 
