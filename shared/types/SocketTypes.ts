@@ -1,4 +1,4 @@
-import { Player } from "./Models";
+import { Player, WaitingRoom } from "./Models";
 
 //import { Player, Game } from "./Models";
 export {};
@@ -17,8 +17,15 @@ export interface ClientToServerEvents {
   ) => void;
 }
 
+// Waiting room with players
+
+export interface WaitingRoomInfo extends WaitingRoom {
+  players: Player[];
+}
+
 // Player Join Response
 export interface PlayerJoinResponse {
   success: boolean;
-  waitingRoomId: string;
+  waitingRoom: WaitingRoomInfo | null;
+  //waitingRoomId: string;
 }

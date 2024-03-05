@@ -116,22 +116,26 @@ export const handleConnection = (
 		// Server responds to the client with success and waiting room info
 		callback({
 			success: true,
-			waitingRoomId: waitingRoom.id, // waitingRoomWithPlayers should be responded because that's the info we need!
+			waitingRoom: {
+				id: waitingRoom.id,
+				players: waitingRoomWithPlayers.players,
+			},
 		});
 
 		// create game in database when there are two players in waitingroom array
 		// empty the array of waiting players
+		// Join players to the game room
+		// Create a start game event??
 
 		if (waitingRoomWithPlayers.players.length === 2) {
 			const gameRoom = await createGame(waitingRoomWithPlayers.players);
-			debug(`Created gameRoom: %o", ${gameRoom}`);
+			debug(`Created gameRoom with id:, ${gameRoom.id}`);
 
 			// empty waiting room when creating game
 			await deletePlayersFromWaitingRoom(
 				"65e6126154fa5214cd6db856",
 				waitingRoomWithPlayers.players
 			);
-			// Join players to the game room
 
 			socket.join(gameRoom.id);
 			debug("Players joined gameRoom: %o", gameRoom.id);
