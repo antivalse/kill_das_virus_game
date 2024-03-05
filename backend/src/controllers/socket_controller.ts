@@ -14,7 +14,7 @@ import {
 import { createGame, getGameWithPlayers } from "../services/game_service";
 import { Player } from "@shared/types/Models";
 import {
-	addPlayersToWaitingRoom,
+	addPlayerToWaitingRoom,
 	deletePlayersFromWaitingRoom,
 	getWaitingRoom,
 } from "../services/waitingRoom_service";
@@ -81,8 +81,6 @@ export const handleConnection = (
 	io: Server<ClientToServerEvents, ServerToClientEvents>
 ) => {
 	debug("🙋 A user connected", socket.id);
-	// create array with waiting players
-	let waitingPlayers: Player[] = [];
 
 	// Listen for a player join request from the client when a player submits a form
 	socket.on("playerJoinRequest", async (playername, callback) => {
@@ -106,24 +104,19 @@ export const handleConnection = (
 		});
 		debug("Created player: %o", player);
 
-		// add created player to array
-
-		waitingPlayers.push(player);
-		debug("waiting players: %o", waitingPlayers);
-
 		// add player to waiting room
 
-		const waitingRoomWithPlayers = await addPlayersToWaitingRoom(
+		const waitingRoomWithPlayers = await addPlayerToWaitingRoom(
 			waitingRoom.id,
-			waitingPlayers
+			player
 		);
-		// log array of players in waitingroom
-		debug("Waiting room with players: %o", waitingRoomWithPlayers);
+		// log array of player(s) in waitingroom
+		debug("Waiting room with player(s): %o", waitingRoomWithPlayers);
 
-		// Server responds to the client with success and game info
+		// Server responds to the client with success and waiting room info
 		callback({
 			success: true,
-			waitingRoomId: waitingRoom.id,
+			waitingRoomId: waitingRoom.id, // waitingRoomWithPlayers should be responded because that's the info we need!
 		});
 
 		// create game in database when there are two players in waitingroom array
@@ -131,7 +124,7 @@ export const handleConnection = (
 
 		if (waitingRoomWithPlayers.players.length === 2) {
 			const gameRoom = await createGame(waitingRoomWithPlayers.players);
-			debug("Created gameRoom: %o", gameRoom);
+			debug(`Created gameRoom: %o", ${gameRoom}`);
 
 			// empty waiting room when creating game
 			await deletePlayersFromWaitingRoom(
@@ -139,33 +132,12 @@ export const handleConnection = (
 				waitingRoomWithPlayers.players
 			);
 			// Join players to the game room
-			// Does this work?
+
 			socket.join(gameRoom.id);
 			debug("Players joined gameRoom: %o", gameRoom.id);
 		}
 
-		// // Listen for start game event
-
-		// } )
-
-		// // create the game when there are two players in the waiting players array
-		// // add players as data when creating game
-		// // empty waitingPlayers array
-		// // make sure players leave the waiting room
-
-		// if (waitingPlayers.length === 2) {
-		// 	const gameRoom = await createGame();
-		// 	debug("Created gameRoom: %o", gameRoom);
-
-		// 	// Join player to the game room
-		// 	socket.join(gameRoom.id);
-		// 	debug("Player joined gameRoom: %o", gameRoom.id);
-
-		// 	// Update the game with players
-		// 	const gameWithPlayers = await addPlayersToGame(
-		// 		gameRoom.id,
-		// 		waitingPlayers
-		// 	);
+		// GAME CODE BELOW:
 
 		// 	debug("Game with players: %o", gameWithPlayers);
 

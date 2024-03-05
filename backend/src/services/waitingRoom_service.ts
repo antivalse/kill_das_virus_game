@@ -19,10 +19,10 @@ export const getWaitingRoom = (waitingRoomId: string) => {
  * @param players array of players to be added to game
  */
 
-// Add players to waiting room
-export const addPlayersToWaitingRoom = async (
+// Add player to waiting room
+export const addPlayerToWaitingRoom = async (
 	waitingRoomId: string,
-	players: Player[]
+	player: Player
 ) => {
 	return prisma.waitingRoom.update({
 		where: {
@@ -30,7 +30,7 @@ export const addPlayersToWaitingRoom = async (
 		},
 		data: {
 			players: {
-				connect: players.map((player) => ({ id: player.id })),
+				connect: [{ id: player.id }],
 			},
 		},
 		include: {
