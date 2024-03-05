@@ -166,3 +166,10 @@ socket.on("playerJoined", (playername, timestamp, waitingRoomId) => {
 socket.on("playersLeftWaitingRoom", (playersInWaitingRoom) => {
   console.log("These players left the waiting room: ", playersInWaitingRoom);
 });
+
+// Listen for when a game is created
+
+socket.on("gameCreated", (gameId) => {
+  // handle event of game being created
+  console.log("started the game with id: ", gameId);
+});

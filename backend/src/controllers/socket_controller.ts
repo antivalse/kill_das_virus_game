@@ -110,6 +110,9 @@ export const handleConnection = (
 				waitingRoomWithPlayers.players
 			);
 
+			// Emit an event to inform players in waiting room that a game is created
+			io.to(waitingRoom.id).emit("gameCreated", gameRoom.id);
+
 			// leave the waiting room
 			socket.leave(waitingRoom.id);
 			// ... and join the gameRoom!

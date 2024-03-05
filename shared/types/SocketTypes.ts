@@ -12,6 +12,7 @@ export interface ServerToClientEvents {
     waitingRoomId: string
   ) => void;
   playersLeftWaitingRoom: (playersInWaitingRoom: Player[]) => void;
+  gameCreated: (gameRoomId: string) => void;
 }
 
 // Events emitted by the client to the server
