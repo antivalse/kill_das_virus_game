@@ -168,4 +168,10 @@ socket.on("gameCreated", (gameRoomId) => {
 
 socket.on("playersJoinedGame", (players) => {
   console.log("these are the players in the game: ", players);
+  let playerOne = players[0].playername;
+  let playerTwo = players[1].playername;
+
+  console.log(
+    `Welcome to the game player one: ${playerOne} and player two: ${playerTwo}`
+  );
 });
