@@ -53,6 +53,8 @@ export const handleConnection = (
 			debug(`Created gameRoom with id:, ${gameRoom.id}`);
 
 			// Iterate over each player in waitingPlayers and join the game room
+			// get socket connection with io.sockets.sockets.get by using the players ID
+			// do this only if a player is found
 			waitingPlayers.forEach((player) => {
 				io.sockets.sockets.get(player.id)?.join(gameRoom.id);
 				debug(`Socket ${player.id} joined room ${gameRoom.id}`);
@@ -60,6 +62,9 @@ export const handleConnection = (
 
 			// make players leave the waiting players array when creating game
 			waitingPlayers.length = 0;
+
+			// Emit an event to inform players that a game is created/started
+			io.to(gameRoom.id).emit("gameCreated", gameRoom.id);
 
 			// get list of players in room..
 			const playersInGame = await getGameWithPlayers(gameRoom.id);
@@ -72,9 +77,6 @@ export const handleConnection = (
 					playersInGame?.players
 				);
 			}
-
-			// Emit an event to inform players that a game is created/started
-			io.to(gameRoom.id).emit("gameCreated", gameRoom.id);
 		}
 	});
 
