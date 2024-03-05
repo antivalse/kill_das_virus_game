@@ -9,7 +9,7 @@ export interface Player {
   playername: string;
 }
 
-export interface WaitingRoom {
-  //id: string;
-  players: Player[];
-}
+// export interface WaitingRoom {
+//   //id: string;
+//   players: Player[];
+// }

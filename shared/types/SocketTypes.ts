@@ -1,4 +1,4 @@
-import { Player, WaitingRoom } from "./Models";
+import { Game } from "./Models";
 
 //import { Player, Game } from "./Models";
 export {};
@@ -7,7 +7,6 @@ export {};
 export interface ServerToClientEvents {
   // event when player joins the waiting room
   playerJoined: (playername: string, timestamp: number) => void;
-  //playersLeftWaitingRoom: (playersInWaitingRoom: Player[]) => void;
   gameCreated: (gameRoomId: string) => void;
 }
 
@@ -21,13 +20,15 @@ export interface ClientToServerEvents {
 
 // Waiting room with players
 
-export interface WaitingRoomInfo extends WaitingRoom {
-  players: Player[];
-}
+// export interface WaitingRoomInfo extends WaitingRoom {
+//   players: Player[];
+// }
 
 // Player Join Response
 export interface PlayerJoinResponse {
   success: boolean;
-  waitingRoom: WaitingRoomInfo | null;
+  game: Game;
+
+  //waitingRoom: WaitingRoomInfo | null;
   //waitingRoomId: string;
 }

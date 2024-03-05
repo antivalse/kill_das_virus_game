@@ -7,17 +7,9 @@ import {
 	ClientToServerEvents,
 	ServerToClientEvents,
 } from "@shared/types/SocketTypes";
-import {
-	createPlayer,
-	getPlayersInWaitingRoom,
-} from "../services/player_service";
-import { createGame, getGameWithPlayers } from "../services/game_service";
+import { createPlayer } from "../services/player_service";
+import { createGame } from "../services/game_service";
 import { Player } from "@shared/types/Models";
-import {
-	addPlayerToWaitingRoom,
-	deletePlayersFromWaitingRoom,
-	getWaitingRoom,
-} from "../services/waitingRoom_service";
 
 // Create a new debug instance
 const debug = Debug("backend:socket_controller");
@@ -37,7 +29,7 @@ export const handleConnection = (
 		debug(`player ${playername} wants to join the game`);
 
 		// this will be broadcasted to all connected clients
-		// for testing purposes only remove later
+		// for testing purposes only, remove later
 		io.emit("playerJoined", playername, Date.now());
 
 		// Add player to waiting players array
@@ -47,10 +39,10 @@ export const handleConnection = (
 		});
 		waitingPlayers.push(player);
 
-		// Server responds to the client with success and players from the "waiting room"
+		// Server responds to the client with success and players from waiting players array
 		callback({
 			success: true,
-			waitingRoom: {
+			game: {
 				players: waitingPlayers,
 			},
 		});

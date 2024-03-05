@@ -1,3 +1,7 @@
+/**
+ * REMOVE LATER. ISN'T BEING USED
+ */
+
 import { Player } from "@shared/types/Models";
 import prisma from "../prisma";
 
