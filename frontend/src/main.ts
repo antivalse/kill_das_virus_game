@@ -169,7 +169,7 @@ socket.on("playersLeftWaitingRoom", (playersInWaitingRoom) => {
 
 // Listen for when a game is created
 
-socket.on("gameCreated", (gameId) => {
+socket.on("gameCreated", (gameRoomId) => {
   // handle event of game being created
-  console.log("started the game with id: ", gameId);
+  console.log("started the game with id: ", gameRoomId);
 });

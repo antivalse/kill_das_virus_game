@@ -10,6 +10,6 @@ export interface Player {
 }
 
 export interface WaitingRoom {
-  id: string;
+  //id: string;
   players: Player[];
 }
