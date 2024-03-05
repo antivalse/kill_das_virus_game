@@ -155,9 +155,11 @@ socket.on("announcePlayer", (players) => {
 
 // Listen for when a new player joins a game
 
-socket.on("playerJoined", (playername, timestamp) => {
-  // add waitingRoomId
-
-  console.log("A new player joined the waitingroom: ", playername, timestamp); // add waitingroom id
-  //console.log("waiting room id is: ", waitingRoomId);
+socket.on("playerJoined", (playername, timestamp, waitingRoomId) => {
+  console.log(
+    "A new player joined the waitingroom: ",
+    playername,
+    timestamp,
+    waitingRoomId
+  );
 });

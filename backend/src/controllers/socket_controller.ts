@@ -112,6 +112,13 @@ export const handleConnection = (
 		);
 		// log array of player(s) in waitingroom
 		debug("Waiting room with player(s): %o", waitingRoomWithPlayers);
+		// let everyone in the waiting room (including new player) know that a player has joined the waiting room
+		io.to(waitingRoom.id).emit(
+			"playerJoined",
+			playername,
+			Date.now(),
+			waitingRoom.id
+		);
 
 		// Server responds to the client with success and waiting room info
 		callback({
