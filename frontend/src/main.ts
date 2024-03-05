@@ -163,3 +163,9 @@ socket.on("gameCreated", (gameRoomId) => {
   // handle event of game being created
   console.log("started the game with id: ", gameRoomId);
 });
+
+// Listen for a list of online players in game
+
+socket.on("playersJoinedGame", (players) => {
+  console.log("these are the players in the game: ", players);
+});

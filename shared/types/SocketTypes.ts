@@ -1,4 +1,4 @@
-import { Game } from "./Models";
+import { Game, Player } from "./Models";
 
 //import { Player, Game } from "./Models";
 export {};
@@ -8,6 +8,7 @@ export interface ServerToClientEvents {
   // event when player joins the waiting room
   playerJoined: (playername: string, timestamp: number) => void;
   gameCreated: (gameRoomId: string) => void;
+  playersJoinedGame: (playersInGame: Player[]) => void;
 }
 
 // Events emitted by the client to the server

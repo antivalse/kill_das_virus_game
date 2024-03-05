@@ -8,7 +8,7 @@ import {
 	ServerToClientEvents,
 } from "@shared/types/SocketTypes";
 import { createPlayer } from "../services/player_service";
-import { createGame } from "../services/game_service";
+import { createGame, getGameWithPlayers } from "../services/game_service";
 import { Player } from "@shared/types/Models";
 
 // Create a new debug instance
@@ -60,6 +60,18 @@ export const handleConnection = (
 
 			// make players leave the waiting players array when creating game
 			waitingPlayers.length = 0;
+
+			// get list of players in room..
+			const playersInGame = await getGameWithPlayers(gameRoom.id);
+
+			//...IF there are any players
+			if (playersInGame) {
+				// send list of players to the room
+				io.to(gameRoom.id).emit(
+					"playersJoinedGame",
+					playersInGame?.players
+				);
+			}
 
 			// Emit an event to inform players that a game is created/started
 			io.to(gameRoom.id).emit("gameCreated", gameRoom.id);
