@@ -347,3 +347,109 @@ footer p {
 #quit-game-button:hover {
   background-color: rgb(230, 48, 48);
 }
+
+/* Styles for large screens (1080p and above) */
+@media screen and (min-width: 1081px) {
+  h1 {
+    font-size: 10rem;
+  }
+
+  /* STARTPAGE STYLES */
+
+  .intro {
+    font-size: 5rem;
+    .intro-strong {
+      font-size: 6.5rem;
+    }
+  }
+
+  #username-form {
+    input {
+      height: 5rem;
+      font-size: 4rem;
+    }
+    button {
+      font-size: 4rem;
+      height: 5.5rem;
+    }
+  }
+
+  #startpage-stats {
+    margin-bottom: 18rem;
+    margin-top: 10rem;
+    width: 30%;
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  /* FOOTER STYLES*/
+
+  footer p {
+    font-size: 3rem;
+  }
+
+  /* GAMEPAGE STYLES*/
+  #game-info p {
+    font-size: 5rem;
+  }
+
+  .grid-container {
+    margin-top: 4rem;
+  }
+
+  #rule-set {
+    align-items: center;
+    display: flex;
+    margin-top: 15rem;
+    width: 30%;
+
+    h2 {
+      font-size: 5rem;
+      margin-bottom: 4rem;
+    }
+    ul {
+      font-size: 3rem;
+    }
+  }
+
+  #score-board-display {
+    align-items: center;
+    display: flex;
+    width: 30%;
+    margin-top: 15rem;
+
+    h2 {
+      font-size: 5rem;
+      margin-bottom: 4rem;
+    }
+
+    p {
+      font-size: 3rem;
+    }
+  }
+
+  #score-count {
+    width: 40%;
+    margin-bottom: 3rem;
+    p {
+      font-size: 5rem;
+    }
+  }
+
+  .player-stats {
+    width: 40%;
+    height: 200px;
+    h3 {
+      font-size: 3rem;
+    }
+  }
+
+  #player-one-stats p {
+    font-size: 3rem;
+  }
+
+  #player-two-stats p {
+    font-size: 3rem;
+  }
+}
