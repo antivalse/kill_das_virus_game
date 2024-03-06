@@ -184,4 +184,15 @@ socket.on("playersJoinedGame", (players) => {
   console.log(
     `Welcome to the game player one: ${playerOne} and player two: ${playerTwo}`
   );
+
+  // set player's names on score board display when game starts
+  const playerOneNameEl = document.querySelector(
+    "#player-one-name"
+  ) as HTMLElement;
+  const playerTwoNameEl = document.querySelector(
+    "#player-two-name"
+  ) as HTMLElement;
+
+  playerOneNameEl.innerText = playerOne;
+  playerTwoNameEl.innerText = playerTwo;
 });
