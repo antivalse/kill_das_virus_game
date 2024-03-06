@@ -29,6 +29,7 @@ const gamePage = document.querySelector("#game-page") as HTMLElement;
 let playerName: string | null = null;
 
 // Game Details
+const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
 
 //let gameId: string | null = null;
 
@@ -62,6 +63,8 @@ const showGamePage = () => {
     // Show game page
     startPage.classList.add("hide");
     gamePage.classList.remove("hide");
+    // inform waiting player that they are waiting for next player to join
+    gameInfoEl.innerText = "Waiting for player two....";
   });
 
   // Test to start game/show virus
@@ -70,6 +73,9 @@ const showGamePage = () => {
 // Game function
 
 const startGame = () => {
+  // inform players that game is about to start
+  gameInfoEl.innerText = "Get ready to start DAS GAME!";
+
   // Select position of virus
   const moveVirus = () => {
     const gridVirus = document.getElementById("gridVirus");
