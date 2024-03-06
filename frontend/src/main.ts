@@ -69,50 +69,52 @@ const showGamePage = () => {
 
 // Game function
 
-// Select position of virus
-const moveVirus = () => {
-  const gridVirus = document.getElementById("gridVirus");
-  if (gridVirus) {
-    const gridColumn = getRandomNumber(1, 10);
-    const gridRow = getRandomNumber(1, 10);
-    gridVirus.style.gridColumn = String(gridColumn);
-    gridVirus.style.gridRow = String(gridRow);
-  }
-};
+const startGame = () => {
+  // Select position of virus
+  const moveVirus = () => {
+    const gridVirus = document.getElementById("gridVirus");
+    if (gridVirus) {
+      const gridColumn = getRandomNumber(1, 10);
+      const gridRow = getRandomNumber(1, 10);
+      gridVirus.style.gridColumn = String(gridColumn);
+      gridVirus.style.gridRow = String(gridRow);
+    }
+  };
 
-// Get random number
-const getRandomNumber = (min: number, max: number): number => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+  // Get random number
+  const getRandomNumber = (min: number, max: number): number => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
-// Show virus
-const showVirus = () => {
-  const virus = document.getElementById("gridVirus");
-  if (virus) {
-    virus.classList.remove("hide");
-    virus.addEventListener("click", hideVirus);
-  }
-};
+  // Show virus
+  const showVirus = () => {
+    const virus = document.getElementById("gridVirus");
+    if (virus) {
+      virus.classList.remove("hide");
+      virus.addEventListener("click", hideVirus);
+    }
+  };
 
-// Hide virus
-const hideVirus = () => {
-  const virus = document.getElementById("gridVirus");
-  if (virus) {
-    virus.classList.add("hide");
-    virus.addEventListener("click", moveVirus);
-  }
-};
+  // Hide virus
+  const hideVirus = () => {
+    const virus = document.getElementById("gridVirus");
+    if (virus) {
+      virus.classList.add("hide");
+      virus.addEventListener("click", moveVirus);
+    }
+  };
 
-// A singel round of game
-const gameRound = () => {
-  const gridVirus = document.getElementById("gridVirus");
-  if (gridVirus) {
-    gridVirus.addEventListener("click", moveVirus);
-  }
-  moveVirus();
-  setTimeout(showVirus, getRandomNumber(1500, 10000));
+  // A singel round of game
+  const gameRound = () => {
+    const gridVirus = document.getElementById("gridVirus");
+    if (gridVirus) {
+      gridVirus.addEventListener("click", moveVirus);
+    }
+    moveVirus();
+    setTimeout(showVirus, getRandomNumber(1500, 10000));
+  };
+  gameRound();
 };
-gameRound();
 
 /**
  * Socket handlers
@@ -162,6 +164,8 @@ socket.on("playerJoined", (playername, timestamp) => {
 socket.on("gameCreated", (gameRoomId) => {
   // handle event of game being created
   console.log("started the game with id: ", gameRoomId);
+  // call on start game function
+  startGame();
 });
 
 // Listen for a list of online players in game
