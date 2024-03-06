@@ -349,137 +349,147 @@ footer p {
 }
 
 /* Styles for large screens (1080p and above) */
-@media screen and (min-width: 1081px) {
+@media screen and (min-width: 1080px) {
+  /* Universal Styles */
+  * {
+    overflow: auto;
+  }
+
+  button {
+    font-size: 1.8rem;
+    height: 3rem;
+    margin-top: 3rem;
+  }
+
   h1 {
-    font-size: 10rem;
+    font-size: 6rem;
   }
 
   /* STARTPAGE STYLES */
 
+  h1 a:hover {
+    color: rgb(230, 48, 48);
+    font-size: 7rem;
+  }
+
   .intro {
-    font-size: 5rem;
+    font-size: 2rem;
     .intro-strong {
-      font-size: 6.5rem;
+      font-size: 3rem;
     }
   }
 
   #username-form {
     input {
-      height: 5rem;
-      font-size: 4rem;
-    }
-    button {
-      font-size: 4rem;
-      height: 5.5rem;
+      height: 3rem;
+      font-size: 2rem;
     }
   }
 
   #startpage-stats {
-    margin-bottom: 18rem;
-    margin-top: 10rem;
-    width: 30%;
+    margin-bottom: 10rem;
+    margin-top: 7rem;
+    width: 40%;
     h2 {
-      font-size: 2.5rem;
+      font-size: 1.5rem;
     }
   }
 
   /* FOOTER STYLES*/
 
   footer p {
-    font-size: 3rem;
+    font-size: 1.5rem;
   }
 
   /* GAMEPAGE STYLES*/
   #game-info p {
-    font-size: 5rem;
+    font-size: 2.5rem;
   }
 
   .grid-container {
-    margin-top: 4rem;
+    margin-bottom: 5rem;
+    margin-top: 2.5rem;
+    width: 50%;
   }
 
   #rule-set {
     align-items: center;
     display: flex;
-    margin-top: 15rem;
-    width: 30%;
+    margin-top: 2.5rem;
+    width: 20%;
 
     h2 {
-      font-size: 5rem;
-      margin-bottom: 4rem;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
     }
     ul {
-      font-size: 3rem;
+      font-size: 1.5rem;
     }
   }
 
   #score-board-display {
     align-items: center;
     display: flex;
-    width: 30%;
-    margin-top: 15rem;
+    width: 20%;
+    margin-top: 2.5rem;
 
     h2 {
-      font-size: 5rem;
-      margin-bottom: 4rem;
+      font-size: 2rem;
+      margin-bottom: 2rem;
     }
 
     p {
-      font-size: 3rem;
+      font-size: 2rem;
     }
   }
 
   #score-count {
-    width: 40%;
-    margin-bottom: 3rem;
+    width: 80%;
+    margin-bottom: 2rem;
     p {
-      font-size: 5rem;
-    }
-  }
-
-  .player-stats {
-    width: 40%;
-    height: 200px;
-    h3 {
       font-size: 3rem;
     }
   }
 
+  .player-stats {
+    width: 80%;
+    height: 20%;
+    h3 {
+      font-size: 2rem;
+    }
+  }
+
   #player-one-stats p {
-    font-size: 3rem;
+    font-size: 1.8rem;
   }
 
   #player-two-stats p {
-    font-size: 3rem;
+    font-size: 1.8rem;
   }
 
   /* RESULT PAGE STYLES */
 
   #result-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     h4 {
-      font-size: 10rem;
+      font-size: 5rem;
       color: rgb(230, 48, 48);
       text-shadow: 2px 2px 4px black;
     }
     #game-winner {
-      font-size: 8rem;
+      font-size: 2.5rem;
     }
     p {
-      font-size: 3rem;
+      font-size: 1.8rem;
       text-shadow: 2px 2px 4px black;
     }
 
     strong {
-      font-size: 5rem;
+      font-size: 2rem;
       text-shadow: 2px 2px 4px black;
     }
-    button {
-      font-size: 2.8rem;
-      height: 5.5rem;
-      margin-top: 3rem;
+
+    #quit-game-button {
+      margin-bottom: 200px;
     }
   }
 }
