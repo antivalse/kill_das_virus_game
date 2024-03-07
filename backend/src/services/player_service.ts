@@ -29,15 +29,15 @@ export const createPlayer = (data: Player) => {
 	});
 };
 
-/**
- * Get players in waitingroom
- * @param waitingRoomId
- */
+// /**
+//  * Get players in waitingroom
+//  * @param waitingRoomId
+//  */
 
-export const getPlayersInWaitingRoom = (waitingRoomId: string) => {
-	return prisma.player.findMany({
-		where: {
-			waitingRoomId,
-		},
-	});
-};
+// export const getPlayersInWaitingRoom = (waitingRoomId: string) => {
+// 	return prisma.player.findMany({
+// 		where: {
+// 			waitingRoomId,
+// 		},
+// 	});
+// };
