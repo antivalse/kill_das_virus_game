@@ -73,6 +73,11 @@ const showGamePage = () => {
 // Game function
 
 const startGame = () => {
+  // Time variable for comparison with click
+  let msSinceEpochOnTimeout = 0;
+  // Variable/Boolean for time comparison
+  let waitingForClick = false;
+
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
 
@@ -85,14 +90,32 @@ const startGame = () => {
         // Set position of virus
         gridVirus.style.gridColumn = String(gridColumn);
         gridVirus.style.gridRow = String(gridRow);
-        // add eventlistner for click on virus div, hide virus when clicked
-        gridVirus.addEventListener("click", hideVirus);
+
         // Remove hideclass
         gridVirus.classList.remove("hide");
+
+        // Set time for comparison
+
+        msSinceEpochOnTimeout = Date.now();
+        console.log(msSinceEpochOnTimeout);
+
+        waitingForClick = true;
+
+        // add eventlistner for click on virus div, hide virus when clicked
+        gridVirus.addEventListener("click", () => {
+          if (waitingForClick) {
+            const score = Date.now() - msSinceEpochOnTimeout;
+            console.log(score);
+
+            // Hide virus after click
+            hideVirus();
+          }
+        });
       }
     };
     placeVirus();
   });
+
   // Hide virus in game
   const hideVirus = () => {
     const virus = document.getElementById("gridVirus");
