@@ -77,6 +77,36 @@ export const handleConnection = (
 					playersInGame?.players
 				);
 			}
+
+			const playerOne = playersInGame?.players[0].playername;
+			const playerTwo = playersInGame?.players[1].playername;
+			debug(
+				`Name of player one is: ${playerOne}. Name of player two is: ${playerTwo}`
+			);
+
+			// declare grid positions for column and row
+
+			let gridColumn: number = 0;
+			let gridRow: number = 0;
+
+			// Select position of virus in game
+			const positionOfVirus = () => {
+				gridColumn = getRandomNumber(1, 10);
+				gridRow = getRandomNumber(1, 10);
+				debug(`gridColumnn is: ${gridColumn}`);
+				debug(`gridRow is: ${gridRow} `);
+			};
+
+			// Get random number
+			const getRandomNumber = (min: number, max: number): number => {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			};
+			// call on function
+			positionOfVirus();
+
+			// emit an event to client with position of virus
+
+			io.to(gameRoom.id).emit("setVirusPosition", gridColumn, gridRow);
 		}
 	});
 

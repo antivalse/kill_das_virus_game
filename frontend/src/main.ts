@@ -76,50 +76,54 @@ const startGame = () => {
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
 
-  // Select position of virus
-  const moveVirus = () => {
-    const gridVirus = document.getElementById("gridVirus");
-    if (gridVirus) {
-      const gridColumn = getRandomNumber(1, 10);
-      const gridRow = getRandomNumber(1, 10);
-      gridVirus.style.gridColumn = String(gridColumn);
-      gridVirus.style.gridRow = String(gridRow);
-    }
-  };
+  socket.on("setVirusPosition", (gridColumn, gridRow) => {
+    console.log(`gridColumnn is: ${gridColumn} aaand gridRow is: ${gridRow}`);
+  });
 
-  // Get random number
-  const getRandomNumber = (min: number, max: number): number => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+  // // Select position of virus
+  // const moveVirus = () => {
+  //   const gridVirus = document.getElementById("gridVirus");
+  //   if (gridVirus) {
+  //     const gridColumn = getRandomNumber(1, 10);
+  //     const gridRow = getRandomNumber(1, 10);
+  //     gridVirus.style.gridColumn = String(gridColumn);
+  //     gridVirus.style.gridRow = String(gridRow);
+  //   }
+  // };
 
-  // Show virus
-  const showVirus = () => {
-    const virus = document.getElementById("gridVirus");
-    if (virus) {
-      virus.classList.remove("hide");
-      virus.addEventListener("click", hideVirus);
-    }
-  };
+  // // Get random number
+  // const getRandomNumber = (min: number, max: number): number => {
+  //   return Math.floor(Math.random() * (max - min + 1)) + min;
+  // };
 
-  // Hide virus
-  const hideVirus = () => {
-    const virus = document.getElementById("gridVirus");
-    if (virus) {
-      virus.classList.add("hide");
-      virus.addEventListener("click", moveVirus);
-    }
-  };
+  // // Show virus
+  // const showVirus = () => {
+  //   const virus = document.getElementById("gridVirus");
+  //   if (virus) {
+  //     virus.classList.remove("hide");
+  //     virus.addEventListener("click", hideVirus);
+  //   }
+  // };
 
-  // A singel round of game
-  const gameRound = () => {
-    const gridVirus = document.getElementById("gridVirus");
-    if (gridVirus) {
-      gridVirus.addEventListener("click", moveVirus);
-    }
-    moveVirus();
-    setTimeout(showVirus, getRandomNumber(1500, 10000));
-  };
-  gameRound();
+  // // Hide virus
+  // const hideVirus = () => {
+  //   const virus = document.getElementById("gridVirus");
+  //   if (virus) {
+  //     virus.classList.add("hide");
+  //     virus.addEventListener("click", moveVirus);
+  //   }
+  // };
+
+  // // A singel round of game
+  // const gameRound = () => {
+  //   const gridVirus = document.getElementById("gridVirus");
+  //   if (gridVirus) {
+  //     gridVirus.addEventListener("click", moveVirus);
+  //   }
+  //   moveVirus();
+  //   setTimeout(showVirus, getRandomNumber(1500, 10000));
+  // };
+  // gameRound();
 };
 
 /**
