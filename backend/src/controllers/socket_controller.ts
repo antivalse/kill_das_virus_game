@@ -96,13 +96,16 @@ export const handleConnection = (
 
 			let gridColumn: number = 0;
 			let gridRow: number = 0;
+			let virusDelay: number = 0;
 
 			// Select position of virus in game
 			const positionOfVirus = () => {
 				gridColumn = getRandomNumber(1, 10);
 				gridRow = getRandomNumber(1, 10);
+				virusDelay = getRandomNumber(1500, 10000);
 				debug(`gridColumnn is: ${gridColumn}`);
 				debug(`gridRow is: ${gridRow} `);
+				debug(`delay is: ${virusDelay} `);
 			};
 
 			// Get random number
@@ -114,7 +117,12 @@ export const handleConnection = (
 
 			// emit an event to client with position of virus
 
-			io.to(gameRoom.id).emit("setVirusPosition", gridColumn, gridRow);
+			io.to(gameRoom.id).emit(
+				"setVirusPosition",
+				gridColumn,
+				gridRow,
+				virusDelay
+			);
 
 			// get reaction time from client
 		}

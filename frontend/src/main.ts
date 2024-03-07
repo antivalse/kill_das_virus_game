@@ -81,39 +81,42 @@ const startGame = () => {
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
 
-  socket.on("setVirusPosition", (gridColumn, gridRow) => {
-    console.log(`gridColumnn is: ${gridColumn} aaand gridRow is: ${gridRow}`);
+  socket.on("setVirusPosition", (gridColumn, gridRow, virusDelay) => {
+    console.log(
+      `gridColumnn is: ${gridColumn} aaand gridRow is: ${gridRow} aaand virusDelay is ${virusDelay}`
+    );
     // Show virus
-    const placeVirus = () => {
-      const gridVirus = document.getElementById("gridVirus");
-      if (gridVirus) {
-        // Set position of virus
-        gridVirus.style.gridColumn = String(gridColumn);
-        gridVirus.style.gridRow = String(gridRow);
+    const placeVirus = (delay: number) => {
+      setTimeout(() => {
+        const gridVirus = document.getElementById("gridVirus");
+        if (gridVirus) {
+          // Set position of virus
+          gridVirus.style.gridColumn = String(gridColumn);
+          gridVirus.style.gridRow = String(gridRow);
 
-        // Remove hideclass
-        gridVirus.classList.remove("hide");
+          // Remove hideclass
+          gridVirus.classList.remove("hide");
 
-        // Set time for comparison
+          // Set time for comparison
+          msSinceEpochOnTimeout = Date.now();
+          console.log(msSinceEpochOnTimeout);
 
-        msSinceEpochOnTimeout = Date.now();
-        console.log(msSinceEpochOnTimeout);
+          waitingForClick = true;
 
-        waitingForClick = true;
+          // add eventlistner for click on virus div, hide virus when clicked
+          gridVirus.addEventListener("click", () => {
+            if (waitingForClick) {
+              const score = Date.now() - msSinceEpochOnTimeout;
+              console.log(score);
 
-        // add eventlistner for click on virus div, hide virus when clicked
-        gridVirus.addEventListener("click", () => {
-          if (waitingForClick) {
-            const score = Date.now() - msSinceEpochOnTimeout;
-            console.log(score);
-
-            // Hide virus after click
-            hideVirus();
-          }
-        });
-      }
+              // Hide virus after click
+              hideVirus();
+            }
+          });
+        }
+      }, delay);
     };
-    placeVirus();
+    placeVirus(virusDelay);
   });
 
   // Hide virus in game
