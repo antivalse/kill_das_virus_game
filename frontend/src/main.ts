@@ -78,7 +78,31 @@ const startGame = () => {
 
   socket.on("setVirusPosition", (gridColumn, gridRow) => {
     console.log(`gridColumnn is: ${gridColumn} aaand gridRow is: ${gridRow}`);
+    // Show virus
+    const placeVirus = () => {
+      const gridVirus = document.getElementById("gridVirus");
+      if (gridVirus) {
+        // Set position of virus
+        gridVirus.style.gridColumn = String(gridColumn);
+        gridVirus.style.gridRow = String(gridRow);
+        // add eventlistner for click on virus div, hide virus when clicked
+        gridVirus.addEventListener("click", hideVirus);
+        // Remove hideclass
+        gridVirus.classList.remove("hide");
+      }
+    };
+    placeVirus();
   });
+  // Hide virus in game
+  const hideVirus = () => {
+    const virus = document.getElementById("gridVirus");
+    if (virus) {
+      // add class of hide
+      virus.classList.add("hide");
+      // remove listning for clicks
+      virus.removeEventListener("click", hideVirus);
+    }
+  };
 
   // // Select position of virus
   // const moveVirus = () => {
