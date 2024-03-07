@@ -18,6 +18,10 @@ export interface ClientToServerEvents {
     playername: string,
     callback: (response: PlayerJoinResponse) => void
   ) => void;
+  playersClickedVirus: (
+    playerOneClicks: number[],
+    playerTwoClicks: number[]
+  ) => void;
 }
 
 // Waiting room with players

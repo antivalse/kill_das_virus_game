@@ -126,6 +126,19 @@ const startGame = () => {
   // gameRound();
 };
 
+// declare array for clicks
+
+let playerOneClicks: number[] = [];
+let playerTwoClicks: number[] = [];
+
+// push reaction time to player click arrays
+playerOneClicks = [1, 2, 3];
+playerTwoClicks = [4, 5, 6];
+
+// emit clicks to server
+
+socket.emit("playersClickedVirus", playerOneClicks, playerTwoClicks);
+
 /**
  * Socket handlers
  */

@@ -24,6 +24,14 @@ export const handleConnection = (
 ) => {
 	debug("🙋 A user connected", socket.id);
 
+	// get reaction times from client
+	// movie to game logic
+	socket.on("playersClickedVirus", (playerOneClicks, playerTwoClicks) => {
+		debug(
+			`player one's clicks: ${playerOneClicks} aaand player two's clicks: ${playerTwoClicks}`
+		);
+	});
+
 	// Listen for a player join request from the client when a player submits a form
 	socket.on("playerJoinRequest", async (playername, callback) => {
 		debug(`player ${playername} wants to join the game`);
@@ -107,6 +115,8 @@ export const handleConnection = (
 			// emit an event to client with position of virus
 
 			io.to(gameRoom.id).emit("setVirusPosition", gridColumn, gridRow);
+
+			// get reaction time from client
 		}
 	});
 
