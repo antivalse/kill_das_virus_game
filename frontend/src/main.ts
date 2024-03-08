@@ -81,6 +81,10 @@ const startGame = () => {
 
   socket.on("updateVirusClicks", (count) => {
     virusClicks = count;
+    // Stop timer when both player clicks on virus
+    if (virusClicks === 1) {
+      clearInterval(timerInterval);
+    }
   });
 
   // inform players that game is about to start
@@ -101,6 +105,8 @@ const startGame = () => {
 
           // Remove hideclass
           gridVirus.classList.remove("hide");
+
+          startTimer();
 
           // Set time for comparison
           msSinceEpochOnTimeout = Date.now();
@@ -226,3 +232,39 @@ socket.on("playersJoinedGame", (players) => {
   playerOneNameEl.innerText = playerOne;
   playerTwoNameEl.innerText = playerTwo;
 });
+
+// timer function
+let timerInterval: number;
+
+// start values timer
+const startTimer = () => {
+  const startTime = Date.now();
+  const endTime = startTime + 30000;
+
+  const timerFunc = () => {
+    const currentTime = Date.now();
+    const remainingTime = endTime - currentTime;
+
+    if (remainingTime <= 0) {
+      clearInterval(timerInterval);
+      gameInfoEl.innerText = "00:00";
+      return;
+    }
+
+    const minutes = Math.floor(remainingTime / 60000);
+    const seconds = Math.floor((remainingTime % 60000) / 1000);
+
+    const durationInMinutes = minutes.toString().padStart(2, "0");
+    const durationInSeconds = seconds.toString().padStart(2, "o");
+
+    gameInfoEl.innerText = `${durationInMinutes}:${durationInSeconds}`;
+  };
+
+  // Call for timeFunc
+  timerFunc();
+
+  // update the timer
+  timerInterval = setInterval(timerFunc, 1000);
+};
+
+// Start countdown
