@@ -19,11 +19,17 @@ const debug = Debug("backend:socket_controller");
 // Track waiting players
 const waitingPlayers: Player[] = [];
 
+// track if highscores have already been sent to client
+let highscoresSent = false;
+// track if results have already been sent to client
+let resultsSent = false;
+
 // Get and emit results from database to client
 const sendResultsToClient = async (socket: Socket) => {
 	const results = await getResults();
 	socket.emit("sendResults", results);
 	debug("results are: ", results);
+	resultsSent = true;
 };
 
 // Get and emit highscores from database to client
@@ -32,6 +38,7 @@ const sendHighscoresToClient = async (socket: Socket) => {
 	const highscores = await getHighscores();
 	socket.emit("sendHighscores", highscores);
 	debug("highscores are: ", highscores);
+	highscoresSent = true;
 };
 
 // handle connection function
@@ -41,11 +48,15 @@ export const handleConnection = (
 ) => {
 	debug("🙋 A user connected", socket.id);
 
-	// get latest results when user connects
-	sendResultsToClient(socket);
+	// send highscores to the client only if they haven't been sent before
+	if (!resultsSent) {
+		sendResultsToClient(socket);
+	}
 
-	// get latest high scores when user connects
-	sendHighscoresToClient(socket);
+	// send highscores to the client only if they haven't been sent before
+	if (!highscoresSent) {
+		sendHighscoresToClient(socket);
+	}
 
 	// get reaction times from client
 	// movie to game logic
