@@ -9,7 +9,7 @@ import prisma from "../prisma";
 export const getHighscores = async () => {
 	return await prisma.highscore.findMany({
 		orderBy: {
-			id: "desc",
+			id: "asc",
 		},
 	});
 };

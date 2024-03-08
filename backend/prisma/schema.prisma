@@ -24,7 +24,7 @@ model Result {
  playerOneName         String
  playerTwoName         String
  playerOneHighscore    Int
- playerTwoHighscore    Int 
+ playerTwoHighscore    Int  
  playerOnePoint        Int
  playerTwoPoint        Int
  timestamp             Int
