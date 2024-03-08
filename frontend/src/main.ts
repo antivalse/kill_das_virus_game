@@ -322,3 +322,10 @@ socket.on("sendHighscores", (highscores) => {
   console.log("highscores are: ", highscores);
   renderHighscores(highscores);
 });
+
+// listen for when a player leaves the game
+// end game and go to result page
+
+socket.on("playerDisconnected", (playername) => {
+  console.log(`${playername} left the game, so the game has ended!`);
+});
