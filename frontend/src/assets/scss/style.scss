@@ -105,7 +105,6 @@ input {
   border: 1px solid rgb(30, 28, 28);
   border-radius: 15px;
   color: #f3eded;
-
   display: flex;
   justify-content: space-between;
   margin-top: 100px;
@@ -115,7 +114,11 @@ input {
 
 #startpage-stats ul {
   padding: 0px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
+
 .startpage-stats-containers {
   align-items: center;
   display: flex;
