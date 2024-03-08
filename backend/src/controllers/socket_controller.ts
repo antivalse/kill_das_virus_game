@@ -7,7 +7,7 @@ import {
 	ClientToServerEvents,
 	ServerToClientEvents,
 } from "@shared/types/SocketTypes";
-import { createPlayer } from "../services/player_service";
+import { createPlayer, getPlayer } from "../services/player_service";
 import { createGame, getGameWithPlayers } from "../services/game_service";
 import { Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";
@@ -172,6 +172,24 @@ export const handleConnection = (
 		);
 		if (index !== -1) {
 			waitingPlayers.splice(index, 1);
+		}
+
+		// find player in order to find out which room they were in
+
+		const player = await getPlayer(socket.id);
+		// if player didn't exist, don't dp anything
+		if (!player) {
+			return;
+		}
+
+		const gameId = player.gameId;
+		const playerName = player.playername;
+
+		// remove the player from the database?
+
+		// let other player in room know that the other player left
+		if (gameId) {
+			io.to(gameId).emit("playerDisconnected", playerName);
 		}
 	});
 };

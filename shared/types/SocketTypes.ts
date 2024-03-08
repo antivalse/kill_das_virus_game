@@ -16,6 +16,7 @@ export interface ServerToClientEvents {
   updateVirusClicks: (virusClicks: number) => void;
   sendResults: (results: ResultData[]) => void;
   sendHighscores: (highscores: HighscoreData[]) => void;
+  playerDisconnected: (playername: string) => void;
 }
 
 // Events emitted by the client to the server
