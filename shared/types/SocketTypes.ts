@@ -29,17 +29,8 @@ export interface ClientToServerEvents {
   virusClicked: () => void;
 }
 
-// Waiting room with players
-
-// export interface WaitingRoomInfo extends WaitingRoom {
-//   players: Player[];
-// }
-
 // Player Join Response
 export interface PlayerJoinResponse {
   success: boolean;
   game: Game;
-
-  //waitingRoom: WaitingRoomInfo | null;
-  //waitingRoomId: string;
 }
