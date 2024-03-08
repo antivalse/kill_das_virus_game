@@ -19,4 +19,20 @@ model Player {
    game        Game?      @relation(fields: [gameId], references: [id])
 }
 
+model Result {
+ id         String   @id @default(auto()) @map("_id") @db.ObjectId
+ playerOneName         String
+ playerTwoName         String
+ playerOneHighscore    Int
+ playerTwoHighscore    Int 
+ playerOnePoint        Int
+ playerTwoPoint        Int
+ timestamp             Int
+}
+
+model Highscore {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  playername String
+  highscore  Int
+}
 
