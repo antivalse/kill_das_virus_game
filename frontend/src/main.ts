@@ -77,6 +77,11 @@ const startGame = () => {
   let msSinceEpochOnTimeout = 0;
   // Variable/Boolean for time comparison
   let waitingForClick = false;
+  let virusClicks = 0;
+
+  socket.on("updateVirusClicks", (count) => {
+    virusClicks = count;
+  });
 
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
@@ -105,9 +110,12 @@ const startGame = () => {
 
           // add eventlistner for click on virus div, hide virus when clicked
           gridVirus.addEventListener("click", () => {
+            socket.emit("virusClicked");
             if (waitingForClick) {
               const score = Date.now() - msSinceEpochOnTimeout;
               console.log(score);
+
+              console.log(virusClicks);
 
               // Hide virus after click
               hideVirus();

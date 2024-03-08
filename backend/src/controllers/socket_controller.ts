@@ -125,6 +125,17 @@ export const handleConnection = (
 			);
 
 			// get reaction time from client
+
+			// Number of clicks
+			let virusClicks = 0;
+
+			// Listen for clicks on virus from client
+			socket.on("virusClicked", () => {
+				// Add clicks
+				virusClicks++;
+				// emit clicks to client side
+				io.emit("updateVirusClicks", virusClicks);
+			});
 		}
 	});
 
