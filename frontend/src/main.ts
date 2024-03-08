@@ -1,7 +1,9 @@
 import { io, Socket } from "socket.io-client";
 import {
   ClientToServerEvents,
+  HighscoreData,
   PlayerJoinResponse,
+  ResultData,
   ServerToClientEvents,
 } from "@shared/types/SocketTypes";
 import "./assets/scss/style.scss";
@@ -268,3 +270,55 @@ const startTimer = () => {
 };
 
 // Start countdown
+
+// Function to render results to start page
+const renderResults = (results: ResultData[]) => {
+  const startPageGameResultUlEl = document.querySelector(
+    "#start-page-stats-gameresults"
+  );
+
+  // Loop through results and create li elements
+  results.forEach((result) => {
+    // Game Result
+    const liGameResultEl = document.createElement("li");
+    liGameResultEl.innerHTML = `
+      <span class="player-one-points-name">${result.playerOneName}: </span>
+      <span class="stats-point">${result.playerOnePoint} p</span> vs
+      <span class="player-two-point-name">${result.playerTwoName}: </span>
+      <span class="stats-point">${result.playerTwoPoint} p</span>`;
+
+    startPageGameResultUlEl?.appendChild(liGameResultEl);
+  });
+};
+
+// Listen for the results and then call render function
+socket.on("sendResults", (results) => {
+  console.log("results are: ", results);
+
+  renderResults(results);
+});
+
+const renderHighscores = (results: HighscoreData[]) => {
+  const startPageHighscoreUlEl = document.querySelector(
+    "#start-page-stats-highscore"
+  ) as HTMLUListElement;
+
+  // Loop through results and create li elements
+  results.forEach((highscore) => {
+    // High Score
+    const liHighScoreEl = document.createElement("li");
+    liHighScoreEl.innerHTML = `
+      <span class="stats-player-name">${highscore.playername}: </span>
+      <span class="stats-points">${highscore.highscore} seconds</span>
+     
+    `;
+
+    startPageHighscoreUlEl.appendChild(liHighScoreEl);
+  });
+};
+// Listen for the highscores and then call the render function
+
+socket.on("sendHighscores", (highscores) => {
+  console.log("highscores are: ", highscores);
+  renderHighscores(highscores);
+});
