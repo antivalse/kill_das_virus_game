@@ -34,3 +34,21 @@ export interface PlayerJoinResponse {
   success: boolean;
   game: Game;
 }
+
+// Result payload
+export interface ResultData {
+  playerOneName: string;
+  playerTwoName: string;
+  playerOneHighscore: number;
+  playerTwoHighscore: number;
+  playerOnePoint: number;
+  playerTwoPoint: number;
+  timestamp: number;
+}
+
+// Highscore payload
+
+export interface HighscoreData {
+  playername: string;
+  highscore: number;
+}
