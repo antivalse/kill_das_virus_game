@@ -10,6 +10,8 @@ import {
 import { createPlayer } from "../services/player_service";
 import { createGame, getGameWithPlayers } from "../services/game_service";
 import { Player } from "@shared/types/Models";
+import { getResults } from "../services/result_service";
+import { getHighscores } from "../services/highscore_service";
 
 // Create a new debug instance
 const debug = Debug("backend:socket_controller");
@@ -17,12 +19,33 @@ const debug = Debug("backend:socket_controller");
 // Track waiting players
 const waitingPlayers: Player[] = [];
 
+// Get and emit results from database to client
+const sendResultsToClient = async (socket: Socket) => {
+	const results = await getResults();
+	socket.emit("sendResults", results);
+	debug("results are: ", results);
+};
+
+// Get and emit highscores from database to client
+
+const sendHighscoresToClient = async (socket: Socket) => {
+	const highscores = await getHighscores();
+	socket.emit("sendHighscores", highscores);
+	debug("highscores are: ", highscores);
+};
+
 // handle connection function
 export const handleConnection = (
 	socket: Socket<ClientToServerEvents, ServerToClientEvents>,
 	io: Server<ClientToServerEvents, ServerToClientEvents>
 ) => {
 	debug("🙋 A user connected", socket.id);
+
+	// get latest results when user connects
+	sendResultsToClient(socket);
+
+	// get latest high scores when user connects
+	sendHighscoresToClient(socket);
 
 	// get reaction times from client
 	// movie to game logic
