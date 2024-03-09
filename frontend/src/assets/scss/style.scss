@@ -122,6 +122,25 @@ input {
   text-align: center;
 }
 
+#spinning-loader {
+  margin: 0;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-top-color: #f3eded;
+  border-bottom-color: #f3eded;
+  animation: spin 1s ease-in-out infinite;
+  overflow: hidden;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .startpage-stats-containers {
   align-items: center;
   display: flex;
@@ -404,6 +423,7 @@ footer p {
     margin-bottom: 10rem;
     margin-top: 7rem;
     width: 40%;
+    min-height: 200px;
     h2 {
       font-size: 1.5rem;
     }
