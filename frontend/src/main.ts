@@ -30,9 +30,11 @@ const gamePage = document.querySelector("#game-page") as HTMLElement;
 // Player Details
 let playerName: string | null = null;
 
-// Spinning loader on startpage
+// Spinning loaders on startpage
 
-const spinningLoaderEl = document.querySelectorAll("#spinning-loader");
+const highScoreSpinningLoaderEl = document.querySelector("#spinning-loader-hs");
+
+const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 
 // Game Details
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
@@ -203,12 +205,11 @@ const clearHighscores = () => {
 socket.on("connect", () => {
   console.log("💥 Connected to the server", SOCKET_HOST);
   console.log("🔗 Socket ID:", socket.id);
-  // hide loading spinner when connecting
-  spinningLoaderEl.forEach((spinner) => {
-    spinner.classList.add("hide");
-  });
+  // hide loading spinners when connecting
 
-  //.classList.add("hide");
+  highScoreSpinningLoaderEl?.classList.add("hide");
+  resultSpinningLoaderEl?.classList.add("hide");
+
   // call on showGamePage function when connection is established
   showGamePage();
 });
@@ -221,9 +222,8 @@ socket.on("disconnect", () => {
   clearResults();
   clearHighscores();
   // show loading spinner when connecting
-  spinningLoaderEl.forEach((spinner) => {
-    spinner.classList.remove("hide");
-  });
+  highScoreSpinningLoaderEl?.classList.remove("hide");
+  resultSpinningLoaderEl?.classList.remove("hide");
 });
 
 // Listen for when we're reconnected (either due to our or the servers connection)
