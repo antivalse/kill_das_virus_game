@@ -147,6 +147,7 @@ footer {
   flex-direction: column;
   align-items: center;
   margin-top: 75px;
+  margin-bottom: 20px;
 }
 
 footer p {
@@ -218,8 +219,8 @@ footer p {
 }
 
 .grid-virus img {
-  height: 90%;
-  width: 100%;
+  height: 80%;
+  width: 90%;
 }
 
 #score-board-display {
@@ -420,7 +421,8 @@ footer p {
   .grid-container {
     margin-bottom: 5rem;
     margin-top: 2.5rem;
-    width: 50%;
+    width: 800px;
+    height: 800px;
   }
 
   #rule-set {
@@ -464,7 +466,7 @@ footer p {
 
   .player-stats {
     width: 80%;
-    height: 20%;
+    height: 130px;
     h3 {
       font-size: 2rem;
     }
