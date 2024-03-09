@@ -332,7 +332,7 @@ const renderHighscores = (results: HighscoreData[]) => {
     const liHighScoreEl = document.createElement("li");
     liHighScoreEl.innerHTML = `
       <span class="stats-player-name">${highscore.playername}: </span>
-      <span class="stats-points">${highscore.highscore} seconds</span>
+      <span class="stats-points">${highscore.highscore} ms</span>
      
     `;
 

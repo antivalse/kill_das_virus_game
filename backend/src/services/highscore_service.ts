@@ -12,6 +12,6 @@ export const getHighscores = async () => {
 		orderBy: {
 			highscore: "asc",
 		},
-		take: -10,
+		take: 10,
 	});
 };

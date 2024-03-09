@@ -13,7 +13,7 @@ export const getResults = async () => {
 		orderBy: {
 			timestamp: "asc",
 		},
-		take: -10,
+		take: 10,
 	});
 };
 
