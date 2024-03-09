@@ -10,7 +10,7 @@ import prisma from "../prisma";
 export const getHighscores = async () => {
 	return await prisma.highscore.findMany({
 		orderBy: {
-			id: "asc",
+			highscore: "asc",
 		},
 		take: -10,
 	});
