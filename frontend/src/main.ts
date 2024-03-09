@@ -175,6 +175,26 @@ const handlePlayerGameJoinRequestCallback = (response: PlayerJoinResponse) => {
   showGamePage();
 };
 
+// Function to clear results from startpage when disconneted from server
+const clearResults = () => {
+  const startPageGameResultUlEl = document.querySelector(
+    "#start-page-stats-gameresults"
+  );
+  if (startPageGameResultUlEl) {
+    startPageGameResultUlEl.innerHTML = "";
+  }
+};
+
+// Function to clear highscores from startpage when disconnected from server
+const clearHighscores = () => {
+  const startPageHighscoreUlEl = document.querySelector(
+    "#start-page-stats-highscore"
+  );
+  if (startPageHighscoreUlEl) {
+    startPageHighscoreUlEl.innerHTML = "";
+  }
+};
+
 // Listen for when connection is established
 socket.on("connect", () => {
   console.log("💥 Connected to the server", SOCKET_HOST);
@@ -186,6 +206,9 @@ socket.on("connect", () => {
 // Listen for when server got tired of us
 socket.on("disconnect", () => {
   console.log("💀 Disconnected from the server:", SOCKET_HOST);
+  // call on functions to clear highscore and results
+  clearResults();
+  clearHighscores();
 });
 
 // Listen for when we're reconnected (either due to our or the servers connection)
