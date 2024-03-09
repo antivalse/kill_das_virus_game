@@ -23,7 +23,7 @@ const waitingPlayers: Player[] = [];
 const sendResultsToClient = async (socket: Socket) => {
 	const results = await getResults();
 	socket.emit("sendResults", results);
-	debug("results are: ", results);
+	//debug("results are: ", results);
 };
 
 // Get and emit highscores from database to client
@@ -31,7 +31,7 @@ const sendResultsToClient = async (socket: Socket) => {
 const sendHighscoresToClient = async (socket: Socket) => {
 	const highscores = await getHighscores();
 	socket.emit("sendHighscores", highscores);
-	debug("highscores are: ", highscores);
+	//debug("highscores are: ", highscores);
 };
 
 // handle connection function
