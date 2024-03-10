@@ -78,7 +78,7 @@ const showGamePage = () => {
   // Test to start game/show virus
 };
 
-// Game function
+// Game functions
 
 const startGame = () => {
   // Time variable for comparison with click
@@ -94,6 +94,10 @@ const startGame = () => {
       clearInterval(timerInterval);
     }
   });
+
+  const endGame = () => {
+    gameInfoEl.innerText = "Someone won the game!";
+  };
 
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
