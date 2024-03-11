@@ -38,8 +38,9 @@ const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 
 // Game Details
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
+// Reference to scoreboard scores
 
-//let gameId: string | null = null;
+let gameScoreEl = document.querySelector("#score") as HTMLElement;
 
 // add eventlistener to player name form
 const showGamePage = () => {
@@ -72,7 +73,7 @@ const showGamePage = () => {
     startPage.classList.add("hide");
     gamePage.classList.remove("hide");
     // inform waiting player that they are waiting for next player to join
-    gameInfoEl.innerText = "Waiting for player two....";
+    gameInfoEl.innerText = "Waiting for player two to join....";
   });
 
   // Test to start game/show virus
@@ -97,6 +98,7 @@ const startGame = () => {
 
   const endGame = () => {
     gameInfoEl.innerText = "Someone won the game!";
+    gameScoreEl.innerText = "0 - 0";
   };
 
   // inform players that game is about to start
