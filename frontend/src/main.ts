@@ -91,6 +91,12 @@ const showGamePage = () => {
 // Game functions
 
 const startGame = () => {
+  // show previous round div
+
+  const previousRoundDivEl = document.querySelector(
+    "#previous-round-div"
+  ) as HTMLDivElement;
+  previousRoundDivEl.classList.remove("hide-div");
   // Time variable for comparison with click
   let msSinceEpochOnTimeout = 0;
   // Variable/Boolean for time comparison
