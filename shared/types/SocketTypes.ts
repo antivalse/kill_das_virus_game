@@ -59,3 +59,16 @@ export interface HighscoreData {
   playername: string;
   highscore: number;
 }
+
+export type GetGameWithPlayersResult = {
+  players: {
+    id: string;
+    playername: string;
+    gameId: string | null;
+  }[];
+  id: string;
+} | null;
+
+export type GetGameWithPlayers = (
+  gameId: string
+) => Promise<GetGameWithPlayersResult>;
