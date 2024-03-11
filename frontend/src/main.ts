@@ -193,62 +193,60 @@ const handlePlayerGameJoinRequestCallback = (response: PlayerJoinResponse) => {
   showGamePage();
 };
 
-// restart game function
-
 // Handle case where user wants to play again
 // let server know that player wants to play again
 // reference to result page
 
-const restartGame = () => {
-  // reference to the restart button
-  const restartGameBtnEl = document.querySelector(
-    "#new-game-button"
-  ) as HTMLButtonElement;
+// reference to the restart button
+const restartGameBtnEl = document.querySelector(
+  "#new-game-button"
+) as HTMLButtonElement;
 
-  restartGameBtnEl.addEventListener("click", () => {
-    console.log("player wants to play again!");
-    resultPage.classList.add("hide");
-    startPage.classList.add("hide");
-    gamePage.classList.remove("hide");
+// Event listener for the restart button
+restartGameBtnEl.addEventListener("click", () => {
+  console.log("Restart button clicked");
+  resultPage.classList.add("hide");
+  startPage.classList.add("hide");
+  gamePage.classList.remove("hide");
 
-    // clear timer interval
-    clearInterval(timerInterval);
-    // hide virus
-    virus?.classList.add("hide");
-    // clear game info
-    gameInfoEl.innerHTML = "Hope you're ready to KILL DAS VIRUS";
-    //let playerThatClickedRestart = socket.id;
-    let playerThatClickedRestart = {
-      id: socket.id,
-      name: playerName,
-    };
-    // let server know that player wants to play again
-    // create playerJoinAgainRequest where a new player is not created
-    if (playerThatClickedRestart.name) {
-      socket.emit(
-        "playerJoinAgainRequest",
-        playerThatClickedRestart.name,
-        handlePlayerGameJoinRequestCallback
-      );
-      console.log(
-        `Emitted playerJoinRequest event to server AGAIN, player: ${playerThatClickedRestart.name}`
-      );
-    }
-  });
+  // clear timer interval
+  clearInterval(timerInterval);
+  // hide virus
+  virus?.classList.add("hide");
+  // clear game info
+  gameInfoEl.innerHTML = "Hope you're ready to KILL DAS VIRUS";
+  //let playerThatClickedRestart = socket.id;
+  let playerThatClickedRestart = {
+    id: socket.id,
+    name: playerName,
+  };
 
-  // Handle case where player wants to leave the game
-  // reference to the leave game button
-  const leaveGameBtnEl = document.querySelector(
-    "#quit-game-button"
-  ) as HTMLButtonElement;
+  // let server know that the player wants to play again
+  // create playerJoinAgainRequest where a new player is not created
+  if (playerThatClickedRestart.name) {
+    socket.emit(
+      "playerJoinAgainRequest",
+      playerThatClickedRestart.name,
+      handlePlayerGameJoinRequestCallback
+    );
+    console.log(
+      `Emitted playerJoinRequest event to server AGAIN, player: ${playerThatClickedRestart.name}`
+    );
+  }
+});
 
-  leaveGameBtnEl.addEventListener("click", () => {
-    console.log("player wants to leave");
-    resultPage.classList.add("hide");
-    // send event to server so server can delete player from database
-    socket.emit("playerWantsToLeave");
-  });
-};
+// Handle case where player wants to leave the game
+// reference to the leave game button
+const leaveGameBtnEl = document.querySelector(
+  "#quit-game-button"
+) as HTMLButtonElement;
+
+leaveGameBtnEl.addEventListener("click", () => {
+  console.log("player wants to leave");
+  resultPage.classList.add("hide");
+  // send event to server so server can delete player from database
+  socket.emit("playerWantsToLeave");
+});
 // end game function
 const endGame = () => {
   // clear timer interval
@@ -484,5 +482,5 @@ socket.on("playerDisconnected", (playername) => {
   // hide the trophy image since nobody won!
   trophyImgEl.classList.add("hide");
   // call on restart game function
-  restartGame();
+  // restartGame();
 });
