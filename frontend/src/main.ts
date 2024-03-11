@@ -42,7 +42,10 @@ const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 
 // Game Details
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
-// Reference to scoreboard scores
+// Reference to previous round div
+const previousRoundDivEl = document.querySelector(
+  "#previous-round-div"
+) as HTMLDivElement;
 
 //let gameScoreEl = document.querySelector("#score") as HTMLElement;
 const virus = document.getElementById("gridVirus");
@@ -92,10 +95,6 @@ const showGamePage = () => {
 
 const startGame = () => {
   // show previous round div
-
-  const previousRoundDivEl = document.querySelector(
-    "#previous-round-div"
-  ) as HTMLDivElement;
   previousRoundDivEl.classList.remove("hide-div");
   // Time variable for comparison with click
   let msSinceEpochOnTimeout = 0;
@@ -220,7 +219,7 @@ restartGameBtnEl.addEventListener("click", () => {
   // hide virus
   virus?.classList.add("hide");
   // clear game info
-  gameInfoEl.innerHTML = "Hope you're ready to KILL DAS VIRUS";
+  gameInfoEl.innerHTML = "Get ready to try and KILL DAS VIRUS..AGAIN!";
   //let playerThatClickedRestart = socket.id;
   let playerThatClickedRestart = {
     id: socket.id,
@@ -261,6 +260,8 @@ const endGame = () => {
   virus?.classList.add("hide");
   // clear game info
   gameInfoEl.innerHTML = "";
+  // hide previous round dive
+  previousRoundDivEl.classList.add("hide-div");
 };
 
 // Function to clear results from startpage when disconneted from server
