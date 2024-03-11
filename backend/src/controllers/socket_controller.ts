@@ -8,7 +8,11 @@ import {
 	GetGameWithPlayers,
 	ServerToClientEvents,
 } from "@shared/types/SocketTypes";
-import { createPlayer, getPlayer } from "../services/player_service";
+import {
+	createPlayer,
+	deletePlayer,
+	getPlayer,
+} from "../services/player_service";
 import { createGame, getGameWithPlayers } from "../services/game_service";
 import { Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";
@@ -297,6 +301,14 @@ export const handleConnection = (
 			getGameWithPlayers,
 			socket
 		);
+	});
+
+	socket.on("playerWantsToLeave", async () => {
+		debug("a player wants to leave us", socket.id);
+
+		// remove the player who wants to leave
+		await deletePlayer(socket.id);
+		debug("deleted the player!");
 	});
 
 	// Handle disconnect

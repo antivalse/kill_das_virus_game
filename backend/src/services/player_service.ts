@@ -28,3 +28,16 @@ export const createPlayer = (data: Player) => {
 		data,
 	});
 };
+
+/**
+ * Delete a single player in database
+ * @param playerID Player ID === socket.id
+ */
+
+export const deletePlayer = (playerId: string) => {
+	return prisma.player.delete({
+		where: {
+			id: playerId,
+		},
+	});
+};
