@@ -26,6 +26,10 @@ const playerNameInputEl = document.querySelector(
 // Pages
 const startPage = document.querySelector("#start-page") as HTMLElement;
 const gamePage = document.querySelector("#game-page") as HTMLElement;
+const resultPage = document.querySelector("#result-page") as HTMLElement;
+
+const gameWinnerInfoEl = document.querySelector("#game-winner") as HTMLElement;
+const trophyImgEl = document.querySelector("#trophy-img") as HTMLImageElement;
 
 // Player Details
 let playerName: string | null = null;
@@ -230,6 +234,32 @@ socket.on("disconnect", () => {
   // show loading spinner when connecting
   highScoreSpinningLoaderEl?.classList.remove("hide");
   resultSpinningLoaderEl?.classList.remove("hide");
+
+  // end the game and give player option to play again on resultpage
+  gamePage.classList.add("hide");
+  resultPage.classList.remove("hide");
+  // let the player who is left know what happened
+  gameWinnerInfoEl.innerText = `Something went wrong, try again later`;
+  // hide the trophy image since nobody won!
+  trophyImgEl.classList.add("hide");
+
+  // hide the new game wrapper div
+  const newGameWrapperEl = document.querySelector("#new-game-wrapper");
+  newGameWrapperEl?.classList.add("hide-div");
+  // create a button for going back to homepage and place in result-wrapper
+  const goHomeBtn = document.createElement("button");
+  goHomeBtn.innerText = "GO BACK TO HOMEPAGE";
+  goHomeBtn.classList.add("go-home-button");
+
+  const resultWrapperEl = document.querySelector(
+    "#result-wrapper"
+  ) as HTMLDivElement;
+  resultWrapperEl.appendChild(goHomeBtn);
+
+  goHomeBtn.addEventListener("click", () => {
+    resultPage.classList.add("hide");
+    startPage.classList.remove("hide");
+  });
 });
 
 // Listen for when we're reconnected (either due to our or the servers connection)
@@ -372,4 +402,12 @@ socket.on("sendHighscores", (highscores) => {
 
 socket.on("playerDisconnected", (playername) => {
   console.log(`${playername} left the game, so the game has ended!`);
+
+  // end the game and give player option to play again on resultpage
+  gamePage.classList.add("hide");
+  resultPage.classList.remove("hide");
+  // let the player who is left know what happened
+  gameWinnerInfoEl.innerText = `player: ${playername} left the game, so the game has ended!`;
+  // hide the trophy image since nobody won!
+  trophyImgEl.classList.add("hide");
 });
