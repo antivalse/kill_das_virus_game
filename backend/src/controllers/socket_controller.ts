@@ -339,8 +339,6 @@ export const handleConnection = (
 		const gameId = player.gameId;
 		const playerName = player.playername;
 
-		// remove the player from the database?
-
 		// let other player in room know that the other player left
 		if (gameId) {
 			io.to(gameId).emit("playerDisconnected", playerName);

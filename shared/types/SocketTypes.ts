@@ -17,6 +17,7 @@ export interface ServerToClientEvents {
   sendResults: (results: ResultData[]) => void;
   sendHighscores: (highscores: HighscoreData[]) => void;
   playerDisconnected: (playername: string) => void;
+  endGame: () => void;
 }
 
 // Events emitted by the client to the server

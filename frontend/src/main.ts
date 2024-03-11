@@ -45,6 +45,7 @@ const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
 // Reference to scoreboard scores
 
 //let gameScoreEl = document.querySelector("#score") as HTMLElement;
+const virus = document.getElementById("gridVirus");
 
 // add eventlistener to player name form
 const showGamePage = () => {
@@ -152,7 +153,6 @@ const startGame = () => {
 
   // Hide virus in game
   const hideVirus = () => {
-    const virus = document.getElementById("gridVirus");
     if (virus) {
       // add class of hide
       virus.classList.add("hide");
@@ -242,8 +242,10 @@ const restartGame = () => {
 };
 // end game function
 const endGame = () => {
-  //socket.emit("gameEnded");
-  gameInfoEl.innerText = "";
+  // clear timer
+  gameInfoEl.innerHTML = "";
+  // hide virus
+  virus?.classList.add("hide");
 };
 
 // Function to clear results from startpage when disconneted from server
