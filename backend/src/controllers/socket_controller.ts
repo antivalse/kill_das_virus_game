@@ -24,6 +24,10 @@ const debug = Debug("backend:socket_controller");
 // Track waiting players
 const waitingPlayers: Player[] = [];
 
+// Declare playerName in global scope
+
+let playerName: string | null;
+
 // Get and emit results from database to client
 const sendResultsToClient = async (socket: Socket) => {
 	const results = await getResults();
@@ -192,18 +196,18 @@ export const handleConnection = (
 	// Handle if a player wants to play again and add them to the waiting players array!
 	// Replace playerId with playerName!
 
-	socket.on("playerJoinAgainRequest", async (playerId, callback) => {
-		debug("the player that wants to play again is: ", playerId);
+	socket.on("playerJoinAgainRequest", async (playername, callback) => {
+		debug("the player that wants to play again is: ", playername);
 
 		debug("WAITING PLAYERS BEFORE JOINING: ", waitingPlayers);
 		// this will be broadcasted to all connected clients
 		// for testing purposes only, remove later
 
-		io.emit("playerJoined", playerId, Date.now());
+		io.emit("playerJoined", playername, Date.now());
 
 		// replace id with socket.id and playername with playerId!
 		// playername can be an empty string because we already have the information about the player stored?
-		let player = { id: playerId, playername: "" };
+		let player = { id: socket.id, playername: playername };
 		waitingPlayers.push(player);
 
 		// Server responds to the client with success and players from waiting players array

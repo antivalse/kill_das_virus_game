@@ -212,17 +212,20 @@ const restartGame = () => {
     // need to get player name here!
 
     //let playerThatClickedRestart = socket.id;
-    let playerThatClickedRestart = socket.id;
+    let playerThatClickedRestart = {
+      id: socket.id,
+      name: playerName,
+    };
     // let server know that player wants to play again
     // create playerJoinAgainRequest where a new player is not created
-    if (playerThatClickedRestart) {
+    if (playerThatClickedRestart.name) {
       socket.emit(
         "playerJoinAgainRequest",
-        playerThatClickedRestart,
+        playerThatClickedRestart.name,
         handlePlayerGameJoinRequestCallback
       );
       console.log(
-        `Emitted playerJoinRequest event to server AGAIN, player: ${playerThatClickedRestart}`
+        `Emitted playerJoinRequest event to server AGAIN, player: ${playerThatClickedRestart.name}`
       );
     }
   });
