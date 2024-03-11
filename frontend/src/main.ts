@@ -242,10 +242,12 @@ const restartGame = () => {
 };
 // end game function
 const endGame = () => {
-  // clear timer
-  gameInfoEl.innerHTML = "";
+  // clear timer interval
+  clearInterval(timerInterval);
   // hide virus
   virus?.classList.add("hide");
+  // clear game info
+  gameInfoEl.innerHTML = "";
 };
 
 // Function to clear results from startpage when disconneted from server
