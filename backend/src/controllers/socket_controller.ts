@@ -204,8 +204,8 @@ export const handleConnection = (
 		// Check if there are already waiting players
 		const hasWaitingPlayers = waitingPlayers.length > 0;
 
-		// Clear waiting players only if there are none already
-		if (!hasWaitingPlayers) {
+		// Clear waiting players
+		if (hasWaitingPlayers) {
 			waitingPlayers.length = 0;
 			debug("WAITING PLAYERS BEFORE JOINING: ", waitingPlayers);
 		}

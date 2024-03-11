@@ -108,6 +108,9 @@ const startGame = () => {
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
 
+  // Remove the existing event listener before adding a new one
+  socket.off("setVirusPosition");
+
   socket.on("setVirusPosition", (gridColumn, gridRow, virusDelay) => {
     console.log(
       `gridColumnn is: ${gridColumn} aaand gridRow is: ${gridRow} aaand virusDelay is ${virusDelay}`
