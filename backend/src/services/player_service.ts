@@ -23,7 +23,7 @@ export const getPlayer = (playerId: string) => {
  * @param data User information
  * @returns
  */
-export const createPlayer = (data: Player) => {
+export const createPlayer = async (data: Player) => {
 	return prisma.player.create({
 		data,
 	});

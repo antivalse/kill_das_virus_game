@@ -308,7 +308,7 @@ export const handleConnection = (
 
 		// remove the player who wants to leave
 		await deletePlayer(socket.id);
-		debug("deleted the player!");
+		debug("deleted the player with id, ", socket.id);
 	});
 
 	// Handle disconnect
