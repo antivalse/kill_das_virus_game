@@ -200,6 +200,7 @@ export const handleConnection = (
 
 	socket.on("playerJoinAgainRequest", async (playerName, callback) => {
 		debug("the player that wants to play again is: ", playerName);
+		// empty waiting players array if the player wants to play again and again and again
 		waitingPlayers.length = 0;
 		debug("WAITING PLAYERS BEFORE JOINING: ", waitingPlayers);
 
