@@ -61,6 +61,10 @@ const showGamePage = () => {
       return;
     }
 
+    // clear input field
+
+    playerNameInputEl.value = "";
+
     // send request to server with neccessary information
     // Emit player join request event to server and wait for acknowledgement
 
