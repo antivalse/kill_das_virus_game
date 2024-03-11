@@ -208,9 +208,12 @@ const restartGame = () => {
     startPage.classList.add("hide");
     gamePage.classList.remove("hide");
 
-    // get id of player that clicked restart
-    // need to get player name here!
-
+    // clear timer interval
+    clearInterval(timerInterval);
+    // hide virus
+    virus?.classList.add("hide");
+    // clear game info
+    gameInfoEl.innerHTML = "Hope you're ready to KILL DAS VIRUS";
     //let playerThatClickedRestart = socket.id;
     let playerThatClickedRestart = {
       id: socket.id,
