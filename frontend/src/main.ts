@@ -100,6 +100,58 @@ const startGame = () => {
     }
   });
 
+  // restart game function
+
+  // Handle case where user wants to play again
+  // let server know that player wants to play again
+  // reference to result page
+
+  const restartGame = () => {
+    // reference to the restart button
+    const restartGameBtnEl = document.querySelector(
+      "#new-game-button"
+    ) as HTMLButtonElement;
+
+    restartGameBtnEl.addEventListener("click", () => {
+      console.log("player wants to play again!");
+      resultPage.classList.add("hide");
+      startPage.classList.add("hide");
+      gamePage.classList.remove("hide");
+
+      // get id of player that clicked restart
+      // need to get player name here!
+
+      //let playerThatClickedRestart = socket.id;
+      let playerThatClickedRestart = socket.id;
+      // let server know that player wants to play again
+      // create playerJoinAgainRequest where a new player is not created
+      if (playerThatClickedRestart) {
+        socket.emit(
+          "playerJoinAgainRequest",
+          playerThatClickedRestart,
+          handlePlayerGameJoinRequestCallback
+        );
+        console.log(
+          `Emitted playerJoinRequest event to server AGAIN, player: ${playerThatClickedRestart}`
+        );
+      }
+    });
+
+    // Handle case where player wants to leave the game
+    // reference to the leave game button
+    const leaveGameBtnEl = document.querySelector(
+      "#quit-game-button"
+    ) as HTMLButtonElement;
+
+    leaveGameBtnEl.addEventListener("click", () => {
+      console.log("player wants to leave");
+      resultPage.classList.add("hide");
+      // send event to server
+      // let the server know to delete player from database
+    });
+  };
+
+  // end game function
   const endGame = () => {
     gameInfoEl.innerText = "Someone won the game!";
     gameScoreEl.innerText = "0 - 0";
