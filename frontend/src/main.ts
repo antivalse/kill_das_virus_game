@@ -481,6 +481,4 @@ socket.on("playerDisconnected", (playername) => {
   gameWinnerInfoEl.innerText = `The game has ended because ${playername} left the game!`;
   // hide the trophy image since nobody won!
   trophyImgEl.classList.add("hide");
-  // call on restart game function
-  // restartGame();
 });
