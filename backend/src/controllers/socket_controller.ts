@@ -64,9 +64,6 @@ const createGameAndJoinPlayers = async (
 			debug(`Socket ${player.id} joined room ${gameRoom.id}`);
 		});
 
-		// make players leave the waiting players array when creating game
-		waitingPlayers.length = 0;
-
 		// Emit an event to inform players that a game is created/started
 		io.to(gameRoom.id).emit("gameCreated", gameRoom.id);
 
@@ -81,6 +78,8 @@ const createGameAndJoinPlayers = async (
 				playersInGame?.players
 			);
 		}
+		// make players leave the waiting players array when creating game
+		waitingPlayers.length = 0;
 
 		const playerOne = playersInGame?.players[0].playername;
 		const playerTwo = playersInGame?.players[1].playername;
@@ -132,6 +131,9 @@ const createGameAndJoinPlayers = async (
 			// emit clicks to client side
 			io.emit("updateVirusClicks", virusClicks);
 		});
+
+		// Make sure socket joins the room only once
+		socket.join(gameRoom.id);
 	}
 };
 
@@ -196,20 +198,18 @@ export const handleConnection = (
 	// Handle if a player wants to play again and add them to the waiting players array!
 	// Replace playerId with playerName!
 
-	socket.on("playerJoinAgainRequest", async (playername, callback) => {
-		debug("the player that wants to play again is: ", playername);
-
+	socket.on("playerJoinAgainRequest", async (playerName, callback) => {
+		debug("the player that wants to play again is: ", playerName);
+		waitingPlayers.length = 0;
 		debug("WAITING PLAYERS BEFORE JOINING: ", waitingPlayers);
-		// this will be broadcasted to all connected clients
-		// for testing purposes only, remove later
-
-		io.emit("playerJoined", playername, Date.now());
 
 		// replace id with socket.id and playername with playerId!
 		// playername can be an empty string because we already have the information about the player stored?
-		let player = { id: socket.id, playername: playername };
-		waitingPlayers.push(player);
-
+		if (playerName) {
+			let player = { id: socket.id, playername: playerName };
+			debug("PLAYERNAME RECIEVED:", playerName);
+			waitingPlayers.push(player);
+		}
 		// Server responds to the client with success and players from waiting players array
 		callback({
 			success: true,
