@@ -19,10 +19,6 @@ body {
   display: none;
 }
 
-.hide-div {
-  display: none !important;
-}
-
 /* TEXT STYLES */
 
 h1 {
@@ -293,6 +289,9 @@ footer p {
 
 /* RESULT PAGE STYLES */
 
+.hide-div {
+  display: none !important;
+}
 #result-page h4 {
   color: rgb(230, 48, 48);
   font-family: "Black Ops One", system-ui, -apple-system, BlinkMacSystemFont,
@@ -323,6 +322,7 @@ footer p {
 
 #result-wrapper {
   display: flex;
+  flex-direction: column;
   font-family: "Changa", sans-serif;
   justify-content: center;
   align-items: center;
@@ -383,7 +383,8 @@ footer p {
   text-transform: uppercase;
 }
 
-#quit-game-button:hover {
+#quit-game-button:hover,
+.go-home-button:hover {
   background-color: rgb(230, 48, 48);
 }
 
