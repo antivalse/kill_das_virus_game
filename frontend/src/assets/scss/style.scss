@@ -19,6 +19,10 @@ body {
   display: none;
 }
 
+.hide-div {
+  display: none !important;
+}
+
 /* TEXT STYLES */
 
 h1 {
@@ -278,20 +282,24 @@ footer p {
   font-weight: 500;
 }
 
+#previous-round-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .player-stats {
   border: 2px solid black;
   background-color: #f3eded;
   height: 100px;
   text-align: center;
-  width: 90%;
+  width: 100%;
   margin-bottom: 15px;
 }
 
 /* RESULT PAGE STYLES */
 
-.hide-div {
-  display: none !important;
-}
 #result-page h4 {
   color: rgb(230, 48, 48);
   font-family: "Black Ops One", system-ui, -apple-system, BlinkMacSystemFont,
