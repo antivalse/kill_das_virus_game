@@ -160,11 +160,14 @@ export const handleConnection = (
 		// for testing purposes only, remove later
 		io.emit("playerJoined", playername, Date.now());
 
+		// if it's a new player creat a new player
+		// if it's not a new player add player that wants to play again to the waitingPlayers array
 		// Add player to waiting players array
 		const player = await createPlayer({
 			id: socket.id,
 			playername,
 		});
+
 		waitingPlayers.push(player);
 
 		// Server responds to the client with success and players from waiting players array
@@ -184,89 +187,6 @@ export const handleConnection = (
 			getGameWithPlayers,
 			socket
 		);
-
-		// // create game when there are two players in the waitingPlayers array
-		// if (waitingPlayers.length === 2) {
-		// 	const gameRoom = await createGame(waitingPlayers);
-		// 	debug(`Created gameRoom with id:, ${gameRoom.id}`);
-
-		// 	// Iterate over each player in waitingPlayers and join the game room
-		// 	// get socket connection with io.sockets.sockets.get by using the players ID
-		// 	// do this only if a player is found
-		// 	waitingPlayers.forEach((player) => {
-		// 		io.sockets.sockets.get(player.id)?.join(gameRoom.id);
-		// 		debug(`Socket ${player.id} joined room ${gameRoom.id}`);
-		// 	});
-
-		// 	// make players leave the waiting players array when creating game
-		// 	waitingPlayers.length = 0;
-
-		// 	// Emit an event to inform players that a game is created/started
-		// 	io.to(gameRoom.id).emit("gameCreated", gameRoom.id);
-
-		// 	// get list of players in room..
-		// 	const playersInGame = await getGameWithPlayers(gameRoom.id);
-
-		// 	//...IF there are any players
-		// 	if (playersInGame) {
-		// 		// send list of players to the room
-		// 		io.to(gameRoom.id).emit(
-		// 			"playersJoinedGame",
-		// 			playersInGame?.players
-		// 		);
-		// 	}
-
-		// 	const playerOne = playersInGame?.players[0].playername;
-		// 	const playerTwo = playersInGame?.players[1].playername;
-		// 	debug(
-		// 		`Name of player one is: ${playerOne}. Name of player two is: ${playerTwo}`
-		// 	);
-
-		// 	// declare grid positions for column and row
-
-		// 	let gridColumn: number = 0;
-		// 	let gridRow: number = 0;
-		// 	let virusDelay: number = 0;
-
-		// 	// Select position of virus in game
-		// 	const positionOfVirus = () => {
-		// 		gridColumn = getRandomNumber(1, 10);
-		// 		gridRow = getRandomNumber(1, 10);
-		// 		virusDelay = getRandomNumber(1500, 10000);
-		// 		debug(`gridColumnn is: ${gridColumn}`);
-		// 		debug(`gridRow is: ${gridRow} `);
-		// 		debug(`delay is: ${virusDelay} `);
-		// 	};
-
-		// 	// Get random number
-		// 	const getRandomNumber = (min: number, max: number): number => {
-		// 		return Math.floor(Math.random() * (max - min + 1)) + min;
-		// 	};
-		// 	// call on function
-		// 	positionOfVirus();
-
-		// 	// emit an event to client with position of virus
-
-		// 	io.to(gameRoom.id).emit(
-		// 		"setVirusPosition",
-		// 		gridColumn,
-		// 		gridRow,
-		// 		virusDelay
-		// 	);
-
-		// 	// get reaction time from client
-
-		// 	// Number of clicks
-		// 	let virusClicks = 0;
-
-		// 	// Listen for clicks on virus from client
-		// 	socket.on("virusClicked", () => {
-		// 		// Add clicks
-		// 		virusClicks++;
-		// 		// emit clicks to client side
-		// 		io.emit("updateVirusClicks", virusClicks);
-		// 	});
-		// }
 	});
 
 	// Handle if a player wants to play again and add them to the waiting players array!
@@ -303,12 +223,97 @@ export const handleConnection = (
 		);
 	});
 
+	// // create game when there are two players in the waitingPlayers array
+	// if (waitingPlayers.length === 2) {
+	// 	const gameRoom = await createGame(waitingPlayers);
+	// 	debug(`Created gameRoom with id:, ${gameRoom.id}`);
+
+	// 	// Iterate over each player in waitingPlayers and join the game room
+	// 	// get socket connection with io.sockets.sockets.get by using the players ID
+	// 	// do this only if a player is found
+	// 	waitingPlayers.forEach((player) => {
+	// 		io.sockets.sockets.get(player.id)?.join(gameRoom.id);
+	// 		debug(`Socket ${player.id} joined room ${gameRoom.id}`);
+	// 	});
+
+	// 	// make players leave the waiting players array when creating game
+	// 	waitingPlayers.length = 0;
+
+	// 	// Emit an event to inform players that a game is created/started
+	// 	io.to(gameRoom.id).emit("gameCreated", gameRoom.id);
+
+	// 	// get list of players in room..
+	// 	const playersInGame = await getGameWithPlayers(gameRoom.id);
+
+	// 	//...IF there are any players
+	// 	if (playersInGame) {
+	// 		// send list of players to the room
+	// 		io.to(gameRoom.id).emit(
+	// 			"playersJoinedGame",
+	// 			playersInGame?.players
+	// 		);
+	// 	}
+
+	// 	const playerOne = playersInGame?.players[0].playername;
+	// 	const playerTwo = playersInGame?.players[1].playername;
+	// 	debug(
+	// 		`Name of player one is: ${playerOne}. Name of player two is: ${playerTwo}`
+	// 	);
+
+	// 	// declare grid positions for column and row
+
+	// 	let gridColumn: number = 0;
+	// 	let gridRow: number = 0;
+	// 	let virusDelay: number = 0;
+
+	// 	// Select position of virus in game
+	// 	const positionOfVirus = () => {
+	// 		gridColumn = getRandomNumber(1, 10);
+	// 		gridRow = getRandomNumber(1, 10);
+	// 		virusDelay = getRandomNumber(1500, 10000);
+	// 		debug(`gridColumnn is: ${gridColumn}`);
+	// 		debug(`gridRow is: ${gridRow} `);
+	// 		debug(`delay is: ${virusDelay} `);
+	// 	};
+
+	// 	// Get random number
+	// 	const getRandomNumber = (min: number, max: number): number => {
+	// 		return Math.floor(Math.random() * (max - min + 1)) + min;
+	// 	};
+	// 	// call on function
+	// 	positionOfVirus();
+
+	// 	// emit an event to client with position of virus
+
+	// 	io.to(gameRoom.id).emit(
+	// 		"setVirusPosition",
+	// 		gridColumn,
+	// 		gridRow,
+	// 		virusDelay
+	// 	);
+
+	// 	// get reaction time from client
+
+	// 	// Number of clicks
+	// 	let virusClicks = 0;
+
+	// 	// Listen for clicks on virus from client
+	// 	socket.on("virusClicked", () => {
+	// 		// Add clicks
+	// 		virusClicks++;
+	// 		// emit clicks to client side
+	// 		io.emit("updateVirusClicks", virusClicks);
+	// 	});
+	// }
+
 	socket.on("playerWantsToLeave", async () => {
 		debug("a player wants to leave us", socket.id);
 
 		// remove the player who wants to leave
 		await deletePlayer(socket.id);
 		debug("deleted the player with id, ", socket.id);
+
+		//
 	});
 
 	// Handle disconnect
@@ -339,6 +344,9 @@ export const handleConnection = (
 		// let other player in room know that the other player left
 		if (gameId) {
 			io.to(gameId).emit("playerDisconnected", playerName);
+
+			// leave the room
+			io.sockets.sockets.get(socket.id)?.leave(gameId);
 		}
 	});
 };

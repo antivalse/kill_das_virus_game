@@ -35,6 +35,7 @@ export interface ClientToServerEvents {
   ) => void;
   virusClicked: () => void;
   playerWantsToLeave: () => void;
+  gameEnded: () => void;
 }
 
 // Player Join Response

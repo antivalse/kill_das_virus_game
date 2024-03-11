@@ -44,7 +44,7 @@ const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
 // Reference to scoreboard scores
 
-let gameScoreEl = document.querySelector("#score") as HTMLElement;
+//let gameScoreEl = document.querySelector("#score") as HTMLElement;
 
 // add eventlistener to player name form
 const showGamePage = () => {
@@ -242,8 +242,8 @@ const restartGame = () => {
 };
 // end game function
 const endGame = () => {
-  gameInfoEl.innerText = "Someone won the game!";
-  gameScoreEl.innerText = "0 - 0";
+  //socket.emit("gameEnded");
+  gameInfoEl.innerText = "";
 };
 
 // Function to clear results from startpage when disconneted from server
@@ -460,7 +460,10 @@ socket.on("sendHighscores", (highscores) => {
 socket.on("playerDisconnected", (playername) => {
   console.log(`${playername} left the game, so the game has ended!`);
 
-  // end the game and give player option to play again on resultpage
+  // end the game
+  endGame();
+
+  // give player option to play again on resultpage
   gamePage.classList.add("hide");
   resultPage.classList.remove("hide");
   // let the player who is left know what happened
