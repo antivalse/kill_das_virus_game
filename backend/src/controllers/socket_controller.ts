@@ -7,13 +7,19 @@ import {
 	ClientToServerEvents,
 	GetGameWithPlayers,
 	ServerToClientEvents,
+	VirusClickedData,
 } from "@shared/types/SocketTypes";
 import {
 	createPlayer,
 	deletePlayer,
 	getPlayer,
+	updatePlayerScore,
 } from "../services/player_service";
-import { createGame, getGameWithPlayers } from "../services/game_service";
+import {
+	createGame,
+	getGame,
+	getGameWithPlayers,
+} from "../services/game_service";
 import { Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";
 import { getHighscores } from "../services/highscore_service";
@@ -136,7 +142,7 @@ const createGameAndJoinPlayers = async (
 		// get reaction time from client
 
 		// Number of clicks
-		let virusClicks = 0;
+		virusClicks = 0;
 
 		// Listen for clicks on virus from client
 		socket.on("virusClicked", () => {

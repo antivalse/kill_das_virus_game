@@ -41,3 +41,20 @@ export const deletePlayer = (playerId: string) => {
 		},
 	});
 };
+
+/**
+ * Update player clickTime
+ * @params playerId
+ * @params clicktime
+ */
+
+export const updatePlayerScore = async (playerId: string, data: number) => {
+	return await prisma.player.update({
+		where: {
+			id: playerId,
+		},
+		data: {
+			clickTime: data,
+		},
+	});
+};
