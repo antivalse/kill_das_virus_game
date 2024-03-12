@@ -164,8 +164,8 @@ export const handleConnection = (
 	sendHighscoresToClient(socket);
 
 	// get reaction times from client
-	// movie to game logic
-	socket.on("playersClickedVirus", (playerOneClicks, playerTwoClicks) => {
+	// calculate average time for highscore
+	socket.on("clickTimes", (playerOneClicks, playerTwoClicks) => {
 		debug(
 			`player one's clicks: ${playerOneClicks} aaand player two's clicks: ${playerTwoClicks}`
 		);

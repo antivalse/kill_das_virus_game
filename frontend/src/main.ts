@@ -153,13 +153,9 @@ function handleVirusClick() {
       playerTwoClickedTimes.push(score);
     }
 
-    // Emit both players' clicked times to the server
+    // make sure both players clicked before emitting to server
     // do this after the last round so server can calculate who won
-    socket.emit(
-      "playersClickedVirus",
-      playerOneClickedTimes,
-      playerTwoClickedTimes
-    );
+    socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
 
     console.log(
       `Emitted "virusClicked" event for player ${playerId} with score: ${score}`

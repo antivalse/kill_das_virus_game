@@ -32,10 +32,7 @@ export interface ClientToServerEvents {
     playername: string,
     callback: (response: PlayerJoinResponse) => void
   ) => void;
-  playersClickedVirus: (
-    playerOneClicks: number[],
-    playerTwoClicks: number[]
-  ) => void;
+  clickTimes: (playerOneClicks: number[], playerTwoClicks: number[]) => void;
   virusClicked: (data: VirusClickedData) => void;
   playerWantsToLeave: () => void;
   gameEnded: () => void;
