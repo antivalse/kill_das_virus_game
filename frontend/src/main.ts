@@ -456,6 +456,7 @@ socket.on("playersJoinedGame", (players) => {
     "#player-two-name"
   ) as HTMLElement;
 
+  // Timer and name of player
   if (playerOneId) {
     playerOneNameEl.innerText = playerOne;
     playerTwoNameEl.innerText = playerTwo;

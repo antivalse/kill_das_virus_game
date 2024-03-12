@@ -272,13 +272,18 @@ footer p {
   display: flex;
   text-align: center;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   height: 100px;
   width: 90%;
   margin-bottom: 15px;
 }
-#score-count p {
+.score-counter {
   font-size: 3rem;
+  font-weight: 500;
+}
+
+.score-name {
+  font-size: 1.5rem;
   font-weight: 500;
 }
 
