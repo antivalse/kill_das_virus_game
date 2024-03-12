@@ -44,6 +44,9 @@ const playerTwoScoreEl = document.querySelector(
   "#player-two-score"
 ) as HTMLSpanElement;
 
+let playerOneClickedTimes: number[] = [];
+let playerTwoClickedTimes: number[] = [];
+
 // Spinning loaders on startpage
 
 const highScoreSpinningLoaderEl = document.querySelector("#spinning-loader-hs");
@@ -141,6 +144,26 @@ function handleVirusClick() {
     const score = Date.now() - msSinceEpochOnTimeout;
     const playerId = socket.id;
     playerOneTimer.innerText = formatTime(score);
+
+    // push each players click time to their clickedTimes array
+
+    if (playerName === playerOne) {
+      playerOneClickedTimes.push(score);
+    } else if (playerName === playerTwo) {
+      playerTwoClickedTimes.push(score);
+    }
+
+    // Emit both players' clicked times to the server
+    // do this after the last round so server can calculate who won
+    socket.emit(
+      "playersClickedVirus",
+      playerOneClickedTimes,
+      playerTwoClickedTimes
+    );
+
+    console.log(
+      `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
+    );
     // Abort if there is no playerId
     if (!playerId) {
       return;
@@ -150,6 +173,9 @@ function handleVirusClick() {
       `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
     );
     hideVirus();
+
+    console.log("player one clicked times: ", playerOneClickedTimes);
+    console.log("player two clicked times: ", playerTwoClickedTimes);
   }
 }
 
@@ -210,18 +236,18 @@ const startGame = () => {
   });
 };
 
-// declare array for clicks
+// // declare array for clicks
 
-let playerOneClicks: number[] = [];
-let playerTwoClicks: number[] = [];
+// let playerOneClicks: number[] = [];
+// let playerTwoClicks: number[] = [];
 
-// push reaction time to player click arrays
-playerOneClicks = [1, 2, 3];
-playerTwoClicks = [4, 5, 6];
+// // push reaction time to player click arrays
+// playerOneClicks = [1, 2, 3];
+// playerTwoClicks = [4, 5, 6];
 
-// emit clicks to server
+// // emit clicks to server
 
-socket.emit("playersClickedVirus", playerOneClicks, playerTwoClicks);
+// socket.emit("playersClickedVirus", playerOneClicks, playerTwoClicks);
 
 /**
  * Socket handlers
@@ -523,6 +549,7 @@ function stopTimer() {
 
 socket.on("playersClickedVirus", (players) => {
   console.log("these are the players that clicked: ", players);
+
   // update previous time for player two
 
   //playerTwoTimer.innerText = String(players[1].clickTime);

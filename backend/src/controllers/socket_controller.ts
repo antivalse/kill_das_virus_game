@@ -324,6 +324,8 @@ export const handleConnection = (
 			const playerOneTime = playersThatClicked?.players[0].clickTime;
 			const playerTwoTime = playersThatClicked?.players[1].clickTime;
 
+			// add click times to players and store in database
+
 			// declare a winner
 			let roundWinner: string | null = null;
 			if (playerOneTime && playerTwoTime) {
