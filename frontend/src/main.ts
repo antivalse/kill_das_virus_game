@@ -43,10 +43,11 @@ const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 // Game Details
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
 // grid container
-// hide grid so virus doesn't show up
 const gridContainer = document.querySelector(
   "#grid-container"
 ) as HTMLDivElement;
+// game page header
+const gamePageHeaderEl = document.querySelector("#game-header") as HTMLElement;
 // Reference to previous round div
 const previousRoundDivEl = document.querySelector(
   "#previous-round-div"
@@ -99,6 +100,9 @@ const showGamePage = () => {
 // Game functions
 
 const startGame = () => {
+  gamePageHeaderEl.innerText = "KILL DAS VIRUS";
+  // show gameInfoEl
+  gameInfoEl.classList.remove("hide");
   // show gridcontainer
   gridContainer.classList.remove("hide-div");
   // show previous round div
@@ -226,8 +230,9 @@ restartGameBtnEl.addEventListener("click", () => {
   // hide virus
   virus?.classList.add("hide");
   // clear game info
-  gameInfoEl.innerHTML = "Get ready to try and KILL DAS VIRUS..AGAIN!";
-  //let playerThatClickedRestart = socket.id;
+  //gameInfoEl.innerHTML = "Get ready to try and KILL DAS VIRUS..AGAIN!";
+  // change header when player joins again
+  gamePageHeaderEl.innerText = "Get ready to try and KILL DAS VIRUS..AGAIN!";
   let playerThatClickedRestart = {
     id: socket.id,
     name: playerName,
@@ -261,6 +266,8 @@ leaveGameBtnEl.addEventListener("click", () => {
 });
 // end game function
 const endGame = () => {
+  // hide gameInfoEl so timer doesn't show up if other player leaves before virus and timer are rendered
+  gameInfoEl.classList.add("hide");
   // hide grid-container
   gridContainer.classList.add("hide-div");
   // clear timer interval
