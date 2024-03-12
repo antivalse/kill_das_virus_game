@@ -137,6 +137,7 @@ const hideVirus = () => {
 // Define the handleVirusClick function
 function handleVirusClick() {
   if (waitingForClick) {
+    stopTimer();
     const score = Date.now() - msSinceEpochOnTimeout;
     const playerId = socket.id;
     playerOneTimer.innerText = formatTime(score);
@@ -161,13 +162,13 @@ const startGame = () => {
   // show scoreboard wrapper div
   scoreBoardWrapper.classList.remove("hide-div");
 
-  socket.on("updateVirusClicks", (count) => {
-    virusClicks = count;
-    // Stop timer when both player clicks on virus
-    if (virusClicks === 1) {
-      clearInterval(timerInterval);
-    }
-  });
+  // socket.on("updateVirusClicks", (count) => {
+  //   virusClicks = count;
+  //   // Stop timer when both player clicks on virus
+  //   if (virusClicks === 1) {
+  //     clearInterval(timerInterval);
+  //   }
+  // });
 
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
@@ -431,8 +432,8 @@ socket.on("gameCreated", (gameRoomId) => {
 
 socket.on("playersJoinedGame", (players) => {
   console.log("these are the players in the game: ", players);
-  let playerOne = players[0].playername;
-  let playerTwo = players[1].playername;
+  playerOne = players[0].playername;
+  playerTwo = players[1].playername;
 
   let playerOneId = players[0].id === socket.id;
   let playerTwoId = players[1].id === socket.id;
@@ -516,6 +517,8 @@ socket.on("playersClickedVirus", (players) => {
 
 socket.on("roundResult", (winner) => {
   console.log("this player won the round: ", winner);
+  console.log("Player One:", playerOne);
+  console.log("Player Two:", playerTwo);
 
   if (winner === playerOne) {
     playerOneScore++;
