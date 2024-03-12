@@ -10,6 +10,11 @@ export interface Player {
   clickTimes: number[];
 }
 
+// extended Player interface with clicktime
+export interface ExtendedPlayer extends Player {
+  clickTime: number;
+}
+
 export interface Result {
   id: string;
   playerOneHighscore: Number;

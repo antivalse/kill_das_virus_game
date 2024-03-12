@@ -1,4 +1,4 @@
-import { Game, Player } from "./Models";
+import { ExtendedPlayer, Game, Player } from "./Models";
 
 export {};
 
@@ -14,7 +14,7 @@ export interface ServerToClientEvents {
     virusDelay: number
   ) => void;
   updateVirusClicks: (virusClicks: number) => void;
-  playersClickedVirus: (playersThatClicked: Player[]) => void;
+  playersClickedVirus: (playersThatClicked: ExtendedPlayer[]) => void;
   roundResult: (roundWinner: string | null) => void;
   sendResults: (results: ResultData[]) => void;
   sendHighscores: (highscores: HighscoreData[]) => void;
