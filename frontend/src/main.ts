@@ -148,8 +148,6 @@ const startGame = () => {
           gridVirus.style.gridColumn = String(gridColumn);
           gridVirus.style.gridRow = String(gridRow);
 
-          gameInfoEl.innerText = "";
-
           // Remove hideclass
           gridVirus.classList.remove("hide");
 
