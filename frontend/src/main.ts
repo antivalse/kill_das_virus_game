@@ -177,16 +177,16 @@ const startGame = () => {
     };
     placeVirus(virusDelay);
   });
+};
 
-  // Hide virus in game
-  const hideVirus = () => {
-    if (virus) {
-      // add class of hide
-      virus.classList.add("hide");
-      // remove listning for clicks
-      virus.removeEventListener("click", hideVirus);
-    }
-  };
+// Hide virus in game
+const hideVirus = () => {
+  if (virus) {
+    // add class of hide
+    virus.classList.add("hide");
+    // remove listning for clicks
+    virus.removeEventListener("click", hideVirus);
+  }
 };
 
 // declare array for clicks
@@ -435,6 +435,12 @@ const startTimer = () => {
     if (elapsedTime >= 30000) {
       stopTimer();
       playerOneTimer.innerText = "00:30:000";
+      if (virus) {
+        // add class of hide
+        virus.classList.add("hide");
+        // remove listning for clicks
+        virus.removeEventListener("click", hideVirus);
+      }
       return;
     }
 
