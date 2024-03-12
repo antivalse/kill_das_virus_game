@@ -55,6 +55,7 @@ export const updatePlayerScore = async (playerId: string, data: number) => {
 		},
 		data: {
 			clickTime: data,
+			clickTimes: { push: data },
 		},
 	});
 };

@@ -144,6 +144,7 @@ function handleVirusClick() {
     const score = Date.now() - msSinceEpochOnTimeout;
     const playerId = socket.id;
     playerOneTimer.innerText = formatTime(score);
+    virusClicks++;
 
     // push each players click time to their clickedTimes array
 
@@ -153,13 +154,8 @@ function handleVirusClick() {
       playerTwoClickedTimes.push(score);
     }
 
-    // make sure both players clicked before emitting to server
-    // do this after the last round so server can calculate who won
-    socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
+    console.log("virus clicks: ", virusClicks);
 
-    console.log(
-      `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
-    );
     // Abort if there is no playerId
     if (!playerId) {
       return;
@@ -170,8 +166,21 @@ function handleVirusClick() {
     );
     hideVirus();
 
-    console.log("player one clicked times: ", playerOneClickedTimes);
-    console.log("player two clicked times: ", playerTwoClickedTimes);
+    socket.on("updateVirusClicks", (clicks) => {
+      console.log("there are this many clicks: ", clicks);
+
+      // send clickedTimes to server after both player's clicked
+      if (clicks === 2) {
+        socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
+        console.log(
+          `emitted clickedTimes to server, playerOneClickedTimes: ${playerOneClickedTimes}, playerTwoClickedTimes: ${playerTwoClickedTimes}`
+        );
+        // empty clicks if neccessary
+      }
+
+      console.log("player one clicked times: ", playerOneClickedTimes);
+      console.log("player two clicked times: ", playerTwoClickedTimes);
+    });
   }
 }
 
@@ -183,14 +192,6 @@ const startGame = () => {
   gridContainer.classList.remove("hide-div");
   // show scoreboard wrapper div
   scoreBoardWrapper.classList.remove("hide-div");
-
-  // socket.on("updateVirusClicks", (count) => {
-  //   virusClicks = count;
-  //   // Stop timer when both player clicks on virus
-  //   if (virusClicks === 1) {
-  //     clearInterval(timerInterval);
-  //   }
-  // });
 
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";

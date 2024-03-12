@@ -35,6 +35,11 @@ const waitingPlayers: Player[] = [];
 let playerOneName: string | null;
 let playerTwoName: string | null;
 
+// arrays for storing players clicking times
+
+let playerOneClickedTimes: number[] = [];
+let playerTwoClickedTimes: number[] = [];
+
 // Access id of room
 
 let gameId: string | null = null;
@@ -73,6 +78,10 @@ const createGameAndJoinPlayers = async (
 		debug(`Created gameRoom with id:, ${gameRoom.id}`);
 		gameId = gameRoom.id;
 
+		// empty array with clicks
+
+		playerOneClickedTimes = [];
+		playerTwoClickedTimes = [];
 		// empty virus clicks when starting a new game
 		virusClicks = 0;
 
@@ -324,8 +333,19 @@ export const handleConnection = (
 			const playerOneTime = playersThatClicked?.players[0].clickTime;
 			const playerTwoTime = playersThatClicked?.players[1].clickTime;
 
-			// add click times to players and store in database
+			// // add click times to players and store in database
 
+			// if (playerOneTime) {
+			// 	playerOneClickedTimes.push(playerOneTime);
+			// }
+
+			// if (playerTwoTime) {
+			// 	playerTwoClickedTimes.push(playerTwoTime);
+			// }
+
+			// // Log the arrays with clicks
+			// debug("Player one clicked times array:", playerOneClickedTimes);
+			// debug("Player two clicked times array:", playerTwoClickedTimes);
 			// declare a winner
 			let roundWinner: string | null = null;
 			if (playerOneTime && playerTwoTime) {
