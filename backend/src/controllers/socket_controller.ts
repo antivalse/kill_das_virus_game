@@ -101,10 +101,16 @@ const createGameAndJoinPlayers = async (
 		// make players leave the waiting players array when creating game
 		waitingPlayers.length = 0;
 
-		const playerOne = playersInGame?.players[0].playername;
-		const playerTwo = playersInGame?.players[1].playername;
+		// const playerOne = playersInGame?.players[0].playername;
+		// const playerTwo = playersInGame?.players[1].playername;
+		// debug(
+		// 	`Name of player one is: ${playerOne}. Name of player two is: ${playerTwo}`
+		// );
+
+		playerOneName = playersInGame?.players[0].playername || null;
+		playerTwoName = playersInGame?.players[1].playername || null;
 		debug(
-			`Name of player one is: ${playerOne}. Name of player two is: ${playerTwo}`
+			`Name of player one is: ${playerOneName}. Name of player two is: ${playerTwoName}`
 		);
 
 		// declare grid positions for column and row
