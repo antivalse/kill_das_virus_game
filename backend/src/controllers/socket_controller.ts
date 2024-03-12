@@ -24,9 +24,19 @@ const debug = Debug("backend:socket_controller");
 // Track waiting players
 const waitingPlayers: Player[] = [];
 
-// Declare playerName in global scope
+//let playerName: string | null;
 
-let playerName: string | null;
+let playerOneName: string | null;
+let playerTwoName: string | null;
+
+// Access id of room
+
+let gameId: string | null = null;
+
+let clickTimes: number[] = [];
+
+// keep track of clicks
+let virusClicks = 0;
 
 // Get and emit results from database to client
 const sendResultsToClient = async (socket: Socket) => {
@@ -43,7 +53,7 @@ const sendHighscoresToClient = async (socket: Socket) => {
 	//debug("highscores are: ", highscores);
 };
 
-// Create a function to create a game and join players to it
+// function to create a game and join players to it
 const createGameAndJoinPlayers = async (
 	waitingPlayers: Player[],
 	io: Server,
@@ -55,6 +65,10 @@ const createGameAndJoinPlayers = async (
 	if (waitingPlayers.length === 2) {
 		const gameRoom = await createGame(waitingPlayers);
 		debug(`Created gameRoom with id:, ${gameRoom.id}`);
+		gameId = gameRoom.id;
+
+		// empty virus clicks when starting a new game
+		virusClicks = 0;
 
 		// Iterate over each player in waitingPlayers and join the game room
 		// get socket connection with io.sockets.sockets.get by using the players ID
@@ -172,6 +186,7 @@ export const handleConnection = (
 		const player = await createPlayer({
 			id: socket.id,
 			playername,
+			clickTimes,
 		});
 
 		waitingPlayers.push(player);
@@ -211,7 +226,11 @@ export const handleConnection = (
 		}
 
 		if (playerName) {
-			let player = { id: socket.id, playername: playerName };
+			let player = {
+				id: socket.id,
+				playername: playerName,
+				clickTimes: clickTimes,
+			};
 			debug("PLAYERNAME RECIEVED:", playerName);
 			waitingPlayers.push(player);
 		}
@@ -231,6 +250,90 @@ export const handleConnection = (
 				getGameWithPlayers,
 				socket
 			);
+		}
+	});
+
+	//Listen for clicks on virus from client
+	socket.on("virusClicked", async ({ playerId, score }: VirusClickedData) => {
+		debug(
+			"Received virusClicked event. Player ID:",
+			playerId,
+			"Score:",
+			score
+		);
+
+		// Add clicks
+		virusClicks++;
+		debug("amount of virus clicks: ", virusClicks);
+
+		// emit clicks to client side
+		io.emit("updateVirusClicks", virusClicks);
+
+		try {
+			// Use playerId directly in getPlayer function
+			const player = await getPlayer(playerId);
+
+			// Log player information
+			debug("Player information:", player);
+
+			// if player didn't exist, don't do anything
+			if (!player) {
+				debug("Player not found. Aborting.");
+				return;
+			}
+
+			// Update player score in the database
+			await updatePlayerScore(playerId, score);
+
+			// Log the successful update
+			debug(
+				`Updated clickTime for player with ID ${playerId} to ${score}`
+			);
+		} catch (error) {
+			// Log any errors that might occur during the async operations
+			console.error("Error processing virusClicked event:", error);
+		}
+
+		// get the gameRoom id
+
+		if (gameId) {
+			await getGame(gameId);
+
+			// get players in room and access their clickTime
+			const playersThatClicked = await getGameWithPlayers(gameId);
+
+			//...IF there are any players
+			if (playersThatClicked && virusClicks === 2) {
+				// send list of players to the game room when both players have clicked
+				io.to(gameId).emit(
+					"playersClickedVirus",
+					playersThatClicked?.players
+				);
+
+				// reset virusclicks counter
+				virusClicks = 0;
+			}
+
+			// get click times from players
+			const playerOneTime = playersThatClicked?.players[0].clickTime;
+			const playerTwoTime = playersThatClicked?.players[1].clickTime;
+
+			// declare a winner
+			let roundWinner: string | null = null;
+			if (playerOneTime && playerTwoTime) {
+				if (playerOneTime < playerTwoTime) {
+					roundWinner = playerOneName;
+					console.log(`${playerOneName}  gets a point!`);
+				} else if (playerTwoTime < playerOneTime) {
+					roundWinner = playerTwoName;
+					console.log(`${playerTwoName} gets a point!`);
+				} else {
+					roundWinner = null;
+					console.log("It was a tie, no one gets a point");
+				}
+				// send round result to client
+				io.to(gameId).emit("roundResult", roundWinner);
+			}
 		}
 	});
 

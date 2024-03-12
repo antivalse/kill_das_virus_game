@@ -14,6 +14,8 @@ export interface ServerToClientEvents {
     virusDelay: number
   ) => void;
   updateVirusClicks: (virusClicks: number) => void;
+  playersClickedVirus: (playersThatClicked: Player[]) => void;
+  roundResult: (roundWinner: string | null) => void;
   sendResults: (results: ResultData[]) => void;
   sendHighscores: (highscores: HighscoreData[]) => void;
   playerDisconnected: (playername: string) => void;
@@ -34,7 +36,7 @@ export interface ClientToServerEvents {
     playerOneClicks: number[],
     playerTwoClicks: number[]
   ) => void;
-  virusClicked: () => void;
+  virusClicked: (data: VirusClickedData) => void;
   playerWantsToLeave: () => void;
   gameEnded: () => void;
 }
@@ -63,6 +65,8 @@ export interface HighscoreData {
   highscore: number;
 }
 
+// Game with player directors cut
+
 export type GetGameWithPlayersResult = {
   players: {
     id: string;
@@ -72,6 +76,15 @@ export type GetGameWithPlayersResult = {
   id: string;
 } | null;
 
+// Game with players
+
 export type GetGameWithPlayers = (
   gameId: string
 ) => Promise<GetGameWithPlayersResult>;
+
+// Virus clicked data
+
+export type VirusClickedData = {
+  playerId: string;
+  score: number;
+};

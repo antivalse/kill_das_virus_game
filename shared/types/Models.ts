@@ -7,6 +7,7 @@ export interface Game {
 export interface Player {
   id: string;
   playername: string;
+  clickTimes: number[];
 }
 
 export interface Result {
