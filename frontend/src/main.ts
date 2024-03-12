@@ -180,7 +180,7 @@ const startGame = () => {
     // Show virus
     const placeVirus = (delay: number) => {
       setTimeout(() => {
-        const gridVirus = document.getElementById("gridVirus");
+        //const gridVirus = document.getElementById("gridVirus");
         if (gridVirus) {
           // Set position of virus
           gridVirus.style.gridColumn = String(gridColumn);
