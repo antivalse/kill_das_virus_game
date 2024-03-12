@@ -37,8 +37,8 @@ let playerTwoName: string | null;
 
 // arrays for storing players clicking times
 
-let playerOneClickedTimes: number[] = [];
-let playerTwoClickedTimes: number[] = [];
+// let playerOneClickedTimes: number[] = [];
+// let playerTwoClickedTimes: number[] = [];
 
 // Access id of room
 
@@ -80,8 +80,8 @@ const createGameAndJoinPlayers = async (
 
 		// empty array with clicks
 
-		playerOneClickedTimes = [];
-		playerTwoClickedTimes = [];
+		// playerOneClickedTimes = [];
+		// playerTwoClickedTimes = [];
 		// empty virus clicks when starting a new game
 		virusClicks = 0;
 

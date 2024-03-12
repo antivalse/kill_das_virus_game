@@ -66,7 +66,7 @@ let msSinceEpochOnTimeout = 0;
 // Variable/Boolean for time comparison
 let waitingForClick = false;
 // keep track of clicks
-let virusClicks = 0;
+// let virusClicks = 0;
 // grid container
 const gridContainer = document.querySelector(
   "#grid-container"
@@ -144,7 +144,7 @@ function handleVirusClick() {
     const score = Date.now() - msSinceEpochOnTimeout;
     const playerId = socket.id;
     playerOneTimer.innerText = formatTime(score);
-    virusClicks++;
+    //virusClicks++;
 
     // push each players click time to their clickedTimes array
 
@@ -154,7 +154,7 @@ function handleVirusClick() {
       playerTwoClickedTimes.push(score);
     }
 
-    console.log("virus clicks: ", virusClicks);
+    // console.log("virus clicks: ", virusClicks);
 
     // Abort if there is no playerId
     if (!playerId) {
@@ -166,21 +166,21 @@ function handleVirusClick() {
     );
     hideVirus();
 
-    socket.on("updateVirusClicks", (clicks) => {
-      console.log("there are this many clicks: ", clicks);
+    // socket.on("updateVirusClicks", (clicks) => {
+    //   console.log("there are this many clicks: ", clicks);
 
-      // send clickedTimes to server after both player's clicked
-      if (clicks === 2) {
-        socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
-        console.log(
-          `emitted clickedTimes to server, playerOneClickedTimes: ${playerOneClickedTimes}, playerTwoClickedTimes: ${playerTwoClickedTimes}`
-        );
-        // empty clicks if neccessary
-      }
+    //   // send clickedTimes to server after both player's clicked
+    //   if (clicks === 2) {
+    //     socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
+    //     console.log(
+    //       `emitted clickedTimes to server, playerOneClickedTimes: ${playerOneClickedTimes}, playerTwoClickedTimes: ${playerTwoClickedTimes}`
+    //     );
 
-      console.log("player one clicked times: ", playerOneClickedTimes);
-      console.log("player two clicked times: ", playerTwoClickedTimes);
-    });
+    //   }
+
+    //   console.log("player one clicked times: ", playerOneClickedTimes);
+    //   console.log("player two clicked times: ", playerTwoClickedTimes);
+    // });
   }
 }
 
