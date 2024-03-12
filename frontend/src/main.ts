@@ -33,6 +33,8 @@ const trophyImgEl = document.querySelector("#trophy-img") as HTMLImageElement;
 
 // Player Details
 let playerName: string | null = null;
+let playerOneId: number;
+let playerTwoId: number;
 
 // Spinning loaders on startpage
 
@@ -42,6 +44,12 @@ const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 
 // Game Details
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
+const playerOneTimer = document.querySelector(
+  "#player-one-timer"
+) as HTMLElement;
+const playerTwoTimer = document.querySelector(
+  "#player-two-timer"
+) as HTMLElement;
 // grid container
 const gridContainer = document.querySelector(
   "#grid-container"
@@ -111,15 +119,15 @@ const startGame = () => {
   let msSinceEpochOnTimeout = 0;
   // Variable/Boolean for time comparison
   let waitingForClick = false;
-  let virusClicks = 0;
+  // let virusClicks = 0;
 
-  socket.on("updateVirusClicks", (count) => {
+  /* socket.on("updateVirusClicks", (count) => {
     virusClicks = count;
     // Stop timer when both player clicks on virus
     if (virusClicks === 1) {
       clearInterval(timerInterval);
     }
-  });
+  }); */
 
   // inform players that game is about to start
   gameInfoEl.innerText = "Get ready to start DAS GAME!";
@@ -140,6 +148,8 @@ const startGame = () => {
           gridVirus.style.gridColumn = String(gridColumn);
           gridVirus.style.gridRow = String(gridRow);
 
+          gameInfoEl.innerText = "";
+
           // Remove hideclass
           gridVirus.classList.remove("hide");
 
@@ -153,12 +163,12 @@ const startGame = () => {
 
           // add eventlistner for click on virus div, hide virus when clicked
           gridVirus.addEventListener("click", () => {
+            stopTimer();
             socket.emit("virusClicked");
             if (waitingForClick) {
               const score = Date.now() - msSinceEpochOnTimeout;
               console.log(score);
-
-              console.log(virusClicks);
+              playerOneTimer.innerText = formatTime(score);
 
               // Hide virus after click
               hideVirus();
@@ -376,7 +386,6 @@ socket.on("gameCreated", (gameRoomId) => {
   // call on start game function
   startGame();
 });
-
 // Listen for a list of online players in game
 
 socket.on("playersJoinedGame", (players) => {
@@ -384,9 +393,18 @@ socket.on("playersJoinedGame", (players) => {
   let playerOne = players[0].playername;
   let playerTwo = players[1].playername;
 
+  let playerOneId = players[0].id === socket.id;
+  let playerTwoId = players[1].id === socket.id;
+
   console.log(
     `Welcome to the game player one: ${playerOne} and player two: ${playerTwo}`
   );
+
+  console.log(
+    `Welcome to the game player one: ${playerOneId} and player two: ${playerTwoId}`
+  );
+
+  console.log("this are the players", players);
 
   // set player's names on score board display when game starts
   const playerOneNameEl = document.querySelector(
@@ -396,8 +414,13 @@ socket.on("playersJoinedGame", (players) => {
     "#player-two-name"
   ) as HTMLElement;
 
-  playerOneNameEl.innerText = playerOne;
-  playerTwoNameEl.innerText = playerTwo;
+  if (playerOneId) {
+    playerOneNameEl.innerText = playerOne;
+    playerTwoNameEl.innerText = playerTwo;
+  } else if (playerTwoId) {
+    playerOneNameEl.innerText = playerTwo;
+    playerTwoNameEl.innerText = playerOne;
+  }
 });
 
 // timer function
@@ -406,33 +429,42 @@ let timerInterval: number;
 // start values timer
 const startTimer = () => {
   const startTime = Date.now();
-  const endTime = startTime + 30000;
 
   const timerFunc = () => {
     const currentTime = Date.now();
-    const remainingTime = endTime - currentTime;
+    const elapsedTime = currentTime - startTime;
 
-    if (remainingTime <= 0) {
-      clearInterval(timerInterval);
-      gameInfoEl.innerText = "00:00";
+    if (elapsedTime >= 30000) {
+      stopTimer();
+      if (playerOneId) {
+        playerOneTimer.innerText = "00:30:000";
+      } else {
+        playerTwoTimer.innerText = "00:30:000";
+      }
       return;
     }
 
-    const minutes = Math.floor(remainingTime / 60000);
-    const seconds = Math.floor((remainingTime % 60000) / 1000);
+    const minutes = Math.floor(elapsedTime / 60000);
+    const seconds = Math.floor((elapsedTime % 60000) / 1000);
+    const milliseconds = elapsedTime % 1000;
 
     const durationInMinutes = minutes.toString().padStart(2, "0");
-    const durationInSeconds = seconds.toString().padStart(2, "o");
+    const durationInSeconds = seconds.toString().padStart(2, "0");
+    const durationInMilliseconds = milliseconds.toString().padStart(3, "0");
 
-    gameInfoEl.innerText = `${durationInMinutes}:${durationInSeconds}`;
+    playerOneTimer.innerText = `${durationInMinutes}:${durationInSeconds}:${durationInMilliseconds}`;
   };
 
   // Call for timeFunc
   timerFunc();
 
   // update the timer
-  timerInterval = setInterval(timerFunc, 1000);
+  timerInterval = setInterval(timerFunc, 1);
 };
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
 
 // Start countdown
 
@@ -505,3 +537,14 @@ socket.on("playerDisconnected", (playername) => {
   // hide the trophy image since nobody won!
   trophyImgEl.classList.add("hide");
 });
+
+const formatTime = (ms) => {
+  const minutes = Math.floor(ms / 60000)
+    .toString()
+    .padStart(2, "0");
+  const seconds = Math.floor((ms % 60000) / 1000)
+    .toString()
+    .padStart(2, "0");
+  const milliseconds = (ms % 1000).toString().padStart(3, "0");
+  return `${minutes}:${seconds}:${milliseconds}`;
+};
