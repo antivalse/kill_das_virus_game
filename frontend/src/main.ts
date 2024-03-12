@@ -151,6 +151,8 @@ const startGame = () => {
           // Remove hideclass
           gridVirus.classList.remove("hide");
 
+          gameInfoEl.innerText = "CLICK DAS VIRUS!";
+
           startTimer();
 
           // Set time for comparison
