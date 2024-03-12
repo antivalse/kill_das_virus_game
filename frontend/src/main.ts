@@ -33,8 +33,6 @@ const trophyImgEl = document.querySelector("#trophy-img") as HTMLImageElement;
 
 // Player Details
 let playerName: string | null = null;
-let playerOneId: number;
-let playerTwoId: number;
 
 // Spinning loaders on startpage
 
@@ -436,11 +434,7 @@ const startTimer = () => {
 
     if (elapsedTime >= 30000) {
       stopTimer();
-      if (playerOneId) {
-        playerOneTimer.innerText = "00:30:000";
-      } else {
-        playerTwoTimer.innerText = "00:30:000";
-      }
+      playerOneTimer.innerText = "00:30:000";
       return;
     }
 
@@ -538,7 +532,7 @@ socket.on("playerDisconnected", (playername) => {
   trophyImgEl.classList.add("hide");
 });
 
-const formatTime = (ms) => {
+const formatTime = (ms: number) => {
   const minutes = Math.floor(ms / 60000)
     .toString()
     .padStart(2, "0");
