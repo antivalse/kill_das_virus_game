@@ -76,6 +76,8 @@ const scoreBoardWrapper = document.querySelector(
   "#score-board-display"
 ) as HTMLDivElement;
 
+let timerInterval: number;
+
 //let gameScoreEl = document.querySelector("#score") as HTMLElement;
 const virus = document.getElementById("gridVirus");
 
@@ -463,7 +465,7 @@ socket.on("playersJoinedGame", (players) => {
 });
 
 // timer function
-let timerInterval: number;
+//let timerInterval: number;
 
 // start values timer
 const startTimer = () => {
@@ -498,6 +500,7 @@ const startTimer = () => {
   timerInterval = setInterval(timerFunc, 1);
 };
 
+// Define the stopTimer function to clear the interval:
 function stopTimer() {
   clearInterval(timerInterval);
 }
