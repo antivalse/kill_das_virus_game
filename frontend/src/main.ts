@@ -42,6 +42,11 @@ const resultSpinningLoaderEl = document.querySelector("#spinning-loader-rs");
 
 // Game Details
 const gameInfoEl = document.querySelector("#game-info-text") as HTMLElement;
+// grid container
+// hide grid so virus doesn't show up
+const gridContainer = document.querySelector(
+  "#grid-container"
+) as HTMLDivElement;
 // Reference to previous round div
 const previousRoundDivEl = document.querySelector(
   "#previous-round-div"
@@ -94,6 +99,8 @@ const showGamePage = () => {
 // Game functions
 
 const startGame = () => {
+  // show gridcontainer
+  gridContainer.classList.remove("hide-div");
   // show previous round div
   previousRoundDivEl.classList.remove("hide-div");
   // Time variable for comparison with click
@@ -254,6 +261,8 @@ leaveGameBtnEl.addEventListener("click", () => {
 });
 // end game function
 const endGame = () => {
+  // hide grid-container
+  gridContainer.classList.add("hide-div");
   // clear timer interval
   clearInterval(timerInterval);
   // hide virus

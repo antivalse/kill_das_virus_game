@@ -232,7 +232,7 @@ footer p {
   }
 }
 
-.grid-container {
+#grid-container {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
@@ -455,7 +455,7 @@ footer p {
     font-size: 2.5rem;
   }
 
-  .grid-container {
+  #grid-container {
     margin-bottom: 5rem;
     margin-top: 2.5rem;
     width: 800px;
