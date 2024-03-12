@@ -525,7 +525,7 @@ socket.on("playersClickedVirus", (players) => {
   console.log("these are the players that clicked: ", players);
   // update previous time for player two
 
-  playerTwoTimer.innerText = String(players[1].clickTime);
+  //playerTwoTimer.innerText = String(players[1].clickTime);
 });
 
 // Listen for winner of each round!
