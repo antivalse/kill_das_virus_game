@@ -139,19 +139,6 @@ const createGameAndJoinPlayers = async (
 			virusDelay
 		);
 
-		// get reaction time from client
-
-		// Number of clicks
-		virusClicks = 0;
-
-		// Listen for clicks on virus from client
-		socket.on("virusClicked", () => {
-			// Add clicks
-			virusClicks++;
-			// emit clicks to client side
-			io.emit("updateVirusClicks", virusClicks);
-		});
-
 		// Make sure socket joins the room only once
 		socket.join(gameRoom.id);
 	}
