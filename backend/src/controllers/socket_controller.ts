@@ -20,7 +20,7 @@ import {
 	getGame,
 	getGameWithPlayers,
 } from "../services/game_service";
-import { Player } from "@shared/types/Models";
+import { ExtendedPlayer, Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";
 import { getHighscores } from "../services/highscore_service";
 
@@ -301,13 +301,20 @@ export const handleConnection = (
 			// get players in room and access their clickTime
 			const playersThatClicked = await getGameWithPlayers(gameId);
 
-			//...IF there are any players
+			// If there are any players
 			if (playersThatClicked && virusClicks === 2) {
+				// Convert the array of objects into an array of ExtendedPlayer objects
+				const extendedPlayers: ExtendedPlayer[] =
+					playersThatClicked.players.map((player) => ({
+						id: player.id,
+						playername: player.playername,
+						clickTimes: player.clickTimes,
+						clickTime:
+							player.clickTime !== null ? player.clickTime : 0, // Assuming 0 if clickTime is null
+					}));
+
 				// send list of players to the game room when both players have clicked
-				io.to(gameId).emit(
-					"playersClickedVirus",
-					playersThatClicked?.players
-				);
+				io.to(gameId).emit("playersClickedVirus", extendedPlayers);
 
 				// reset virusclicks counter
 				virusClicks = 0;
