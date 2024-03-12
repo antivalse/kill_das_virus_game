@@ -456,6 +456,18 @@ socket.on("playersJoinedGame", (players) => {
     "#player-two-name"
   ) as HTMLElement;
 
+  // Set players names on scoreboard points
+  const playerScoreOneNameEl = document.querySelector(
+    "#player-one-name-score"
+  ) as HTMLElement;
+  const playerScoreTwoNameEl = document.querySelector(
+    "#player-two-name-score"
+  ) as HTMLElement;
+
+  // Scoreboard names
+  playerScoreOneNameEl.innerText = playerOne;
+  playerScoreTwoNameEl.innerText = playerTwo;
+
   // Timer and name of player
   if (playerOneId) {
     playerOneNameEl.innerText = playerOne;
