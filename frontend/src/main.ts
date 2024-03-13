@@ -215,6 +215,28 @@ function handleVirusClick() {
   // });
 }
 
+// Handle case where the player did not click
+const handleNoClickDetected = () => {
+  if (waitingForClick) {
+    stopTimer();
+    const score = 30000; // Assuming the max time as score when no click is detected
+    const playerId = socket.id;
+
+    if (!playerId) {
+      return;
+    }
+
+    // Update the gameInfoEl to show the max time
+    gameInfoEl.innerText = "00:30:000";
+
+    // Emit the "virusClicked" event with the max time as the score
+    socket.emit("virusClicked", { playerId, score });
+    console.log(
+      `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
+    );
+  }
+};
+
 const startGame = () => {
   gamePageHeaderEl.innerText = "KILL DAS VIRUS";
   // show gameInfoEl
@@ -560,7 +582,8 @@ const startTimer = () => {
     if (elapsedTime >= 30000) {
       stopTimer();
       gameInfoEl.innerText = "00:30:000";
-      // playerOneTimer.innerText = "00:30:000";
+      // inform server that the user did not click
+      handleNoClickDetected();
       hideVirus();
       return;
     }
