@@ -41,13 +41,16 @@ let playerTwoName: string | null;
 // let playerTwoClickedTimes: number[] = [];
 
 // Access id of room
-
 let gameId: string | null = null;
 
+// store clickTimes
 let clickTimes: number[] = [];
 
 // keep track of clicks
 let virusClicks = 0;
+
+// keet track of rounds
+let roundCounter = 0;
 
 // Get and emit results from database to client
 const sendResultsToClient = async (socket: Socket) => {
@@ -305,6 +308,8 @@ export const handleConnection = (
 
 			// If there are any players
 			if (playersThatClicked && virusClicks === 2) {
+				// count rounds
+				roundCounter++;
 				// Convert the array of objects into an array of ExtendedPlayer objects
 				const extendedPlayers: ExtendedPlayer[] =
 					playersThatClicked.players.map((player) => ({
@@ -321,8 +326,13 @@ export const handleConnection = (
 				// reset virusclicks counter
 				virusClicks = 0;
 
-				// set new virus position when a virus has been clicked
-				setPositionOfVirus(gameId, io, debug);
+				// show new virus if there are less than ten rounds
+				if (roundCounter < 10) {
+					// set new virus position when a virus has been clicked
+					setPositionOfVirus(gameId, io, debug);
+				}
+				// if ten rounds have been played emit event to client to end the game
+				io.to(gameId).emit("endGame");
 			}
 
 			// get click times from players
