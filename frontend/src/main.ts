@@ -143,7 +143,10 @@ function handleVirusClick() {
     stopTimer();
     const score = Date.now() - msSinceEpochOnTimeout;
     const playerId = socket.id;
-    playerOneTimer.innerText = formatTime(score);
+    // place timer in gameInfoEl
+    gameInfoEl.innerText = formatTime(score);
+
+    // playerOneTimer.innerText = formatTime(score);
     //virusClicks++;
 
     // push each players click time to their clickedTimes array
@@ -514,7 +517,8 @@ const startTimer = () => {
 
     if (elapsedTime >= 30000) {
       stopTimer();
-      playerOneTimer.innerText = "00:30:000";
+      gameInfoEl.innerText = "00:30:000";
+      // playerOneTimer.innerText = "00:30:000";
       hideVirus();
       return;
     }
@@ -526,8 +530,8 @@ const startTimer = () => {
     const durationInMinutes = minutes.toString().padStart(2, "0");
     const durationInSeconds = seconds.toString().padStart(2, "0");
     const durationInMilliseconds = milliseconds.toString().padStart(3, "0");
-
-    playerOneTimer.innerText = `${durationInMinutes}:${durationInSeconds}:${durationInMilliseconds}`;
+    gameInfoEl.innerText = `${durationInMinutes}:${durationInSeconds}:${durationInMilliseconds}`;
+    //playerOneTimer.innerText = `${durationInMinutes}:${durationInSeconds}:${durationInMilliseconds}`;
   };
 
   // Call for timeFunc
