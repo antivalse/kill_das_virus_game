@@ -354,26 +354,25 @@ export const handleConnection = (
 
 			// send list of players to the game room when both players have clicked
 			io.to(gameId).emit("playersClickedVirus", extendedPlayers);
-		}
-		// increase player score in database
+			// increase player score in database after round
 
-		let roundWinner: string | null = null;
-
-		if (playerOneTime && playerTwoTime) {
-			if (playerOneTime < playerTwoTime) {
-				roundWinner = game.players[0].playername;
-				await increasePlayerScore(game.players[0].id);
-				console.log(`${playerOneName}  gets a point!`);
-			} else if (playerTwoTime < playerOneTime) {
-				roundWinner = game.players[1].playername;
-				await increasePlayerScore(game.players[1].id);
-				console.log(`${playerTwoName} gets a point!`);
-			} else {
-				roundWinner = null;
-				console.log("It was a tie, no one gets a point");
+			let roundWinner: string | null = null;
+			if (playerOneTime && playerTwoTime) {
+				if (playerOneTime < playerTwoTime) {
+					roundWinner = game.players[0].playername;
+					await increasePlayerScore(game.players[0].id);
+					console.log(`${game.players[0].playername} gets a point!`);
+				} else if (playerTwoTime < playerOneTime) {
+					roundWinner = game.players[1].playername;
+					await increasePlayerScore(game.players[1].id);
+					console.log(`${game.players[1].playername} gets a point!`);
+				} else {
+					roundWinner = null;
+					console.log("It was a tie, no one gets a point");
+				}
+				// Send round result to client
+				io.to(gameId).emit("roundResult", roundWinner);
 			}
-			// Send round result to client
-			io.to(gameId).emit("roundResult", roundWinner);
 		}
 
 		// // Convert the array of objects into an array of ExtendedPlayer objects
