@@ -362,6 +362,9 @@ const endGame = () => {
   gameInfoEl.innerText = "";
   // hide scoreboard and prevous rounds
   scoreBoardWrapper.classList.add("hide-div");
+  // Clear player clicked times arrays
+  playerOneClickedTimes = [];
+  playerTwoClickedTimes = [];
 };
 
 // Function to clear results from startpage when disconneted from server
@@ -569,7 +572,8 @@ socket.on("playersClickedVirus", (players) => {
 // Listen for winner of each round!
 // .. and hand out points to winner
 
-socket.on("roundResult", (winner) => {
+// Define an asynchronous function to handle round result
+const handleRoundResult = async (winner: string | null) => {
   console.log("this player won the round: ", winner);
   console.log("Player One:", playerOne);
   console.log("Player Two:", playerTwo);
@@ -581,15 +585,40 @@ socket.on("roundResult", (winner) => {
     playerTwoScore++;
     console.log("player two score: ", playerTwoScore);
   } else {
-    ("it was a tie, no points?");
+    console.log("It was a tie, no points?");
   }
 
-  // update scoreboard with current point and convert point to string
-
+  // Update scoreboard with current points and convert points to string
   playerOneScoreEl.innerText = String(playerOneScore);
-
   playerTwoScoreEl.innerText = String(playerTwoScore);
+};
+
+// Listen for round result and call the asynchronous function
+socket.on("roundResult", async (winner) => {
+  await handleRoundResult(winner);
 });
+
+// socket.on("roundResult", (winner) => {
+//   console.log("this player won the round: ", winner);
+//   console.log("Player One:", playerOne);
+//   console.log("Player Two:", playerTwo);
+
+//   if (winner === playerOne) {
+//     playerOneScore++;
+//     console.log("player one score: ", playerOneScore);
+//   } else if (winner === playerTwo) {
+//     playerTwoScore++;
+//     console.log("player two score: ", playerTwoScore);
+//   } else {
+//     ("it was a tie, no points?");
+//   }
+
+//   // update scoreboard with current point and convert point to string
+
+//   playerOneScoreEl.innerText = String(playerOneScore);
+
+//   playerTwoScoreEl.innerText = String(playerTwoScore);
+// });
 
 // Function to render results to start page
 const renderResults = (results: ResultData[]) => {
