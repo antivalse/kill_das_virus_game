@@ -365,6 +365,9 @@ leaveGameBtnEl.addEventListener("click", () => {
 });
 // end game function
 const endGame = () => {
+  // end the game and give player option to play again on resultpage
+  gamePage.classList.add("hide");
+  resultPage.classList.remove("hide");
   // empty scores
   playerOneScore = 0;
   playerTwoScore = 0;
@@ -736,4 +739,6 @@ const formatTime = (ms: number) => {
 // listen for server to end the game after 10 rounds
 socket.on("endGame", () => {
   console.log("server says end the game!");
+
+  endGame();
 });

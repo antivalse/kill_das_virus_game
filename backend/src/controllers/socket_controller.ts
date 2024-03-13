@@ -332,7 +332,9 @@ export const handleConnection = (
 					setPositionOfVirus(gameId, io, debug);
 				}
 				// if ten rounds have been played emit event to client to end the game
-				io.to(gameId).emit("endGame");
+				if (roundCounter === 10) {
+					io.to(gameId).emit("endGame");
+				}
 			}
 
 			// get click times from players
