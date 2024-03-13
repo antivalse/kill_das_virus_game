@@ -338,6 +338,7 @@ export const handleConnection = (
 				if (roundCounter < 10) {
 					// set new virus position when a virus has been clicked
 					setPositionOfVirus(gameId, io, debug);
+					debug("Roundcounter is at: ", roundCounter);
 				}
 				// if ten rounds have been played emit event to client to end the game
 				if (roundCounter === 10) {
