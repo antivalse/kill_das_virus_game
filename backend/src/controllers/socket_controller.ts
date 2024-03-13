@@ -97,14 +97,10 @@ const createGameAndJoinPlayers = async (
 	getGameWithPlayers: GetGameWithPlayers,
 	socket: Socket
 ) => {
-	// declare gameId
-
-	let gameId: string | null;
 	// create game when there are two players in the waitingPlayers array
 	if (waitingPlayers.length === 2) {
 		const gameRoom = await createGame(waitingPlayers);
 		debug(`Created gameRoom with id:, ${gameRoom.id}`);
-		gameId = gameRoom.id;
 
 		// empty array with clicks
 
@@ -305,9 +301,14 @@ export const handleConnection = (
 			console.error("Error processing virusClicked event:", error);
 		}
 
-		// get the gameRoom id
+		const player = await getPlayer(playerId);
+		// abort if there is no player
+		if (!player) {
+			return;
+		}
+		const gameId = player.gameId;
 
-		if (gameId) {
+		if (player && gameId) {
 			await getGame(gameId);
 
 			// get players in room and access their clickTime
