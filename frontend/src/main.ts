@@ -494,14 +494,18 @@ socket.on("playersJoinedGame", (players) => {
   playerScoreOneNameEl.innerText = playerOne;
   playerScoreTwoNameEl.innerText = playerTwo;
 
-  // Timer and name of player
-  if (playerOneId) {
-    playerOneNameEl.innerText = playerOne;
-    playerTwoNameEl.innerText = playerTwo;
-  } else if (playerTwoId) {
-    playerOneNameEl.innerText = playerTwo;
-    playerTwoNameEl.innerText = playerOne;
-  }
+  // Previous round names
+  playerOneNameEl.innerText = playerOne;
+  playerTwoNameEl.innerText = playerTwo;
+
+  // // Timer and name of player
+  // if (playerOneId) {
+  //   playerOneNameEl.innerText = playerOne;
+  //   playerTwoNameEl.innerText = playerTwo;
+  // } else if (playerTwoId) {
+  //   playerOneNameEl.innerText = playerTwo;
+  //   playerTwoNameEl.innerText = playerOne;
+  // }
 });
 
 // timer function
@@ -551,9 +555,9 @@ function stopTimer() {
 socket.on("playersClickedVirus", (players) => {
   console.log("these are the players that clicked: ", players);
 
-  // update previous time for player two
-
-  //playerTwoTimer.innerText = String(players[1].clickTime);
+  // update previous time for players after each round
+  playerOneTimer.innerText = `${String(players[0].clickTime)} ms`;
+  playerTwoTimer.innerText = `${String(players[1].clickTime)} ms`;
 });
 
 // Listen for winner of each round!
