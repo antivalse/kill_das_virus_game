@@ -12,6 +12,7 @@ model Game {
   clicks    Int
   rounds    Int
   players   Player[]
+
 }
 
 model Player {
