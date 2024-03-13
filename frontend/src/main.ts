@@ -178,6 +178,9 @@ function handleVirusClick() {
 
   hideVirus();
 
+  // Reset waitingForClick to true for the next click
+  waitingForClick = true; // Add this line to reset waitingForClick to true
+
   // Listen for the "updateVirusClicks" event to keep track of how many clicks
   socket.on("updateVirusClicks", async (clicks) => {
     console.log("There are this many clicks: ", clicks);
@@ -239,6 +242,8 @@ const handleNoClickDetected = () => {
     console.log(
       `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
     );
+    // Reset waitingForClick state
+    waitingForClick = false;
   }
 };
 
