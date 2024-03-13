@@ -31,14 +31,15 @@ export const getGame = (gameId: string) => {
  * Create a new game (room)
  */
 
-export const createGame = (waitingPlayers: Player[], data: number) => {
+export const createGame = (waitingPlayers: Player[]) => {
 	// create game and connect waiting players directly
 	return prisma.game.create({
 		data: {
+			clicks: 0,
+			rounds: 0,
 			players: {
 				connect: waitingPlayers.map((player) => ({ id: player.id })),
 			},
-			rounds: data,
 		},
 	});
 };
@@ -62,13 +63,13 @@ export const getGameWithPlayers = async (gameId: string) => {
 
 /**
  * Update game roundsPlayed
- * @params playerId
+ * @params gameId
  * @params roundsPlayed
  */
-export const updateGameRounds = async (playerId: string, data: number) => {
+export const updateGameRounds = async (gameId: string, data: number) => {
 	return await prisma.game.update({
 		where: {
-			id: playerId,
+			id: gameId,
 		},
 		data: {
 			rounds: data,
@@ -78,16 +79,30 @@ export const updateGameRounds = async (playerId: string, data: number) => {
 
 /**
  * Update game clicks
- * @params playerId
+ * @params GameId
  * @params clicks
  */
-export const updateClicks = async (playerId: string, data: number) => {
+export const updateClicks = async (gameId: string, data: number) => {
 	return await prisma.game.update({
 		where: {
-			id: playerId,
+			id: gameId,
 		},
 		data: {
 			clicks: data,
 		},
+	});
+};
+
+/**
+ * Reset clicks in database
+ * @params gameId
+ * @params clicks
+ */
+export const resetClicksInDatabase = async (gameId: string) => {
+	return prisma.game.update({
+		where: {
+			id: gameId,
+		},
+		data: { clicks: 0 },
 	});
 };
