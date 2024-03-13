@@ -40,8 +40,8 @@ let playerTwoName: string | null;
 // let playerOneClickedTimes: number[] = [];
 // let playerTwoClickedTimes: number[] = [];
 
-// Access id of room
-let gameId: string | null = null;
+// declare gameId
+//let gameId: string | null = null;
 
 // store clickTimes
 let clickTimes: number[] = [];
@@ -91,7 +91,7 @@ const getRandomNumber = (min: number, max: number): number => {
 
 // function to create a game and join players to it
 const createGameAndJoinPlayers = async (
-	waitingPlayers: Player[],
+	waitingPlayers: ExtendedPlayer[],
 	io: Server,
 	debug: Debug.Debugger,
 	getGameWithPlayers: GetGameWithPlayers,
@@ -101,7 +101,6 @@ const createGameAndJoinPlayers = async (
 	if (waitingPlayers.length === 2) {
 		const gameRoom = await createGame(waitingPlayers);
 		debug(`Created gameRoom with id:, ${gameRoom.id}`);
-		gameId = gameRoom.id;
 
 		// empty array with clicks
 
@@ -116,6 +115,8 @@ const createGameAndJoinPlayers = async (
 		waitingPlayers.forEach((player) => {
 			io.sockets.sockets.get(player.id)?.join(gameRoom.id);
 			debug(`Socket ${player.id} joined room ${gameRoom.id}`);
+			// Associate player with the game
+			player.gameId = gameRoom.id;
 		});
 
 		// Emit an event to inform players that a game is created/started
@@ -160,6 +161,7 @@ export const handleConnection = (
 	socket: Socket<ClientToServerEvents, ServerToClientEvents>,
 	io: Server<ClientToServerEvents, ServerToClientEvents>
 ) => {
+	let gameId: string | null;
 	debug("🙋 A user connected", socket.id);
 
 	// send highscores to the client
@@ -191,6 +193,7 @@ export const handleConnection = (
 			id: socket.id,
 			playername,
 			clickTimes,
+			gameId,
 		});
 
 		waitingPlayers.push(player);
@@ -298,9 +301,14 @@ export const handleConnection = (
 			console.error("Error processing virusClicked event:", error);
 		}
 
-		// get the gameRoom id
+		const player = await getPlayer(playerId);
+		// abort if there is no player
+		if (!player) {
+			return;
+		}
+		const gameId = player.gameId;
 
-		if (gameId) {
+		if (player && gameId) {
 			await getGame(gameId);
 
 			// get players in room and access their clickTime

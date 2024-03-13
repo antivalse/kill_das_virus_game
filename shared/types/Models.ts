@@ -8,11 +8,12 @@ export interface Player {
   id: string;
   playername: string;
   clickTimes: number[];
+  gameId?: string | null;
 }
 
 // extended Player interface with clicktime
 export interface ExtendedPlayer extends Player {
-  clickTime: number;
+  clickTime?: number;
 }
 
 export interface Result {
