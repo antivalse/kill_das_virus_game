@@ -140,6 +140,11 @@ const hideVirus = () => {
 
 // Define the handleVirusClick function
 function handleVirusClick() {
+  // Remove the event listener to prevent multiple clicks
+  if (!virus) {
+    return;
+  }
+  virus.removeEventListener("click", handleVirusClick);
   if (waitingForClick) {
     stopTimer();
     const score = Date.now() - msSinceEpochOnTimeout;
