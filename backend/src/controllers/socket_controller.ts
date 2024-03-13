@@ -40,8 +40,8 @@ let playerTwoName: string | null;
 // let playerOneClickedTimes: number[] = [];
 // let playerTwoClickedTimes: number[] = [];
 
-// Access id of room
-let gameId: string | null = null;
+// declare gameId
+//let gameId: string | null = null;
 
 // store clickTimes
 let clickTimes: number[] = [];
@@ -91,12 +91,15 @@ const getRandomNumber = (min: number, max: number): number => {
 
 // function to create a game and join players to it
 const createGameAndJoinPlayers = async (
-	waitingPlayers: Player[],
+	waitingPlayers: ExtendedPlayer[],
 	io: Server,
 	debug: Debug.Debugger,
 	getGameWithPlayers: GetGameWithPlayers,
 	socket: Socket
 ) => {
+	// declare gameId
+
+	let gameId: string | null;
 	// create game when there are two players in the waitingPlayers array
 	if (waitingPlayers.length === 2) {
 		const gameRoom = await createGame(waitingPlayers);
@@ -116,6 +119,8 @@ const createGameAndJoinPlayers = async (
 		waitingPlayers.forEach((player) => {
 			io.sockets.sockets.get(player.id)?.join(gameRoom.id);
 			debug(`Socket ${player.id} joined room ${gameRoom.id}`);
+			// Associate player with the game
+			player.gameId = gameRoom.id;
 		});
 
 		// Emit an event to inform players that a game is created/started
@@ -160,6 +165,7 @@ export const handleConnection = (
 	socket: Socket<ClientToServerEvents, ServerToClientEvents>,
 	io: Server<ClientToServerEvents, ServerToClientEvents>
 ) => {
+	let gameId: string | null;
 	debug("🙋 A user connected", socket.id);
 
 	// send highscores to the client
@@ -191,6 +197,7 @@ export const handleConnection = (
 			id: socket.id,
 			playername,
 			clickTimes,
+			gameId,
 		});
 
 		waitingPlayers.push(player);
