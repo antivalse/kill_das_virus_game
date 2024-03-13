@@ -321,8 +321,8 @@ export const handleConnection = (
 				// reset virusclicks counter
 				virusClicks = 0;
 
-				// Function to start a new round
-				const startNewRound = () => {};
+				// set new virus position when a virus has been clicked
+				setPositionOfVirus(gameId, io, debug);
 			}
 
 			// get click times from players
