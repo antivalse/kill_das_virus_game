@@ -310,9 +310,10 @@ export const handleConnection = (
 
 		if (player && gameId) {
 			await getGame(gameId);
-
+			debug("the game id is: ", gameId);
 			// get players in room and access their clickTime
 			const playersThatClicked = await getGameWithPlayers(gameId);
+			debug("players that clicked are: ", playersThatClicked);
 
 			// If there are any players
 			if (playersThatClicked && virusClicks === 2) {
