@@ -366,13 +366,20 @@ export const handleConnection = (
 			// debug("Player two clicked times array:", playerTwoClickedTimes);
 			// declare a winner
 
+			// keep track of player scores
+
+			let playerOneScore = 0;
+			let playerTwoScore = 0;
+
 			let roundWinner: string | null = null;
 			if (playerOneTime && playerTwoTime) {
 				if (playerOneTime < playerTwoTime) {
 					roundWinner = playerOneName;
+					playerOneScore++;
 					console.log(`${playerOneName}  gets a point!`);
 				} else if (playerTwoTime < playerOneTime) {
 					roundWinner = playerTwoName;
+					playerTwoScore++;
 					console.log(`${playerTwoName} gets a point!`);
 				} else {
 					roundWinner = null;
@@ -381,6 +388,19 @@ export const handleConnection = (
 				// send round result to client
 				io.to(gameId).emit("roundResult", roundWinner);
 			}
+
+			// Compare scores
+			let gameWinner: string | null = null;
+			if (playerOneScore > playerTwoScore) {
+				gameWinner = playerOneName;
+			} else if (playerTwoScore > playerOneScore) {
+				gameWinner = playerTwoName;
+			} else {
+				gameWinner = "It's a tie!";
+			}
+
+			// Emit event to client to announce the game winner
+			io.to(gameId).emit("gameWinner", gameWinner);
 		}
 	});
 

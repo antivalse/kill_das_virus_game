@@ -16,6 +16,7 @@ export interface ServerToClientEvents {
   updateVirusClicks: (virusClicks: number) => void;
   playersClickedVirus: (playersThatClicked: ExtendedPlayer[]) => void;
   roundResult: (roundWinner: string | null) => void;
+  gameWinner: (gameWinner: string | null) => void;
   sendResults: (results: ResultData[]) => void;
   sendHighscores: (highscores: HighscoreData[]) => void;
   playerDisconnected: (playername: string) => void;
