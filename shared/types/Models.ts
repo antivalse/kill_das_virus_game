@@ -5,8 +5,6 @@ export interface Game {
   clicks: number;
   rounds: number;
   players: Player[];
-  rounds: number;
-  clicks: number;
 }
 
 export interface Player {
