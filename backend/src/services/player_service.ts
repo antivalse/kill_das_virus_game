@@ -59,3 +59,22 @@ export const updatePlayerScore = async (playerId: string, data: number) => {
 		},
 	});
 };
+
+/**
+ * Increase a player's score in the database
+ *
+ * @param playerId The ID of the player whose score to update
+ * @returns A Promise resolving to the updated player object
+ */
+export const increasePlayerScore = (playerId: string) => {
+	return prisma.player.update({
+		where: {
+			id: playerId,
+		},
+		data: {
+			score: {
+				increment: 1,
+			},
+		},
+	});
+};

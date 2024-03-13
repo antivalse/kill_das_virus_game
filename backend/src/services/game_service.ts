@@ -24,6 +24,7 @@ export const getGame = (gameId: string) => {
 		where: {
 			id: gameId,
 		},
+		include: { players: true },
 	});
 };
 
@@ -67,4 +68,40 @@ export const getGameWithPlayers = async (gameId: string) => {
 
 export const resetClicksInDatabase = async (gameId: string) => {
 	return prisma.game.update({ where: { id: gameId }, data: { clicks: 0 } });
+};
+
+/**
+ * Update clicks for a game in the database
+ *
+ * @param gameId The ID of the game to update
+ * @param clicks The new value of clicks
+ * @returns A Promise resolving to the updated game object
+ */
+export const updateClicks = (gameId: string, clicks: number) => {
+	return prisma.game.update({
+		where: {
+			id: gameId,
+		},
+		data: {
+			clicks: clicks,
+		},
+	});
+};
+
+/**
+ * Increase rounds for a game in the database
+ *
+ * @param gameId The ID of the game to update
+ * @param rounds The new value of rounds
+ * @returns A Promise resolving to the updated game object
+ */
+export const increaseRounds = (gameId: string, rounds: number) => {
+	return prisma.game.update({
+		where: {
+			id: gameId,
+		},
+		data: {
+			rounds: rounds,
+		},
+	});
 };

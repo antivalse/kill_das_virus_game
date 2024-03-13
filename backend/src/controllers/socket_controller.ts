@@ -13,13 +13,16 @@ import {
 	createPlayer,
 	deletePlayer,
 	getPlayer,
+	increasePlayerScore,
 	updatePlayerScore,
 } from "../services/player_service";
 import {
 	createGame,
 	getGame,
 	getGameWithPlayers,
+	increaseRounds,
 	resetClicksInDatabase,
+	updateClicks,
 } from "../services/game_service";
 import { ExtendedPlayer, Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";
@@ -29,7 +32,7 @@ import { getHighscores } from "../services/highscore_service";
 const debug = Debug("backend:socket_controller");
 
 // Track waiting players
-const waitingPlayers: Player[] = [];
+let waitingPlayers: Player[] = [];
 
 //let playerName: string | null;
 
@@ -185,7 +188,8 @@ export const handleConnection = (
 		const player = await createPlayer({
 			id: socket.id,
 			playername,
-			clickTimes,
+			clickTimes: [],
+			score: 0,
 			gameId,
 		});
 
@@ -195,6 +199,9 @@ export const handleConnection = (
 		callback({
 			success: true,
 			game: {
+				id: gameId!,
+				clicks: 0,
+				rounds: 0,
 				players: waitingPlayers,
 			},
 		});
@@ -221,15 +228,16 @@ export const handleConnection = (
 
 		// Clear waiting players if no one is waiting
 		if (!hasWaitingPlayers) {
-			waitingPlayers.length = 0;
-			debug("WAITING PLAYERS BEFORE JOINING: ", waitingPlayers);
+			waitingPlayers = [];
+			debug("waiting players before joining: ", waitingPlayers);
 		}
 
 		if (playerName) {
 			let player = {
 				id: socket.id,
 				playername: playerName,
-				clickTimes: clickTimes,
+				score: 0,
+				clickTimes: [],
 			};
 			debug("PLAYERNAME RECIEVED:", playerName);
 			waitingPlayers.push(player);
@@ -238,6 +246,9 @@ export const handleConnection = (
 		callback({
 			success: true,
 			game: {
+				id: gameId!,
+				clicks: 0,
+				rounds: 0,
 				players: waitingPlayers,
 			},
 		});
@@ -262,143 +273,113 @@ export const handleConnection = (
 			score
 		);
 
-		// Add clicks
-		virusClicks++;
-		debug("amount of virus clicks: ", virusClicks);
-
-		// emit clicks to client side
-		io.emit("updateVirusClicks", virusClicks);
-
-		try {
-			// Use playerId directly in getPlayer function
-			const player = await getPlayer(playerId);
-
-			// Log player information
-			debug("Player information:", player);
-
-			// if player didn't exist, don't do anything
-			if (!player) {
-				debug("Player not found. Aborting.");
-				return;
-			}
-
-			// Update player score in the database
-			await updatePlayerScore(playerId, score);
-
-			// Log the successful update
-			debug(
-				`Updated clickTime for player with ID ${playerId} to ${score}`
-			);
-		} catch (error) {
-			// Log any errors that might occur during the async operations
-			console.error("Error processing virusClicked event:", error);
-		}
-
+		// Get player from database
 		const player = await getPlayer(playerId);
 		// abort if there is no player
 		if (!player) {
+			debug("Player not found. Aborting.");
 			return;
 		}
+
 		const gameId = player.gameId;
+		if (!gameId) {
+			debug("Game not found. Aborting.");
+			return;
+		}
 
-		if (player && gameId) {
-			await getGame(gameId);
-			debug("the game id is: ", gameId);
-			// get players in room and access their clickTime
-			const playersThatClicked = await getGameWithPlayers(gameId);
-			debug("players that clicked are: ", playersThatClicked);
+		// Get game from database
+		const game = await getGame(gameId);
+		if (!game) {
+			return;
+		}
 
-			// If there are any players
-			if (playersThatClicked && virusClicks === 2) {
-				// count rounds
-				roundCounter++;
-				// Convert the array of objects into an array of ExtendedPlayer objects
-				const extendedPlayers: ExtendedPlayer[] =
-					playersThatClicked.players.map((player) => ({
-						id: player.id,
-						playername: player.playername,
-						clickTimes: player.clickTimes,
-						clickTime:
-							player.clickTime !== null ? player.clickTime : 0, // Assuming 0 if clickTime is null
-					}));
+		// increase clicks in database
+		const newClicks = game.clicks + 1;
+		await updateClicks(gameId, newClicks);
 
-				// send list of players to the game room when both players have clicked
-				io.to(gameId).emit("playersClickedVirus", extendedPlayers);
+		if (newClicks >= 2) {
+			// increase rounds and clear clicks from database
+			const newRounds = game.rounds + 1;
+			if (newRounds <= 10) {
+				await increaseRounds(gameId, newRounds);
+				await updateClicks(gameId, 0);
+				// if there are two clicks in database position new virus
+				setPositionOfVirus(gameId, io, debug);
+			}
+		}
 
-				// reset virusclicks counter
-				virusClicks = 0;
+		// get game with players
 
-				// show new virus if there are less than ten rounds
-				if (roundCounter < 10) {
-					// set new virus position when a virus has been clicked
-					setPositionOfVirus(gameId, io, debug);
-					debug("Roundcounter is at: ", roundCounter);
+		const playersInGame = await getGameWithPlayers(gameId);
+		debug("players that clicked are: ", playersInGame);
+
+		if (!playersInGame) {
+			debug("Players not found. Aborting.");
+			return;
+		}
+
+		// get clickTimes from players in game
+		const playerOneTime = playersInGame.players[0].clickTime;
+		const playerTwoTime = playersInGame.players[1].clickTime;
+
+		// increase player score in database
+
+		let roundWinner: string | null = null;
+
+		if (playerOneTime && playerTwoTime) {
+			if (playerOneTime < playerTwoTime) {
+				roundWinner = game.players[0].playername;
+				await increasePlayerScore(game.players[0].id);
+				console.log(`${playerOneName}  gets a point!`);
+			} else if (playerTwoTime < playerOneTime) {
+				roundWinner = game.players[1].playername;
+				await increasePlayerScore(game.players[1].id);
+				console.log(`${playerTwoName} gets a point!`);
+			} else {
+				roundWinner = null;
+				console.log("It was a tie, no one gets a point");
+			}
+			// Send round result to client
+			io.to(gameId).emit("roundResult", roundWinner);
+		}
+
+		// // Convert the array of objects into an array of ExtendedPlayer objects
+		// const extendedPlayers: ExtendedPlayer[] = playersInGame.players.map(
+		// 	(player) => ({
+		// 		id: player.id,
+		// 		playername: player.playername,
+		// 		clickTimes: player.clickTimes,
+		// 		clickTime: player.clickTime !== null ? player.clickTime : 0, // Assuming 0 if clickTime is null
+		// 	})
+		// );
+
+		// // send list of players to the game room when both players have clicked
+		// io.to(gameId).emit("playersClickedVirus", extendedPlayers);
+
+		//Determine the winner of the game based on player scores.
+
+		const determineGameWinner = (players: Player[]): string => {
+			let maxScore = -1;
+			let winningPlayerName = "";
+
+			for (const player of players) {
+				if (player.score !== null && player.score > maxScore) {
+					maxScore = player.score;
+					winningPlayerName = player.playername;
+				} else if (player.score !== null && player.score === maxScore) {
+					// If there's a tie, return immediately
+					return "It's a tie!";
 				}
 			}
 
-			// get click times from players
-			const playerOneTime = playersThatClicked?.players[0].clickTime;
-			const playerTwoTime = playersThatClicked?.players[1].clickTime;
+			return winningPlayerName;
+		};
 
-			// // add click times to players and store in database
-
-			// if (playerOneTime) {
-			// 	playerOneClickedTimes.push(playerOneTime);
-			// }
-
-			// if (playerTwoTime) {
-			// 	playerTwoClickedTimes.push(playerTwoTime);
-			// }
-
-			// // Log the arrays with clicks
-			// debug("Player one clicked times array:", playerOneClickedTimes);
-			// debug("Player two clicked times array:", playerTwoClickedTimes);
-			// declare a winner
-
-			// keep track of player scores
-
-			let playerOneScore = 0;
-			let playerTwoScore = 0;
-
-			let roundWinner: string | null = null;
-			if (playerOneTime && playerTwoTime) {
-				if (playerOneTime < playerTwoTime) {
-					roundWinner = playerOneName;
-					playerOneScore++;
-					console.log(`${playerOneName}  gets a point!`);
-				} else if (playerTwoTime < playerOneTime) {
-					roundWinner = playerTwoName;
-					playerTwoScore++;
-					console.log(`${playerTwoName} gets a point!`);
-				} else {
-					roundWinner = null;
-					console.log("It was a tie, no one gets a point");
-				}
-				// send round result to client
-				io.to(gameId).emit("roundResult", roundWinner);
-			}
-
-			if (roundCounter === 10) {
-				// send endGame message to client after last round
-				io.to(gameId).emit("endGame");
-				// Compare scores after last round
-				let gameWinner: string | null = null;
-				if (playerOneScore > playerTwoScore) {
-					gameWinner = playerOneName;
-				} else if (playerTwoScore > playerOneScore) {
-					gameWinner = playerTwoName;
-				} else {
-					gameWinner = "It's a tie!";
-				}
-
-				// Emit event to client to announce the game winner
-				io.to(gameId).emit("gameWinner", gameWinner);
-
-				// Reset round-related variables for the next game
-				roundCounter = 0;
-				playerOneScore = 0;
-				playerTwoScore = 0;
-			}
+		if (game.rounds === 10) {
+			const gameWinner = determineGameWinner(game.players);
+			// Skicka meddelande om spelets slut och avgör vinnaren
+			io.to(gameId).emit("endGame");
+			io.to(gameId).emit("gameWinner", gameWinner);
 		}
 	});
 

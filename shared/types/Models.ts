@@ -11,6 +11,7 @@ export interface Player {
   id: string;
   playername: string;
   clickTimes: number[];
+  score: number | null;
   gameId?: string | null;
 }
 
