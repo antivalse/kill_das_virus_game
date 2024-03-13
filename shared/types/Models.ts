@@ -2,6 +2,8 @@ export {};
 
 export interface Game {
   players: Player[];
+  rounds: number;
+  clicks: number;
 }
 
 export interface Player {
@@ -15,12 +17,6 @@ export interface Player {
 export interface ExtendedPlayer extends Player {
   clickTime?: number;
   points?: number;
-}
-
-// extended Game interface with clicks and rounds
-export interface ExtendedPlayer extends Game {
-  rounds?: number;
-  clicks?: number;
 }
 
 export interface Result {
