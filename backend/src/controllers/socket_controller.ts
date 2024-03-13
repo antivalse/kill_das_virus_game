@@ -31,30 +31,13 @@ import { getHighscores } from "../services/highscore_service";
 // Create a new debug instance
 const debug = Debug("backend:socket_controller");
 
-// Track waiting players
+// // Track waiting players
 let waitingPlayers: Player[] = [];
 
 //let playerName: string | null;
 
 let playerOneName: string | null;
 let playerTwoName: string | null;
-
-// arrays for storing players clicking times
-
-// let playerOneClickedTimes: number[] = [];
-// let playerTwoClickedTimes: number[] = [];
-
-// declare gameId
-//let gameId: string | null = null;
-
-// store clickTimes
-//let clickTimes: number[] = [];
-
-// keep track of clicks
-//let virusClicks = 0;
-
-// keet track of rounds
-//let roundCounter = 0;
 
 // Get and emit results from database to client
 const sendResultsToClient = async (socket: Socket) => {
@@ -134,6 +117,15 @@ const createGameAndJoinPlayers = async (
 				playersInGame?.players
 			);
 		}
+
+		// Remove players from waitingPlayers array
+		waitingPlayers.splice(0, waitingPlayers.length);
+
+		playerOneName = playersInGame?.players[0].playername || null;
+		playerTwoName = playersInGame?.players[1].playername || null;
+		debug(
+			`Name of player one is: ${playerOneName}. Name of player two is: ${playerTwoName}`
+		);
 		// make players leave the waiting players array when creating game
 		waitingPlayers = [];
 
@@ -190,7 +182,7 @@ export const handleConnection = (
 			playername,
 			clickTimes: [],
 			score: 0,
-			gameId,
+			gameId: null,
 		});
 
 		waitingPlayers.push(player);
