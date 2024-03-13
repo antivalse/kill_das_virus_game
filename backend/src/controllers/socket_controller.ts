@@ -273,6 +273,9 @@ export const handleConnection = (
 			score
 		);
 
+		// Update player score in the database
+		await updatePlayerScore(playerId, score);
+
 		// Get player from database
 		const player = await getPlayer(playerId);
 		// abort if there is no player
@@ -318,7 +321,23 @@ export const handleConnection = (
 			return;
 		}
 
-		// get clickTimes from players in game
+		// Update clickTimes for the player who clicked
+		const currentPlayerIndex = playersInGame.players.findIndex(
+			(player) => player.id === playerId
+		);
+		if (currentPlayerIndex !== -1) {
+			// Update click time for the current player
+			playersInGame.players[currentPlayerIndex].clickTimes.push(
+				Date.now()
+			);
+		}
+
+		// get clickTimes from players in game and store in database
+
+		socket.on(
+			"clickTimes",
+			(playerOneClickTimes, playerTwoClickTimes) => {}
+		);
 		const playerOneTime = playersInGame.players[0].clickTime;
 		const playerTwoTime = playersInGame.players[1].clickTime;
 
