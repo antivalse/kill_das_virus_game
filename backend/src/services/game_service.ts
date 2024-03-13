@@ -66,13 +66,15 @@ export const getGameWithPlayers = async (gameId: string) => {
  * @params gameId
  * @params roundsPlayed
  */
-export const updateGameRounds = async (gameId: string, data: number) => {
+export const updateGameRounds = async (gameId: string) => {
 	return await prisma.game.update({
 		where: {
 			id: gameId,
 		},
 		data: {
-			rounds: data,
+			rounds: {
+				increment: 1,
+			},
 		},
 	});
 };

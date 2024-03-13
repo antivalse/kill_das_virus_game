@@ -22,7 +22,7 @@ model Player {
    game        Game?      @relation(fields: [gameId], references: [id])
    clickTime   Int?
    clickTimes  Int[]
-   points       Int?
+   points      Int?
 }
 
 model Result {

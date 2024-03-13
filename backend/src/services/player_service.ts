@@ -65,13 +65,15 @@ export const updatePlayerScore = async (playerId: string, data: number) => {
  * @params playerId
  * @params points
  */
-export const updatePlayerPoints = async (playerId: string, data: number) => {
+export const updatePlayerPoints = async (playerId: string) => {
 	return await prisma.player.update({
 		where: {
 			id: playerId,
 		},
 		data: {
-			points: data,
+			points: {
+				increment: 1,
+			},
 		},
 	});
 };

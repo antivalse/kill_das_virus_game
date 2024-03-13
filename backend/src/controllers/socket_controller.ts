@@ -14,11 +14,15 @@ import {
 	deletePlayer,
 	getPlayer,
 	updatePlayerScore,
+	updatePlayerPoints,
 } from "../services/player_service";
 import {
 	createGame,
 	getGame,
 	getGameWithPlayers,
+	resetClicksInDatabase,
+	updateClicks,
+	updateGameRounds,
 } from "../services/game_service";
 import { ExtendedPlayer, Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";
@@ -203,6 +207,8 @@ export const handleConnection = (
 			success: true,
 			game: {
 				players: waitingPlayers,
+				rounds: 0,
+				clicks: 0,
 			},
 		});
 
@@ -246,6 +252,8 @@ export const handleConnection = (
 			success: true,
 			game: {
 				players: waitingPlayers,
+				rounds: 0,
+				clicks: 0,
 			},
 		});
 		// Call on createGameAndJoinPlayers function when there are two players in the waitingPlayers array
