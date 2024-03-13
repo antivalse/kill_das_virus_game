@@ -334,13 +334,27 @@ export const handleConnection = (
 
 		// get clickTimes from players in game and store in database
 
-		socket.on(
-			"clickTimes",
-			(playerOneClickTimes, playerTwoClickTimes) => {}
-		);
 		const playerOneTime = playersInGame.players[0].clickTime;
 		const playerTwoTime = playersInGame.players[1].clickTime;
 
+		// send click times to client to render them
+
+		// Check if both players have clicked
+		if (newClicks % 2 === 0) {
+			// Convert the array of objects into an array of ExtendedPlayer objects
+			const extendedPlayers: ExtendedPlayer[] = playersInGame.players.map(
+				(player) => ({
+					id: player.id,
+					playername: player.playername,
+					clickTimes: player.clickTimes,
+					clickTime: player.clickTime !== null ? player.clickTime : 0,
+					score: 0,
+				})
+			);
+
+			// send list of players to the game room when both players have clicked
+			io.to(gameId).emit("playersClickedVirus", extendedPlayers);
+		}
 		// increase player score in database
 
 		let roundWinner: string | null = null;
