@@ -17,7 +17,7 @@ export interface ExtendedPlayer extends Player {
   points?: number;
 }
 
-// extended Player interface with clicktime
+// extended Game interface with clicks and rounds
 export interface ExtendedPlayer extends Game {
   rounds?: number;
   clicks?: number;
