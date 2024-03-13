@@ -9,7 +9,8 @@ datasource db {
 
 model Game {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  roundsPlayed  Int
+  rounds  Int?
+  clicks  Int?
   players   Player[]
 
 }
@@ -21,7 +22,7 @@ model Player {
    game        Game?      @relation(fields: [gameId], references: [id])
    clickTime   Int?
    clickTimes  Int[]
-   points       Int
+   points       Int?
 }
 
 model Result {

@@ -59,3 +59,19 @@ export const updatePlayerScore = async (playerId: string, data: number) => {
 		},
 	});
 };
+
+/**
+ * Update player points
+ * @params playerId
+ * @params points
+ */
+export const updatePlayerPoints = async (playerId: string, data: number) => {
+	return await prisma.player.update({
+		where: {
+			id: playerId,
+		},
+		data: {
+			points: data,
+		},
+	});
+};
