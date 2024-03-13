@@ -286,6 +286,10 @@ restartGameBtnEl.addEventListener("click", () => {
   playerOneScore = 0;
   playerTwoScore = 0;
 
+  // Clear player clicked times arrays
+  playerOneClickedTimes = [];
+  playerTwoClickedTimes = [];
+
   // clear timer interval
   clearInterval(timerInterval);
   // hide virus
