@@ -7,6 +7,7 @@ import {
   ServerToClientEvents,
 } from "@shared/types/SocketTypes";
 import "./assets/scss/style.scss";
+import { ExtendedPlayer } from "@shared/types/Models";
 
 const SOCKET_HOST = import.meta.env.VITE_SOCKET_HOST;
 
@@ -561,13 +562,27 @@ function stopTimer() {
 
 // Listen for player click times
 
-socket.on("playersClickedVirus", (players) => {
+// Define a function to handle the "playersClickedVirus" event asynchronously
+const handlePlayersClickedVirusAsync = async (players: ExtendedPlayer[]) => {
   console.log("these are the players that clicked: ", players);
 
-  // update previous time for players after each round
+  // Update previous time for players after each round
   playerOneTimer.innerText = `${String(players[0].clickTime)} ms`;
   playerTwoTimer.innerText = `${String(players[1].clickTime)} ms`;
+};
+
+// Listen for the "playersClickedVirus" event
+socket.on("playersClickedVirus", async (players) => {
+  await handlePlayersClickedVirusAsync(players);
 });
+
+// socket.on("playersClickedVirus", (players) => {
+//   console.log("these are the players that clicked: ", players);
+
+//   // update previous time for players after each round
+//   playerOneTimer.innerText = `${String(players[0].clickTime)} ms`;
+//   playerTwoTimer.innerText = `${String(players[1].clickTime)} ms`;
+// });
 
 // Listen for winner of each round!
 // .. and hand out points to winner
