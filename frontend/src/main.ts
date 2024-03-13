@@ -143,6 +143,11 @@ function handleVirusClick() {
     stopTimer();
     const score = Date.now() - msSinceEpochOnTimeout;
     const playerId = socket.id;
+
+    if (!playerId) {
+      return;
+    }
+
     // place timer in gameInfoEl
     gameInfoEl.innerText = formatTime(score);
 
@@ -159,32 +164,29 @@ function handleVirusClick() {
 
     // console.log("virus clicks: ", virusClicks);
 
-    // Abort if there is no playerId
-    if (!playerId) {
-      return;
-    }
     socket.emit("virusClicked", { playerId, score });
     console.log(
       `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
     );
-    hideVirus();
-
-    // socket.on("updateVirusClicks", (clicks) => {
-    //   console.log("there are this many clicks: ", clicks);
-
-    //   // send clickedTimes to server after both player's clicked
-    //   if (clicks === 2) {
-    //     socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
-    //     console.log(
-    //       `emitted clickedTimes to server, playerOneClickedTimes: ${playerOneClickedTimes}, playerTwoClickedTimes: ${playerTwoClickedTimes}`
-    //     );
-
-    //   }
-
-    //   console.log("player one clicked times: ", playerOneClickedTimes);
-    //   console.log("player two clicked times: ", playerTwoClickedTimes);
-    // });
   }
+
+  hideVirus();
+
+  // socket.on("updateVirusClicks", (clicks) => {
+  //   console.log("there are this many clicks: ", clicks);
+
+  //   // send clickedTimes to server after both player's clicked
+  //   if (clicks === 2) {
+  //     socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
+  //     console.log(
+  //       `emitted clickedTimes to server, playerOneClickedTimes: ${playerOneClickedTimes}, playerTwoClickedTimes: ${playerTwoClickedTimes}`
+  //     );
+
+  //   }
+
+  //   console.log("player one clicked times: ", playerOneClickedTimes);
+  //   console.log("player two clicked times: ", playerTwoClickedTimes);
+  // });
 }
 
 const startGame = () => {
@@ -280,6 +282,10 @@ restartGameBtnEl.addEventListener("click", () => {
   startPage.classList.add("hide");
   gamePage.classList.remove("hide");
 
+  // empty scores
+  playerOneScore = 0;
+  playerTwoScore = 0;
+
   // clear timer interval
   clearInterval(timerInterval);
   // hide virus
@@ -288,7 +294,7 @@ restartGameBtnEl.addEventListener("click", () => {
   // Clear previous event listener for virus click
   virus?.removeEventListener("click", handleVirusClick);
   // clear game info
-  gameInfoEl.innerHTML = "Get ready to try and KILL DAS VIRUS..AGAIN!";
+  gameInfoEl.innerText = "Waiting for player two..";
   // change header when player joins again
   //gamePageHeaderEl.innerText = "Get ready...";
   let playerThatClickedRestart = {
@@ -339,7 +345,7 @@ const endGame = () => {
   playerOneTimer.innerText = "0 ms";
   playerTwoTimer.innerText = "0 ms";
   // hide gameInfoEl so timer doesn't show up if other player leaves before virus and timer are rendered
-  gameInfoEl.classList.add("hide");
+  //gameInfoEl.classList.add("hide");
   // hide grid-container
   gridContainer.classList.add("hide-div");
   // clear timer interval
