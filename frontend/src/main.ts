@@ -181,46 +181,12 @@ function handleVirusClick() {
   // Reset waitingForClick to true for the next click
   waitingForClick = true; // Add this line to reset waitingForClick to true
 
-  // Listen for the "updateVirusClicks" event to keep track of how many clicks
-  socket.on("updateVirusClicks", async (clicks) => {
-    console.log("There are this many clicks: ", clicks);
+  // Once both players have clicked, send the clicked times to the server
+  socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
+  console.log("Emitted clickedTimes to server");
 
-    // Asynchronously wait for both players to click
-    await waitForBothPlayersToClick();
-
-    // Once both players have clicked, send the clicked times to the server
-    socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
-    console.log("Emitted clickedTimes to server");
-
-    console.log("Player one clicked times: ", playerOneClickedTimes);
-    console.log("Player two clicked times: ", playerTwoClickedTimes);
-  });
-
-  // Function to wait for both players to click
-  async function waitForBothPlayersToClick() {
-    while (
-      playerOneClickedTimes.length === 0 ||
-      playerTwoClickedTimes.length === 0
-    ) {
-      await new Promise((resolve) => setTimeout(resolve, 100)); // Check every 100 milliseconds
-    }
-  }
-
-  // socket.on("updateVirusClicks", (clicks) => {
-  //   console.log("there are this many clicks: ", clicks);
-
-  //   // send clickedTimes to server after both player's clicked
-  //   if (clicks === 2) {
-  //     socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
-  //     console.log(
-  //       `emitted clickedTimes to server, playerOneClickedTimes: ${playerOneClickedTimes}, playerTwoClickedTimes: ${playerTwoClickedTimes}`
-  //     );
-
-  //   }
-
-  //   console.log("player one clicked times: ", playerOneClickedTimes);
-  //   console.log("player two clicked times: ", playerTwoClickedTimes);
-  // });
+  console.log("Player one clicked times: ", playerOneClickedTimes);
+  console.log("Player two clicked times: ", playerTwoClickedTimes);
 }
 
 // Handle case where the player did not click
