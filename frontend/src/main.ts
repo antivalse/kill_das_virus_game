@@ -392,6 +392,12 @@ const endGame = () => {
   // Clear player clicked times arrays
   playerOneClickedTimes = [];
   playerTwoClickedTimes = [];
+
+  // Listen for game winner or if it was a tie
+  socket.on("gameWinner", (winner) => {
+    // Display the winner on the front end
+    console.log("The winner is:", winner);
+  });
 };
 
 // Function to clear results from startpage when disconneted from server
