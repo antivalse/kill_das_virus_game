@@ -576,14 +576,6 @@ socket.on("playersClickedVirus", async (players) => {
   await handlePlayersClickedVirusAsync(players);
 });
 
-// socket.on("playersClickedVirus", (players) => {
-//   console.log("these are the players that clicked: ", players);
-
-//   // update previous time for players after each round
-//   playerOneTimer.innerText = `${String(players[0].clickTime)} ms`;
-//   playerTwoTimer.innerText = `${String(players[1].clickTime)} ms`;
-// });
-
 // Listen for winner of each round!
 // .. and hand out points to winner
 
