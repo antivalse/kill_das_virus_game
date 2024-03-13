@@ -44,13 +44,13 @@ let playerTwoName: string | null;
 //let gameId: string | null = null;
 
 // store clickTimes
-let clickTimes: number[] = [];
+//let clickTimes: number[] = [];
 
 // keep track of clicks
-let virusClicks = 0;
+//let virusClicks = 0;
 
 // keet track of rounds
-let roundCounter = 0;
+//let roundCounter = 0;
 
 // Get and emit results from database to client
 const sendResultsToClient = async (socket: Socket) => {
@@ -102,12 +102,9 @@ const createGameAndJoinPlayers = async (
 		const gameRoom = await createGame(waitingPlayers);
 		debug(`Created gameRoom with id:, ${gameRoom.id}`);
 
-		// empty array with clicks
-
-		// playerOneClickedTimes = [];
-		// playerTwoClickedTimes = [];
-		// empty virus clicks when starting a new game
-		virusClicks = 0;
+		// reset click count in the database for the new game
+		// ensuring that clicks are 0 when game starts
+		await resetClicksInDatabase(gameRoom.id);
 
 		// Iterate over each player in waitingPlayers and join the game room
 		// get socket connection with io.sockets.sockets.get by using the players ID
@@ -134,13 +131,7 @@ const createGameAndJoinPlayers = async (
 			);
 		}
 		// make players leave the waiting players array when creating game
-		waitingPlayers.length = 0;
-
-		// const playerOne = playersInGame?.players[0].playername;
-		// const playerTwo = playersInGame?.players[1].playername;
-		// debug(
-		// 	`Name of player one is: ${playerOne}. Name of player two is: ${playerTwo}`
-		// );
+		waitingPlayers = [];
 
 		playerOneName = playersInGame?.players[0].playername || null;
 		playerTwoName = playersInGame?.players[1].playername || null;
@@ -152,7 +143,8 @@ const createGameAndJoinPlayers = async (
 		setPositionOfVirus(gameRoom.id, io, debug);
 
 		// Make sure socket joins the room only once
-		socket.join(gameRoom.id);
+		// players already joined before?
+		// socket.join(gameRoom.id);
 	}
 };
 

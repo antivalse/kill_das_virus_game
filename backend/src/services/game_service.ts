@@ -58,3 +58,11 @@ export const getGameWithPlayers = async (gameId: string) => {
 		},
 	});
 };
+
+/**
+ * Reset clicks in database
+ */
+
+export const resetClicksInDatabase = async (gameId: string) => {
+	return prisma.game.update({ where: { id: gameId }, data: { clicks: 0 } });
+};

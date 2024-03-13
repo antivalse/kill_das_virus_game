@@ -1,6 +1,9 @@
 export {};
 
 export interface Game {
+  id: string;
+  clicks: number;
+  rounds: number;
   players: Player[];
 }
 
