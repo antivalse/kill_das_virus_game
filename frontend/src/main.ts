@@ -732,3 +732,8 @@ const formatTime = (ms: number) => {
   const milliseconds = (ms % 1000).toString().padStart(3, "0");
   return `${minutes}:${seconds}:${milliseconds}`;
 };
+
+// listen for server to end the game after 10 rounds
+socket.on("endGame", () => {
+  console.log("server says end the game!");
+});
