@@ -64,6 +64,28 @@ const sendHighscoresToClient = async (socket: Socket) => {
 	//debug("highscores are: ", highscores);
 };
 
+// Function to position the virus in the game
+const setPositionOfVirus = (
+	gameRoomId: string,
+	io: Server,
+	debug: Debug.Debugger
+) => {
+	let gridColumn: number = getRandomNumber(1, 10);
+	let gridRow: number = getRandomNumber(1, 10);
+	let virusDelay: number = getRandomNumber(1500, 10000);
+
+	debug(`gridColumnn is: ${gridColumn}`);
+	debug(`gridRow is: ${gridRow} `);
+	debug(`delay is: ${virusDelay} `);
+	// Emit an event to clients with the position of the virus
+	io.to(gameRoomId).emit("setVirusPosition", gridColumn, gridRow, virusDelay);
+};
+
+// Function to generate a random number
+const getRandomNumber = (min: number, max: number): number => {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 // function to create a game and join players to it
 const createGameAndJoinPlayers = async (
 	waitingPlayers: Player[],
@@ -122,37 +144,8 @@ const createGameAndJoinPlayers = async (
 			`Name of player one is: ${playerOneName}. Name of player two is: ${playerTwoName}`
 		);
 
-		// declare grid positions for column and row
-
-		let gridColumn: number = 0;
-		let gridRow: number = 0;
-		let virusDelay: number = 0;
-
-		// Select position of virus in game
-		const positionOfVirus = () => {
-			gridColumn = getRandomNumber(1, 10);
-			gridRow = getRandomNumber(1, 10);
-			virusDelay = getRandomNumber(1500, 10000);
-			debug(`gridColumnn is: ${gridColumn}`);
-			debug(`gridRow is: ${gridRow} `);
-			debug(`delay is: ${virusDelay} `);
-		};
-
-		// Get random number
-		const getRandomNumber = (min: number, max: number): number => {
-			return Math.floor(Math.random() * (max - min + 1)) + min;
-		};
-		// call on function
-		positionOfVirus();
-
-		// emit an event to client with position of virus
-
-		io.to(gameRoom.id).emit(
-			"setVirusPosition",
-			gridColumn,
-			gridRow,
-			virusDelay
-		);
+		// Emit event to set the position of the virus
+		setPositionOfVirus(gameRoom.id, io, debug);
 
 		// Make sure socket joins the room only once
 		socket.join(gameRoom.id);
@@ -327,6 +320,9 @@ export const handleConnection = (
 
 				// reset virusclicks counter
 				virusClicks = 0;
+
+				// Function to start a new round
+				const startNewRound = () => {};
 			}
 
 			// get click times from players
@@ -347,6 +343,7 @@ export const handleConnection = (
 			// debug("Player one clicked times array:", playerOneClickedTimes);
 			// debug("Player two clicked times array:", playerTwoClickedTimes);
 			// declare a winner
+
 			let roundWinner: string | null = null;
 			if (playerOneTime && playerTwoTime) {
 				if (playerOneTime < playerTwoTime) {
