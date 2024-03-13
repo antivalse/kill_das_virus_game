@@ -395,7 +395,11 @@ const endGame = () => {
 
   // Listen for game winner or if it was a tie
   socket.on("gameWinner", (winner) => {
-    // Display the winner on the front end
+    // Display the winner
+    if (!winner) {
+      return;
+    }
+    gameWinnerInfoEl.innerText = winner;
     console.log("The winner is:", winner);
   });
 };

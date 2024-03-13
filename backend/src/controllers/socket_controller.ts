@@ -400,6 +400,11 @@ export const handleConnection = (
 
 				// Emit event to client to announce the game winner
 				io.to(gameId).emit("gameWinner", gameWinner);
+
+				// Reset round-related variables for the next game
+				roundCounter = 0;
+				playerOneScore = 0;
+				playerTwoScore = 0;
 			}
 		}
 	});
