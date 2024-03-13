@@ -341,10 +341,6 @@ export const handleConnection = (
 					setPositionOfVirus(gameId, io, debug);
 					debug("Roundcounter is at: ", roundCounter);
 				}
-				// if ten rounds have been played emit event to client to end the game
-				if (roundCounter === 10) {
-					io.to(gameId).emit("endGame");
-				}
 			}
 
 			// get click times from players
@@ -389,18 +385,22 @@ export const handleConnection = (
 				io.to(gameId).emit("roundResult", roundWinner);
 			}
 
-			// Compare scores
-			let gameWinner: string | null = null;
-			if (playerOneScore > playerTwoScore) {
-				gameWinner = playerOneName;
-			} else if (playerTwoScore > playerOneScore) {
-				gameWinner = playerTwoName;
-			} else {
-				gameWinner = "It's a tie!";
-			}
+			if (roundCounter === 10) {
+				// send endGame message to client after last round
+				io.to(gameId).emit("endGame");
+				// Compare scores after last round
+				let gameWinner: string | null = null;
+				if (playerOneScore > playerTwoScore) {
+					gameWinner = playerOneName;
+				} else if (playerTwoScore > playerOneScore) {
+					gameWinner = playerTwoName;
+				} else {
+					gameWinner = "It's a tie!";
+				}
 
-			// Emit event to client to announce the game winner
-			io.to(gameId).emit("gameWinner", gameWinner);
+				// Emit event to client to announce the game winner
+				io.to(gameId).emit("gameWinner", gameWinner);
+			}
 		}
 	});
 
