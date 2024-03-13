@@ -326,10 +326,15 @@ export const handleConnection = (
 			(player) => player.id === playerId
 		);
 		if (currentPlayerIndex !== -1) {
-			// Update click time for the current player
-			playersInGame.players[currentPlayerIndex].clickTimes.push(
-				Date.now()
-			);
+			const currentPlayer = playersInGame.players[currentPlayerIndex];
+			// Check if the player has already reached 10 clickTimes
+			if (currentPlayer.clickTimes.length < 10) {
+				// Update click time for the current player
+				currentPlayer.clickTimes.push(Date.now());
+			} else {
+				// If the player has already reached 10 clickTimes, do not add more
+				console.log("Player has already reached maximum click times.");
+			}
 		}
 
 		// get clickTimes from players in game and store in database
