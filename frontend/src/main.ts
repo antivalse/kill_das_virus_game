@@ -173,6 +173,31 @@ function handleVirusClick() {
 
   hideVirus();
 
+  // Listen for the "updateVirusClicks" event to keep track of how many clicks
+  socket.on("updateVirusClicks", async (clicks) => {
+    console.log("There are this many clicks: ", clicks);
+
+    // Asynchronously wait for both players to click
+    await waitForBothPlayersToClick();
+
+    // Once both players have clicked, send the clicked times to the server
+    socket.emit("clickTimes", playerOneClickedTimes, playerTwoClickedTimes);
+    console.log("Emitted clickedTimes to server");
+
+    console.log("Player one clicked times: ", playerOneClickedTimes);
+    console.log("Player two clicked times: ", playerTwoClickedTimes);
+  });
+
+  // Function to wait for both players to click
+  async function waitForBothPlayersToClick() {
+    while (
+      playerOneClickedTimes.length === 0 ||
+      playerTwoClickedTimes.length === 0
+    ) {
+      await new Promise((resolve) => setTimeout(resolve, 100)); // Check every 100 milliseconds
+    }
+  }
+
   // socket.on("updateVirusClicks", (clicks) => {
   //   console.log("there are this many clicks: ", clicks);
 
@@ -482,7 +507,7 @@ socket.on("playersJoinedGame", (players) => {
     `Welcome to the game player one: ${playerOneId} and player two: ${playerTwoId}`
   );
 
-  console.log("this are the players", players);
+  console.log("these are the players", players);
 
   // set player's names on score board display when game starts
   const playerOneNameEl = document.querySelector(
