@@ -19,6 +19,7 @@ import {
 	createGame,
 	getGame,
 	getGameWithPlayers,
+	resetClicksInDatabase,
 } from "../services/game_service";
 import { ExtendedPlayer, Player } from "@shared/types/Models";
 import { getResults } from "../services/result_service";

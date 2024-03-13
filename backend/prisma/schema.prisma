@@ -9,8 +9,8 @@ datasource db {
 
 model Game {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  clicks    Int[]
-  rounds    Int[]
+  clicks    Int
+  rounds    Int
   players   Player[]
 }
 

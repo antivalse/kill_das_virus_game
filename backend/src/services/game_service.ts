@@ -35,6 +35,8 @@ export const createGame = (waitingPlayers: Player[]) => {
 	// create game and connect waiting players directly
 	return prisma.game.create({
 		data: {
+			clicks: 0, // Set initial value for clicks
+			rounds: 0, // Set initial value for rounds
 			players: {
 				connect: waitingPlayers.map((player) => ({ id: player.id })),
 			},
