@@ -375,19 +375,6 @@ export const handleConnection = (
 			}
 		}
 
-		// // Convert the array of objects into an array of ExtendedPlayer objects
-		// const extendedPlayers: ExtendedPlayer[] = playersInGame.players.map(
-		// 	(player) => ({
-		// 		id: player.id,
-		// 		playername: player.playername,
-		// 		clickTimes: player.clickTimes,
-		// 		clickTime: player.clickTime !== null ? player.clickTime : 0, // Assuming 0 if clickTime is null
-		// 	})
-		// );
-
-		// // send list of players to the game room when both players have clicked
-		// io.to(gameId).emit("playersClickedVirus", extendedPlayers);
-
 		//Determine the winner of the game based on player scores.
 
 		const determineGameWinner = (players: Player[]): string => {
