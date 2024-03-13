@@ -288,21 +288,19 @@ restartGameBtnEl.addEventListener("click", () => {
   // Clear previous event listener for virus click
   virus?.removeEventListener("click", handleVirusClick);
   // clear game info
-  //gameInfoEl.innerHTML = "Get ready to try and KILL DAS VIRUS..AGAIN!";
+  gameInfoEl.innerHTML = "Get ready to try and KILL DAS VIRUS..AGAIN!";
   // change header when player joins again
-  gamePageHeaderEl.innerText = "Get ready...";
+  //gamePageHeaderEl.innerText = "Get ready...";
   let playerThatClickedRestart = {
     id: socket.id,
     name: playerName,
   };
 
   if (playerThatClickedRestart.name) {
-    // Emit playerJoinAgainRequest to server
-
     if (!playerThatClickedRestart.name) {
       return;
     }
-    // Emit playerJoinAgainRequest event to server after reconnecting
+    // Emit playerJoinAgainRequest event to server
     socket.emit(
       "playerJoinAgainRequest",
       playerThatClickedRestart.name,
@@ -335,8 +333,11 @@ const endGame = () => {
   playerOneScore = 0;
   playerTwoScore = 0;
 
-  playerOneScoreEl.innerHTML = "0";
-  playerTwoScoreEl.innerHTML = "0";
+  playerOneScoreEl.innerText = "0";
+  playerTwoScoreEl.innerText = "0";
+
+  playerOneTimer.innerText = "0 ms";
+  playerTwoTimer.innerText = "0 ms";
   // hide gameInfoEl so timer doesn't show up if other player leaves before virus and timer are rendered
   gameInfoEl.classList.add("hide");
   // hide grid-container
@@ -345,17 +346,12 @@ const endGame = () => {
   clearInterval(timerInterval);
   // hide virus
   virus?.classList.add("hide");
-
   // Clear previous event listener for virus click
   virus?.removeEventListener("click", handleVirusClick);
   // clear game info
-  gameInfoEl.innerHTML = "";
-
+  gameInfoEl.innerText = "";
   // hide scoreboard and prevous rounds
-
   scoreBoardWrapper.classList.add("hide-div");
-  // hide previous round div
-  //previousRoundDivEl.classList.add("hide-div");
 };
 
 // Function to clear results from startpage when disconneted from server
