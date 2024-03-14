@@ -209,7 +209,7 @@ const handleNoClickDetected = () => {
       `Emitted "virusClicked" event for player ${playerId} with score: ${score}`
     );
     // Reset waitingForClick state
-    waitingForClick = false;
+    waitingForClick = true;
   }
 };
 
