@@ -405,25 +405,22 @@ export const handleConnection = (
 			if (!playerTwoName) {
 				return;
 			}
+
+			// Hämta faktiska poäng från databasen för varje spelare
+			const playerOneScore = game.players[0].score || 0;
+			const playerTwoScore = game.players[1].score || 0;
+
+			// Beräkna poängen för varje spelare
+			let playerOnePoint = playerOneScore;
+			let playerTwoPoint = playerTwoScore;
+			// Skapa ett nytt resultatobjekt med de faktiska poängvärdena
 			const newResult = await createResult({
 				playerOneName: playerOneName,
 				playerTwoName: playerTwoName,
-				playerOneHighscore:
-					game.players[0].score !== null ? game.players[0].score : 0,
-				playerTwoHighscore:
-					game.players[1].score !== null ? game.players[1].score : 0,
-				playerOnePoint:
-					game.players[0].score !== null &&
-					game.players[1].score !== null &&
-					game.players[0].score > game.players[1].score
-						? 1
-						: 0,
-				playerTwoPoint:
-					game.players[0].score !== null &&
-					game.players[1].score !== null &&
-					game.players[1].score > game.players[0].score
-						? 1
-						: 0,
+				playerOneHighscore: playerOneScore,
+				playerTwoHighscore: playerTwoScore,
+				playerOnePoint: playerOnePoint,
+				playerTwoPoint: playerTwoPoint,
 				timestamp: Date.now(),
 			});
 		}
