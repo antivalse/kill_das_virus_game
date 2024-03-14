@@ -11,9 +11,9 @@ import { ResultData } from "@shared/types/SocketTypes";
 export const getResults = async () => {
 	return await prisma.result.findMany({
 		orderBy: {
-			timestamp: "asc",
+			timestamp: "desc",
 		},
-		take: -10,
+		take: 10,
 	});
 };
 
