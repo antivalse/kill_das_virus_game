@@ -25,7 +25,7 @@ import {
 	updateClicks,
 } from "../services/game_service";
 import { ExtendedPlayer, Player } from "@shared/types/Models";
-import { getResults } from "../services/result_service";
+import { createResult, getResults } from "../services/result_service";
 import { getHighscores } from "../services/highscore_service";
 
 // Create a new debug instance
@@ -396,6 +396,36 @@ export const handleConnection = (
 			// Skicka meddelande om spelets slut och avgör vinnaren
 			io.to(gameId).emit("endGame");
 			io.to(gameId).emit("gameWinner", gameWinner);
+			// create a new result and store in database
+
+			if (!playerOneName) {
+				return;
+			}
+
+			if (!playerTwoName) {
+				return;
+			}
+			const newResult = await createResult({
+				playerOneName: playerOneName,
+				playerTwoName: playerTwoName,
+				playerOneHighscore:
+					game.players[0].score !== null ? game.players[0].score : 0,
+				playerTwoHighscore:
+					game.players[1].score !== null ? game.players[1].score : 0,
+				playerOnePoint:
+					game.players[0].score !== null &&
+					game.players[1].score !== null &&
+					game.players[0].score > game.players[1].score
+						? 1
+						: 0,
+				playerTwoPoint:
+					game.players[0].score !== null &&
+					game.players[1].score !== null &&
+					game.players[1].score > game.players[0].score
+						? 1
+						: 0,
+				timestamp: Date.now(),
+			});
 		}
 	});
 
