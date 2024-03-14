@@ -358,8 +358,31 @@ leaveGameBtnEl.addEventListener("click", () => {
   resultPage.classList.add("hide");
   // send event to server so server can delete player from database
   socket.emit("playerWantsToLeave");
-  // call on end game for clean up purposes
-  endGame();
+  // clean up
+  // empty scores
+  playerOneScore = 0;
+  playerTwoScore = 0;
+
+  playerOneScoreEl.innerText = "0";
+  playerTwoScoreEl.innerText = "0";
+
+  playerOneTimer.innerText = "0 ms";
+  playerTwoTimer.innerText = "0 ms";
+  // hide grid-container
+  gridContainer.classList.add("hide-div");
+  // clear timer interval
+  clearInterval(timerInterval);
+  // hide virus
+  virus?.classList.add("hide");
+  // Clear previous event listener for virus click
+  virus?.removeEventListener("click", handleVirusClick);
+  // clear game info
+  gameInfoEl.innerText = "";
+  // hide scoreboard and prevous rounds
+  scoreBoardWrapper.classList.add("hide-div");
+  // Clear player clicked times arrays
+  playerOneClickedTimes = [];
+  playerTwoClickedTimes = [];
 });
 // end game function
 const endGame = () => {
